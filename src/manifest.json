@@ -3,20 +3,10 @@
     "name": "EOS Extension",
     "version": "1.0.0",
     "permissions": [ "tabs", "activeTab" ],
-    "content_scripts": [
-      {
-        "matches": [ "http*://*/*" ],
-        "js": [ "content-script.js" ]
-      }
-    ],
     "browser_action": {
       "default_title": "EOS Extension",
       "default_popup": "index.html",
 	  "default_icon": "icon.png"
-    },
-    "icons": {
-      "19": "assets/Icon-19.png",
-      "38": "assets/Icon-38.png"
     },
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"web_accessible_resources": [

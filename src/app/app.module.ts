@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RoutesModule } from './routes/routes.module';
 
@@ -11,7 +12,8 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    RoutesModule
+    RoutesModule,
+    NoopAnimationsModule
   ],
   providers: [],
   bootstrap: [

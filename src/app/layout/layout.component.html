@@ -1,14 +1,20 @@
-<div id="layout">
-  <nav mat-tab-nav-bar>
-    <a mat-tab-link
-        *ngFor="let link of navLinks"
-        routerLinkActive
-        #rla="routerLinkActive"
-        [routerLink]="link.path"
-        [active]="rla.isActive"
-    >
-      <mat-icon>{{ link.icon }}</mat-icon>
-    </a>
-  </nav>
-  <router-outlet></router-outlet>
+<div>
+  <div class="header">
+    <nav mat-tab-nav-bar>
+      <a mat-tab-link
+          *ngFor="let link of navLinks"
+          routerLinkActive
+          #rla="routerLinkActive"
+          [routerLink]="link.path"
+          [active]="rla.isActive"
+      >
+        <mat-icon>{{ link.icon }}</mat-icon>
+      </a>
+    </nav>
+  </div>
+  <div class="content">
+    <ng-scrollbar>
+      <router-outlet></router-outlet>
+    </ng-scrollbar>
+  </div>
 </div>

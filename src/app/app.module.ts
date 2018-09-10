@@ -1,6 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
+import { HttpLoaderFactory } from './core/translate/translate-loader.factory';
 
 import { RoutesModule } from './routes/routes.module';
 
@@ -13,11 +18,28 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     RoutesModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [ HttpClient ]
+      }
+    })
   ],
-  providers: [],
+  providers: [
+    TranslateService
+  ],
   bootstrap: [
     AppComponent
   ]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private translate: TranslateService) {
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
+
+}

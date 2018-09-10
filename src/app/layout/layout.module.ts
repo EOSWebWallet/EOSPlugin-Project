@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { ScrollbarModule } from 'ngx-scrollbar';
 
 import { LayoutComponent } from './layout.component';
@@ -24,6 +25,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatTabsModule,
     MatIconModule,
+    MatButtonModule,
     ScrollbarModule
   ],
   declarations: [

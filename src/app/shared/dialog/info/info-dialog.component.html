@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+  <div class="icon">
+    <mat-icon>check_circle_outline</mat-icon>
+  </div>
+  <div class="content">
+    <p>{{ data.message }}</p>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">{{ 'shared.dialog.success.button' | translate }}</button>
+</div>

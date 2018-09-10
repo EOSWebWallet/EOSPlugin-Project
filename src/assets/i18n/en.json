@@ -1,5 +1,12 @@
 {
   "home": {
     "dashboard": "Dashboard"
+  },
+  "shared": {
+    "dialog": {
+      "success": {
+        "button": "Continue"
+      }
+    }
   }
 }

@@ -41,3 +41,8 @@
 <h1>{{ 'home.dashboard' | translate }}</h1>
 
 <button mat-button (click)="openDialog()">Dialog</button>
+
+<form #form="ngForm">
+  <app-text name="text-input" [label]="'Test input'" ngModel></app-text>
+  <button type="submit">Submit</button>
+</form>

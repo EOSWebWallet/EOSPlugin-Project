@@ -1,0 +1,9 @@
+<mat-form-field>
+  <input
+    matInput
+    placeholder="{{ label }}"
+    [ngModel]="value"
+    (ngModelChange)="onChange($event)"
+    (focusout)="onFocusOut()"
+  />
+</mat-form-field>

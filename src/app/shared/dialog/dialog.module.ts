@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { InfoDialogComponent } from './info/info-dialog.component';
+import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
 
 @NgModule({
   imports: [
@@ -14,12 +15,15 @@ import { InfoDialogComponent } from './info/info-dialog.component';
     TranslateModule,
   ],
   declarations: [
+    ConfirmDialogComponent,
     InfoDialogComponent,
   ],
   exports: [
+    ConfirmDialogComponent,
     InfoDialogComponent,
   ],
   entryComponents: [
+    ConfirmDialogComponent,
     InfoDialogComponent,
   ]
 })

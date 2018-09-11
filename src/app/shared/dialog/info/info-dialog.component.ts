@@ -13,8 +13,4 @@ export class InfoDialogComponent {
     private dialogRef: MatDialogRef<InfoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IInfoDialogData
   ) { }
-
-  onClose(): void {
-    this.dialogRef.close();
-  }
 }

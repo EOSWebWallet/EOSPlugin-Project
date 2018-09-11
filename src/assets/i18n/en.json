@@ -5,7 +5,11 @@
   "shared": {
     "dialog": {
       "success": {
-        "button": "Continue"
+        "close": "Continue"
+      },
+      "confirm": {
+        "close": "No",
+        "ok": "Yes"
       }
     }
   }

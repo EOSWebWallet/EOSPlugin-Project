@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { InfoDialogComponent } from '../../shared/dialog/info/info-dialog.component';
+import { ConfirmDialogComponent } from '../../shared/dialog/confirm/confirm-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,7 +13,7 @@ export class DashboardComponent {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(InfoDialogComponent, {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
       data: { message: 'Everything is ok)' }
     });

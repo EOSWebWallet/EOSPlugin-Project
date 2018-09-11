@@ -7,5 +7,6 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>{{ 'shared.dialog.success.close' | translate }}</button>
+  <button mat-button mat-dialog-close>{{ 'shared.dialog.confirm.close' | translate }}</button>
+  <button mat-button [mat-dialog-close]="true">{{ 'shared.dialog.confirm.ok' | translate }}</button>
 </div>

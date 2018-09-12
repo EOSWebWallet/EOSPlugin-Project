@@ -1,17 +1,21 @@
 {
-    "manifest_version": 2,
-    "name": "EOS Extension",
-    "version": "1.0.0",
-    "permissions": [ "tabs", "activeTab" ],
-    "browser_action": {
-      "default_title": "EOS Extension",
-      "default_popup": "index.html",
-	  "default_icon": "icon.png"
-    },
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "manifest_version": 2,
+  "name": "EOS Extension",
+  "version": "1.0.0",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage"
+  ],
+  "browser_action": {
+    "default_title": "EOS Extension",
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
+  },
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"web_accessible_resources": [
-			"assets/css/*",
-			"assets/js/*",
-			"assets/fonts/*" 
-			]
-  }
+    "assets/css/*",
+    "assets/js/*",
+    "assets/fonts/*"
+  ]
+}

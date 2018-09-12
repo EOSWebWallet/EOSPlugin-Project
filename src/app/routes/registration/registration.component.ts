@@ -1,7 +1,10 @@
 import { Component, ViewChildren, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 import { IControlErrors } from '../../shared/form/form.interface';
-import { FormControl } from '@angular/forms';
+import { AuthService } from '../../core/auth/auth.service';
+import { PluginService } from '../../core/plugin/plugin.service';
 
 @Component({
   selector: 'app-registration',
@@ -14,6 +17,12 @@ export class RegistrationComponent {
 
   @ViewChild('passwordConfirm')
   passwordConfirmControl: FormControl;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private pluginService: PluginService
+  ) { }
 
   get passwordErrors(): IControlErrors {
     return this.passwordControl.touched && this.passwordControl.errors;
@@ -30,6 +39,11 @@ export class RegistrationComponent {
         ? { passwordEquality: true } : null;
   }
 
-  onRegister(form: any): void {
+  onRegister(): void {
+    this.authService.register(this.passwordControl.value)
+      .subscribe(password => {
+        this.pluginService.createInstance(password);
+        this.router.navigateByUrl('/app/home');
+      });
   }
 }

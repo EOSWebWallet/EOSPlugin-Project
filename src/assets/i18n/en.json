@@ -2,6 +2,13 @@
   "home": {
     "dashboard": "Dashboard"
   },
+  "routes": {
+    "registration": {
+      "password": "New Password",
+      "passwordConfirm": "Confirm Password",
+      "submit": "Create new account"
+    }
+  },
   "shared": {
     "dialog": {
       "success": {
@@ -10,6 +17,12 @@
       "confirm": {
         "close": "No",
         "ok": "Yes"
+      }
+    },
+    "form": {
+      "errors": {
+        "required": "This field is required",
+        "passwordEquality": "Password fields should be equal"
       }
     }
   }

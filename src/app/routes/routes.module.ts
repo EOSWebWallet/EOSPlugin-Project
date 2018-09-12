@@ -4,6 +4,7 @@ import { Route, RouterModule } from '@angular/router';
 const routes: Route[] = [
   { path: '', pathMatch: 'full', redirectTo: 'app' },
   { path: 'app', loadChildren: '../layout/layout.module#LayoutModule' },
+  { path: 'registration', loadChildren: './registration/registration.module#RegistrationModule' },
   { path: '**', redirectTo: '' },
 ];
 

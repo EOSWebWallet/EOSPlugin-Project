@@ -7,6 +7,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { HttpLoaderFactory } from './core/translate/translate-loader.factory';
 
+import { CoreModule } from './core/core.module';
 import { RoutesModule } from './routes/routes.module';
 
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
+    CoreModule,
     RoutesModule,
     NoopAnimationsModule,
     HttpClientModule,

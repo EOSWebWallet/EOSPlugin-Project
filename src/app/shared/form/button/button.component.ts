@@ -7,4 +7,5 @@ import { Component, Input, Output } from '@angular/core';
 export class ButtonComponent {
 
   @Input() label: string;
+  @Input() disabled: boolean;
 }

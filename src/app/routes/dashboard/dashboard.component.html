@@ -44,5 +44,5 @@
 
 <form #form="ngForm">
   <app-text name="text-input" [label]="'Test input'" ngModel></app-text>
-  <app-button [label]="'Submit'"></app-button>
+  <app-button [label]="'Submit'" (click)="onSubmit(form)"></app-button>
 </form>

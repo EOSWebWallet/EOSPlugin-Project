@@ -18,4 +18,7 @@ export class DashboardComponent {
       data: { message: 'Everything is ok)' }
     });
   }
+
+  onSubmit(form: any): void {
+  }
 }

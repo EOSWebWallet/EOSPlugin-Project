@@ -32,7 +32,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "../node_modules/eosjs-ecc/lib/eosjs-ecc.js"
+              "./node_modules/eosjs-ecc/lib/eosjs-ecc.js"
             ]
           },
           "configurations": {

@@ -4,13 +4,22 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store'
 
 import { HttpLoaderFactory } from './core/translate/translate-loader.factory';
 
 import { CoreModule } from './core/core.module';
 import { RoutesModule } from './routes/routes.module';
 
+import { IAppState } from './core/state/state.interface';
+
 import { AppComponent } from './app.component';
+
+import { reducers, initialState } from './core/state/root.reducer';
+
+export function getInitialState(): Partial<IAppState> {
+  return { ...initialState };
+}
 
 @NgModule({
   declarations: [
@@ -28,7 +37,8 @@ import { AppComponent } from './app.component';
         useFactory: HttpLoaderFactory,
         deps: [ HttpClient ]
       }
-    })
+    }),
+    StoreModule.forRoot(reducers, { initialState: getInitialState }),
   ],
   providers: [
     TranslateService

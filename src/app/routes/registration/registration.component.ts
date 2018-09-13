@@ -4,7 +4,6 @@ import { FormControl } from '@angular/forms';
 
 import { IControlErrors } from '../../shared/form/form.interface';
 import { AuthService } from '../../core/auth/auth.service';
-import { PluginService } from '../../core/plugin/plugin.service';
 
 @Component({
   selector: 'app-registration',
@@ -21,7 +20,6 @@ export class RegistrationComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private pluginService: PluginService
   ) { }
 
   get passwordErrors(): IControlErrors {
@@ -40,10 +38,5 @@ export class RegistrationComponent {
   }
 
   onRegister(): void {
-    this.authService.register(this.passwordControl.value)
-      .subscribe(password => {
-        this.pluginService.createInstance(password);
-        this.router.navigateByUrl('/app/home');
-      });
   }
 }

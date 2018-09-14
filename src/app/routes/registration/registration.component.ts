@@ -38,5 +38,6 @@ export class RegistrationComponent {
   }
 
   onRegister(): void {
+    this.authService.register(this.passwordControl.value);
   }
 }

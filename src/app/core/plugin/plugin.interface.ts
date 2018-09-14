@@ -1,5 +1,9 @@
-import { EOSPlugin } from './plugin';
+import { IKeychain } from '../keychain/keychain.interface';
 
 export interface IPluginState {
-  plugin: EOSPlugin;
+  plugin: IPlugin;
+}
+
+export interface IPlugin {
+  keychain: IKeychain;
 }

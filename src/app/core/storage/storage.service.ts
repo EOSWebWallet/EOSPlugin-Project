@@ -1,19 +1,21 @@
-import { EOSPlugin } from '../plugin/plugin';
+import { IPlugin } from '../plugin/plugin.interface';
 
 import { BrowserAPI } from '../browser/browser';
 
-export class AppStorage {
+import { PluginService } from '../plugin/plugin.service';
+
+export class StorageService {
   private static KEY_SALT = 'salt';
 
-  static save(plugin: EOSPlugin): Promise<EOSPlugin> {
+  static save(plugin: IPlugin): Promise<IPlugin> {
     return new Promise(resolve => {
       BrowserAPI.storage.local.set({ plugin }, () => resolve(plugin));
     });
   }
 
-  static get(): Promise<EOSPlugin> {
+  static get(): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPI.storage.local.get('plugin', result => EOSPlugin.fromJson(result.plugin));
+      BrowserAPI.storage.local.get('plugin', result => PluginService.fromJson(result.plugin));
     });
   }
 

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs/internal/observable/of';
 import { map, flatMap } from 'rxjs/operators';
 
-import { EOSPlugin } from '../plugin/plugin';
+import { IPlugin } from '../plugin/plugin.interface';
 import { IAppState } from '../state/state.interface';
 
 @Injectable()

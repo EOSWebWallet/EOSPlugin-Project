@@ -2,7 +2,7 @@ import { entropyToMnemonic, generateMnemonic, mnemonicToSeedHex } from 'bip39';
 import * as scrypt from 'scrypt-async';
 import { first, map } from 'rxjs/operators';
 
-import { AppStorage } from '../storage/storage';
+import { StorageService } from '../storage/storage.service';
 
 declare var eosjs_ecc: any;
 
@@ -14,7 +14,7 @@ export class Encrypt {
 
   static async secureHash(cleartext): Promise<any> {
     return new Promise(async resolve => {
-      const salt = await AppStorage.getSalt();
+      const salt = await StorageService.getSalt();
       scrypt(cleartext, salt, {
           N: 16384,
           r: 8,

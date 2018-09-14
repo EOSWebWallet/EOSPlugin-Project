@@ -5,9 +5,9 @@ import { catchError, map, switchMap, throttleTime, tap } from 'rxjs/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
 
-import { AppStorage } from '../storage/storage';
+import { StorageService } from '../storage/storage.service';
 import { Encrypt } from '../encrypt/encrypt';
-import { EOSPlugin } from '../plugin/plugin';
+import { IPlugin } from '../plugin/plugin.interface';
 import { UnsafeAction } from '../state/state.interface';
 import { ExtensionMessageType } from '../message/message.interface';
 
@@ -22,7 +22,7 @@ export class PluginEffects {
   createPlugin$ = this.actions.pipe(
     ofType(AuthService.AUTH_REGISTER_SUCCESS),
     switchMap(() => {
-      return of(new EOSPlugin())
+      return of({})
         .pipe(
           map(plugin => ({
             type: PluginService.PLUGIN_STORE,

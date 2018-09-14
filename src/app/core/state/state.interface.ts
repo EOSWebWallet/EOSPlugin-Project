@@ -1,9 +1,9 @@
 import { Action } from '@ngrx/store';
 
-import { EOSPlugin } from '../plugin/plugin';
+import { IPluginState } from '../plugin/plugin.interface';
 
 export interface IAppState {
-  plugin?: EOSPlugin;
+  plugin?: IPluginState;
 }
 
 export interface UnsafeAction extends Action {

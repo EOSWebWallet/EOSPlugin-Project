@@ -2,7 +2,7 @@ import { EOSPlugin } from '../plugin/plugin';
 
 import { BrowserAPI } from '../browser/browser';
 
-export class Storage {
+export class AppStorage {
   private static KEY_SALT = 'salt';
 
   static save(plugin: EOSPlugin): Promise<EOSPlugin> {

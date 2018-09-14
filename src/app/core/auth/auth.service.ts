@@ -9,6 +9,9 @@ import { EOSPlugin } from '../plugin/plugin';
 @Injectable()
 export class AuthService implements CanActivate {
 
+  static AUTH_REGISTER = 'AUTH_REGISTER';
+  static AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
+
   constructor(
     private router: Router,
   ) {

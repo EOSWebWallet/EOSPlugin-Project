@@ -4,12 +4,12 @@ import { first, map } from 'rxjs/operators';
 
 import { AppStorage } from '../storage/storage';
 
-declare var ecc: any;
+declare var eosjs_ecc: any;
 
 export class Encrypt {
 
   static insecureHash(cleartext): string {
-    return ecc.sha256(cleartext);
+    return eosjs_ecc.sha256(cleartext);
   }
 
   static async secureHash(cleartext): Promise<any> {

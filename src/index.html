@@ -11,5 +11,11 @@
 </head>
 <body>
   <app-root></app-root>
+  <script>
+    //https://stackoverflow.com/questions/50356408/upgrading-to-angular-6-x-gives-uncaught-referenceerror-global-is-not-defined
+    if (global === undefined) {
+      var global = window;
+    }
+  </script>
 </body>
 </html>

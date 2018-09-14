@@ -17,5 +17,10 @@
     "assets/css/*",
     "assets/js/*",
     "assets/fonts/*"
-  ]
+  ],
+  "background":{
+    "scripts":[
+      "background.js"
+    ]
+  }
 }

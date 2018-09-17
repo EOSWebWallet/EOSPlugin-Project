@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, throttleTime, tap, flatMap } from 'rxjs/operators';
+import { catchError, map, switchMap, throttleTime, tap, flatMap, filter } from 'rxjs/operators';
 import { from } from 'rxjs/internal/observable/from';
 
 import { Encrypt } from '../encrypt/encrypt';
@@ -33,8 +33,26 @@ export class AuthEffects {
     })
   );
 
+  @Effect()
+  login$ = this.actions.pipe(
+    ofType(AuthService.AUTH_LOGIN),
+    switchMap((action: UnsafeAction) => {
+      return from(Encrypt.generateMnemonic(action.payload))
+        .pipe(
+          flatMap(([ mnemonic, seed ]) => this.messageService.send({ type: ExtensionMessageType.SET_SEED, payload: seed })),
+          flatMap(() => this.authService.isAuthorized),
+          filter(Boolean),
+          map(() => ({
+            type: AuthService.AUTH_LOGIN_SUCCESS,
+            payload: action.payload
+          }))
+        );
+    })
+  );
+
   constructor(
     private actions: Actions,
     private messageService: ExtensionMessageService,
+    private authService: AuthService
   ) {}
 }

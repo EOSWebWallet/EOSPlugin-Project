@@ -1,5 +1,5 @@
 import { Store } from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
+import { Actions, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 
@@ -15,13 +15,17 @@ export abstract class AbstractActionService {
     return this.store.dispatch<SafeAction<T>>(action);
   }
 
-  getAction(action: string): Actions<any> {
-    return this.actions.ofType(action);
+  getAction(action: string): Observable<any> {
+    return this.actions
+      .pipe(
+        ofType(action)
+      );
   }
 
   getPayload<T>(type: string): Observable<T> {
-    return this.actions.ofType(type)
+    return this.actions
       .pipe(
+        ofType(type),
         map((action: SafeAction<T>) => action.payload)
       );
   }

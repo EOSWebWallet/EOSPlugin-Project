@@ -7,6 +7,10 @@
       "password": "New Password",
       "passwordConfirm": "Confirm Password",
       "submit": "Create new account"
+    },
+    "login": {
+      "password": "Password",
+      "submit": "Unlock"
     }
   },
   "shared": {

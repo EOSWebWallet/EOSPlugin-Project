@@ -1,0 +1,17 @@
+<div>
+  <div>
+    EOS PLUGIN
+  </div>
+  <form #form="ngForm">
+    <app-password
+      name="password"
+      [ngModel]="value"
+      [ngModelOptions]="{updateOn: 'blur'}"
+      #password="ngModel"
+      [label]="'routes.login.password' | translate"
+      [errors]="passwordErrors"
+      required
+    ></app-password>
+    <app-button [label]="'routes.login.submit' | translate" (click)="onLogin()" [disabled]="form.invalid"></app-button>
+  </form>
+</div>

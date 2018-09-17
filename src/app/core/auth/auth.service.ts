@@ -23,6 +23,8 @@ export class AuthService extends AbstractActionService implements CanActivate {
 
   static AUTH_REGISTER = 'AUTH_REGISTER';
   static AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
+  static AUTH_LOGIN = 'AUTH_LOGIN';
+  static AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 
   constructor(
     protected actions: Actions,
@@ -34,8 +36,8 @@ export class AuthService extends AbstractActionService implements CanActivate {
 
     this.navigateToInitialRoute();
 
-    this.getAction(AuthService.AUTH_REGISTER_SUCCESS)
-      .subscribe(() => this.router.navigateByUrl(AuthService.PATH_HOME));
+    this.navigateAfterRegistration();
+    this.navigateAfterLogin();
   }
 
   get isAuthorized(): Observable<boolean> {
@@ -62,6 +64,13 @@ export class AuthService extends AbstractActionService implements CanActivate {
     });
   }
 
+  login(password: string): void {
+    this.store.dispatch({
+      type: AuthService.AUTH_LOGIN,
+      payload: password
+    });
+  }
+
   private navigateToInitialRoute(): void {
     combineLatest(
       this.hasAuthorization,
@@ -77,5 +86,15 @@ export class AuthService extends AbstractActionService implements CanActivate {
         this.router.navigateByUrl(AuthService.PATH_HOME);
       }
     });
+  }
+
+  private navigateAfterRegistration(): void {
+    this.getAction(AuthService.AUTH_REGISTER_SUCCESS)
+      .subscribe(() => this.router.navigateByUrl(AuthService.PATH_HOME));
+  }
+
+  private navigateAfterLogin(): void {
+    this.getAction(AuthService.AUTH_LOGIN_SUCCESS)
+      .subscribe(() => this.router.navigateByUrl(AuthService.PATH_HOME));
   }
 }

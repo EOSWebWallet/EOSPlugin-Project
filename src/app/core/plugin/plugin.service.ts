@@ -7,9 +7,12 @@ import { KeychainService } from '../keychain/keychain.service';
 export class PluginService {
   static PLUGIN_STORE = 'PLUGIN_STORE';
   static PLUGIN_STORE_SUCCESS = 'PLUGIN_STORE_SUCCESS';
+  static PLUGIN_LOAD = 'PLUGIN_LOAD';
+  static PLUGIN_LOAD_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
 
   static fromJson(json: any): IPlugin {
     return {
+      hasEncryptionKey: json.hasEncryptionKey,
       keychain: (typeof json.keychain === 'string')
         ? json.keychain
         : KeychainService.fromJson(json.keychain)
@@ -38,8 +41,9 @@ export class PluginService {
     };
   }
 
-  static createPlugin(): IPlugin {
+  static createPlugin(hasEncryptionKey?: boolean): IPlugin {
     return {
+      hasEncryptionKey,
       keychain: {
         keypairs: []
       }

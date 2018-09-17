@@ -14,6 +14,7 @@ export function reducer(
 ): IPluginState {
   switch (action.type) {
     case PluginService.PLUGIN_STORE_SUCCESS:
+    case PluginService.PLUGIN_LOAD_SUCCESS:
       return {
         plugin: action.payload
       };

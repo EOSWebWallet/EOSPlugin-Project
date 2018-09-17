@@ -4,6 +4,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap, throttleTime, tap } from 'rxjs/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
+import { defer } from 'rxjs/internal/observable/defer';
 
 import { StorageService } from '../storage/storage.service';
 import { Encrypt } from '../encrypt/encrypt';
@@ -22,7 +23,7 @@ export class PluginEffects {
   createPlugin$ = this.actions.pipe(
     ofType(AuthService.AUTH_REGISTER_SUCCESS),
     switchMap(() => {
-      return of(PluginService.createPlugin())
+      return of(PluginService.createPlugin(true))
         .pipe(
           map(plugin => ({
             type: PluginService.PLUGIN_STORE,
@@ -45,6 +46,25 @@ export class PluginEffects {
         );
     })
   );
+
+  @Effect()
+  loadPlugin$ = this.actions.pipe(
+    ofType(PluginService.PLUGIN_LOAD),
+    switchMap((action: UnsafeAction) => {
+      return from(this.messageService.send({ type: ExtensionMessageType.LOAD_PLUGIN }))
+        .pipe(
+          map(plugin => ({
+            type: PluginService.PLUGIN_LOAD_SUCCESS,
+            payload: PluginService.fromJson(plugin)
+          }))
+        );
+    })
+  );
+
+  @Effect()
+  init$ = defer(() => of({
+    type: PluginService.PLUGIN_LOAD,
+  }));
 
   constructor(
     private actions: Actions,

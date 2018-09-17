@@ -12,7 +12,7 @@ import { BrowserAPIService } from './app/core/browser/browser.service';
 
 export class Background {
 
-  seed: string;
+  seed = '';
 
   constructor() {
     this.initExtensionMessaging();
@@ -29,6 +29,7 @@ export class Background {
       case ExtensionMessageType.IS_AUTHORIZED: this.isAuthorized(cb); break;
       case ExtensionMessageType.SET_SEED: this.setSeed(message.payload, cb); break;
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
+      case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
     }
   }
 
@@ -38,8 +39,8 @@ export class Background {
         try {
           const plugin = PluginService.decrypt(pluginData, this.seed);
           cb(!PluginService.isEncrypted(plugin));
-        } catch(e) {
-          delete this.seed;
+        } catch (e) {
+          this.seed = '';
           cb(false);
         }
       });
@@ -54,7 +55,6 @@ export class Background {
   }
 
   srorePlugin(pluginData: any, cb: Function): void {
-    debugger
     const plugin = PluginService.fromJson(pluginData);
 
     plugin.keychain.keypairs = plugin.keychain.keypairs.map(keypair => KeypairService.encrypt(keypair, this.seed));
@@ -63,6 +63,15 @@ export class Background {
 
     StorageService.save(encryptedPlugin)
       .then(saved => cb(PluginService.decrypt(saved, this.seed)));
+  }
+
+  load(cb: Function): void {
+    StorageService.get().then(pluginData => {
+      cb(!this.seed.length
+        ? pluginData
+        : PluginService.decrypt(pluginData, this.seed)
+      );
+    });
   }
 }
 

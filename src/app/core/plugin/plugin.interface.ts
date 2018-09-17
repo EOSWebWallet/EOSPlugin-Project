@@ -6,4 +6,5 @@ export interface IPluginState {
 
 export interface IPlugin {
   keychain: IKeychain;
+  hasEncryptionKey?: boolean;
 }

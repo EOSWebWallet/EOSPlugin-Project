@@ -2,16 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SharedModule } from '../../shared/shared.module';
-import { NetworksModule } from './networks/networks.module';
+import { SharedModule } from '../../../shared/shared.module';
 
-import { SettingsComponent } from './settings.component';
-import { NetworksComponent } from './networks/networks.component';
+import { NetworksComponent } from './networks.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SettingsComponent,
+    component: NetworksComponent
   },
 ];
 
@@ -22,7 +20,7 @@ const routes: Routes = [
     SharedModule,
   ],
   declarations: [
-    SettingsComponent,
+    NetworksComponent,
   ],
 })
-export class SettingsModule { }
+export class NetworksModule { }

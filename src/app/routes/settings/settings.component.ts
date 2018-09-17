@@ -12,5 +12,7 @@ export class SettingsComponent {
     private router: Router,
   ) { }
 
-
+  navigate(): void {
+    this.router.navigateByUrl('/app/settings/networks');
+  }
 }

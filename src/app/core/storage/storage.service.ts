@@ -1,6 +1,6 @@
 import { IPlugin } from '../plugin/plugin.interface';
 
-import { BrowserAPI } from '../browser/browser';
+import { BrowserAPIService } from '../browser/browser.service';
 
 import { PluginService } from '../plugin/plugin.service';
 
@@ -9,19 +9,19 @@ export class StorageService {
 
   static save(plugin: IPlugin): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPI.storage.local.set({ plugin }, () => resolve(plugin));
+      BrowserAPIService.storage.local.set({ plugin }, () => resolve(plugin));
     });
   }
 
   static get(): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPI.storage.local.get('plugin', result => PluginService.fromJson(result.plugin));
+      BrowserAPIService.storage.local.get('plugin', result => PluginService.fromJson(result.plugin));
     });
   }
 
   static getSalt(): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPI.storage.local.get('salt', possible => {
+      BrowserAPIService.storage.local.get('salt', possible => {
         if (JSON.stringify(possible) !== '{}') {
           resolve(possible.salt);
         } else {
@@ -33,7 +33,7 @@ export class StorageService {
 
   static setSalt(salt: string): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPI.storage.local.set({ salt }, () => resolve(salt));
+      BrowserAPIService.storage.local.set({ salt }, () => resolve(salt));
     });
   }
 }

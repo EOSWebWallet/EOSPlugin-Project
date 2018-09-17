@@ -8,6 +8,7 @@ import { IPlugin } from './app/core/plugin/plugin.interface';
 import { PluginService } from './app/core/plugin/plugin.service';
 import { KeypairService } from './app/core/keypair/keypair.service';
 import { StorageService } from './app/core/storage/storage.service';
+import { BrowserAPIService } from './app/core/browser/browser.service';
 
 export class Background {
 
@@ -18,7 +19,7 @@ export class Background {
   }
 
   initExtensionMessaging(): void {
-    LocalStream.watch((request, cb) => {
+    BrowserAPIService.localStream.watch((request, cb) => {
       this.dispenseMessage(cb, request);
     });
   }
@@ -46,5 +47,5 @@ export class Background {
   }
 }
 
-const background = new Background();
+export const background = new Background();
 

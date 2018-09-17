@@ -21,6 +21,8 @@ import { AppComponent } from './app.component';
 
 import { reducers, initialState } from './core/state/root.reducer';
 
+import { background, Background } from '../background';
+
 export function getInitialState(): Partial<IAppState> {
   return { ...initialState };
 }
@@ -57,9 +59,13 @@ export function getInitialState(): Partial<IAppState> {
 })
 export class AppModule {
 
+  private background: Background;
+
   constructor(private translate: TranslateService) {
     translate.setDefaultLang('en');
     translate.use('en');
+
+    // this.background = background;
   }
 
 }

@@ -7,11 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { ScrollbarModule } from 'ngx-scrollbar';
 
 import { DashboardModule } from '../routes/dashboard/dashboard.module';
+import { KeysModule } from '../routes/keys/keys.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
 import { LayoutComponent } from './layout.component';
 import { DashboardComponent } from '../routes/dashboard/dashboard.component';
+import { KeysComponent } from '../routes/keys/keys.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: DashboardComponent },
+      { path: 'keys', component: KeysComponent },
     ]
   },
 ];
@@ -34,6 +37,7 @@ const routes: Routes = [
     MatButtonModule,
     ScrollbarModule,
     DashboardModule,
+    KeysModule,
   ],
   declarations: [
     LayoutComponent,

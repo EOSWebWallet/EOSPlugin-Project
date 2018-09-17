@@ -11,6 +11,11 @@
     "login": {
       "password": "Password",
       "submit": "Unlock"
+    },
+    "keys": {
+      "accounts": "Accounts",
+      "generate": "Generate Key Pair",
+      "import": "Import Keypairs"
     }
   },
   "shared": {

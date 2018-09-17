@@ -65,7 +65,7 @@ export class AppModule {
     translate.setDefaultLang('en');
     translate.use('en');
 
-    // this.background = background;
+    this.background = background;
   }
 
 }

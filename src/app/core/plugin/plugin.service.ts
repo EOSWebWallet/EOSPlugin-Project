@@ -37,4 +37,12 @@ export class PluginService {
         : AES.encrypt(plugin.keychain, seed)
     };
   }
+
+  static createPlugin(): IPlugin {
+    return {
+      keychain: {
+        keypairs: []
+      }
+    };
+  }
 }

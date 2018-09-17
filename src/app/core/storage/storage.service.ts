@@ -15,7 +15,7 @@ export class StorageService {
 
   static get(): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPIService.storage.local.get('plugin', result => PluginService.fromJson(result.plugin));
+      BrowserAPIService.storage.local.get('plugin', result => resolve(PluginService.fromJson(result.plugin)));
     });
   }
 

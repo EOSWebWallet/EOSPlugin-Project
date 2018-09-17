@@ -6,9 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ScrollbarModule } from 'ngx-scrollbar';
 
+import { DashboardModule } from '../routes/dashboard/dashboard.module';
+
 import { AuthService } from '../core/auth/auth.service';
 
 import { LayoutComponent } from './layout.component';
+import { DashboardComponent } from '../routes/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -17,7 +20,7 @@ const routes: Routes = [
     canActivate: [ AuthService ],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'home', loadChildren: '../routes/dashboard/dashboard.module#DashboardModule' },
+      { path: 'home', component: DashboardComponent },
     ]
   },
 ];
@@ -29,7 +32,8 @@ const routes: Routes = [
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
-    ScrollbarModule
+    ScrollbarModule,
+    DashboardModule,
   ],
   declarations: [
     LayoutComponent,

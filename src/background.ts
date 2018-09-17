@@ -26,16 +26,35 @@ export class Background {
 
   dispenseMessage(cb: Function, message: IExtensionMessage): void {
     switch (message.type) {
+      case ExtensionMessageType.IS_AUTHORIZED: this.isAuthorized(cb); break;
       case ExtensionMessageType.SET_SEED: this.setSeed(message.payload, cb); break;
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
     }
   }
 
+  isAuthorized(cb: Function) {
+    if (this.seed.length) {
+      StorageService.get().then(pluginData => {
+        try {
+          const plugin = PluginService.decrypt(pluginData, this.seed);
+          cb(!PluginService.isEncrypted(plugin));
+        } catch(e) {
+          delete this.seed;
+          cb(false);
+        }
+      });
+    } else {
+      cb(false);
+    }
+  }
+
   setSeed(seed: string, cb: Function): void {
     this.seed = seed;
+    cb(seed);
   }
 
   srorePlugin(pluginData: any, cb: Function): void {
+    debugger
     const plugin = PluginService.fromJson(pluginData);
 
     plugin.keychain.keypairs = plugin.keychain.keypairs.map(keypair => KeypairService.encrypt(keypair, this.seed));

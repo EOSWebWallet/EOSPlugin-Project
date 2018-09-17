@@ -22,7 +22,7 @@ export class PluginEffects {
   createPlugin$ = this.actions.pipe(
     ofType(AuthService.AUTH_REGISTER_SUCCESS),
     switchMap(() => {
-      return of({})
+      return of(PluginService.createPlugin())
         .pipe(
           map(plugin => ({
             type: PluginService.PLUGIN_STORE,

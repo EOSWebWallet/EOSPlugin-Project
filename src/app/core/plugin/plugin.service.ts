@@ -3,6 +3,7 @@ import AES from 'aes-oop';
 import { IPlugin } from './plugin.interface';
 
 import { KeychainService } from '../keychain/keychain.service';
+import { SettingsService } from '../settings/settings.service';
 
 export class PluginService {
   static PLUGIN_STORE = 'PLUGIN_STORE';
@@ -13,9 +14,12 @@ export class PluginService {
   static fromJson(json: any): IPlugin {
     return {
       hasEncryptionKey: json.hasEncryptionKey,
-      keychain: (typeof json.keychain === 'string')
+      keychain: typeof json.keychain === 'string'
         ? json.keychain
-        : KeychainService.fromJson(json.keychain)
+        : KeychainService.fromJson(json.keychain),
+      settings: json.settings
+        ? SettingsService.fromJson(json.settings)
+        : null
     };
   }
 
@@ -46,6 +50,9 @@ export class PluginService {
       hasEncryptionKey,
       keychain: {
         keypairs: []
+      },
+      settings: {
+        networks: []
       }
     };
   }

@@ -1,1 +1,10 @@
-<p>Networks</p>
+<h2>{{ 'routes.settings.networks.title' | translate }}</h2>
+
+<mat-list>
+  <ng-template *ngFor="let network of networks">
+    <mat-list-item>{{ network.name }}</mat-list-item>
+    <mat-divider></mat-divider>
+  </ng-template>
+</mat-list>
+
+<app-button [label]="'routes.settings.networks.add' | translate" (click)="addNetwork()"></app-button>

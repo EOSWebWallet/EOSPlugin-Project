@@ -1,4 +1,5 @@
 import { IKeychain } from '../keychain/keychain.interface';
+import { ISettings } from '../settings/settings.interface';
 
 export interface IPluginState {
   plugin: IPlugin;
@@ -6,5 +7,6 @@ export interface IPluginState {
 
 export interface IPlugin {
   keychain: IKeychain;
+  settings: ISettings;
   hasEncryptionKey?: boolean;
 }

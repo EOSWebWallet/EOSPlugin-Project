@@ -7,12 +7,7 @@ import { Router } from '@angular/router';
 })
 export class SettingsComponent {
 
-
   constructor(
     private router: Router,
   ) { }
-
-  navigate(): void {
-    this.router.navigateByUrl('/app/settings/networks');
-  }
 }

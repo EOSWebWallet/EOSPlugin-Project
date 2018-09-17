@@ -18,7 +18,11 @@
       "import": "Import Keypairs"
     },
     "settings": {
-      "networks": "Networks",
+      "networks": {
+        "menu": "Networks",
+        "title": "Select Network",
+        "add": "Add network"
+      },
       "language": "Language",
       "changePassword": "Change Password",
       "import": "Import Data",

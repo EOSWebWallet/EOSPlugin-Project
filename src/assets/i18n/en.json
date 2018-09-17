@@ -16,6 +16,15 @@
       "accounts": "Accounts",
       "generate": "Generate Key Pair",
       "import": "Import Keypairs"
+    },
+    "settings": {
+      "networks": "Networks",
+      "language": "Language",
+      "changePassword": "Change Password",
+      "import": "Import Data",
+      "export": "Export Data",
+      "destroy": "Destroy",
+      "about": "About"
     }
   },
   "shared": {

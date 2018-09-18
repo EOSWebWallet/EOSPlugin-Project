@@ -38,9 +38,23 @@ export class NetworksComponent implements OnInit, OnDestroy {
   }
 
   onAdd(): void {
-    this.networks.push(NetworkUtils.createNetwork());
+    this.networskService.setNetworks([ ...this.networks, NetworkUtils.createNetwork() ]);
   }
 
   onSave(): void {
+    this.networskService.setNetworks(this.networks);
+  }
+
+  onRemove(network: INetwork): void {
+    this.networskService.setNetworks(this.networks.filter(n => n !== network));
+  }
+
+  onSelect(network: INetwork): void {
+    this.networskService.setNetworks(this.networks.map(n => ({
+      ...n,
+      selected: n === network
+        ? !network.selected
+        : n.selected
+    })));
   }
 }

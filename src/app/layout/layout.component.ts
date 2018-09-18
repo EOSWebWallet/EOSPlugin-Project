@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/internal/operators';
+
 import { INavLink } from './layout.interface';
+
+import { NetworksService } from '../core/network/networks.service';
 
 @Component({
   selector: 'app-layout',
@@ -13,5 +18,15 @@ export class LayoutComponent {
     { icon: 'vpn_key', path: 'keys' },
     { icon: 'settings', path: 'settings' }
   ];
+
+  constructor(private networkService: NetworksService) {
+  }
+
+  get selectedNetwork$(): Observable<string> {
+    return this.networkService.selectedNetwork$
+      .pipe(
+        map(network => network ? network.name : '')
+      );
+  }
 
 }

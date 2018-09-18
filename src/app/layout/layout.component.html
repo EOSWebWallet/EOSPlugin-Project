@@ -10,6 +10,9 @@
       >
         <mat-icon>{{ link.icon }}</mat-icon>
       </a>
+      <span>
+        {{ selectedNetwork$ | async }}
+      </span>
     </nav>
   </div>
   <div class="content">

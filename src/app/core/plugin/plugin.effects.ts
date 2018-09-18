@@ -66,6 +66,12 @@ export class PluginEffects {
     type: PluginUtils.PLUGIN_LOAD,
   }));
 
+  @Effect()
+  authorizePlugin$ = this.actions.pipe(
+    ofType(AuthService.AUTH_LOGIN_SUCCESS),
+    map(() => ({ type: PluginUtils.PLUGIN_LOAD }))
+  );
+
   constructor(
     private actions: Actions,
     private messageService: ExtensionMessageService,

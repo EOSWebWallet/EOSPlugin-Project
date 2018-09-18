@@ -4,9 +4,10 @@
     <mat-list-item *ngFor="let network of networks">
       <div>
         <p>{{ network.name }}</p>
-        <app-icon type="done"></app-icon>
+        <app-icon type="check_box_outline_blank" *ngIf="!network.selected" (click)="onSelect(network)"></app-icon>
+        <app-icon type="check_box" *ngIf="network.selected" (click)="onSelect(network)"></app-icon>
         <app-icon type="edit" (click)="editableNetwork = network"></app-icon>
-        <app-icon type="clear"></app-icon>
+        <app-icon type="clear" (click)="onRemove(network)"></app-icon>
       </div>
       <div *ngIf="network === editableNetwork">
         <form #form="ngForm">
@@ -14,7 +15,7 @@
           <app-text name="host" [(ngModel)]="network.host" [label]="'routes.settings.networks.host' | translate" required></app-text>
           <app-text name="port" [(ngModel)]="network.port" [label]="'routes.settings.networks.port' | translate" required></app-text>
           <app-button [label]="'routes.settings.networks.save' | translate" (click)="onSave()" [disabled]="form.invalid"></app-button>
-          <app-button [label]="'routes.settings.networks.cancel' | translate" (click)="onCancel()"></app-button>
+          <app-button [label]="'routes.settings.networks.cancel' | translate" (click)="editableNetwork = null"></app-button>
         </form>
       </div>
       <mat-divider></mat-divider>

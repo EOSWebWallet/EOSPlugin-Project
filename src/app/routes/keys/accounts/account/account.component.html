@@ -3,7 +3,7 @@
 <div>
   <form #form="ngForm">
     <app-text name="name" [(ngModel)]="account.name" [label]="'routes.keys.accounts.account.name' | translate" required></app-text>
-    <app-password name="privateKey" [(ngModel)]="account.keypair.privateKey" [label]="'routes.keys.accounts.account.privateKey' | translate" required></app-password>
+    <app-password name="privateKey" [(ngModel)]="account.keypair.privateKey" [label]="'routes.keys.accounts.account.privateKey' | translate" (focusout)="generatePublicKey()" required></app-password>
     <app-text name="publicKey" [(ngModel)]="account.keypair.publicKey" [label]="'routes.keys.accounts.account.publicKey' | translate" required></app-text>
   </form>
 </div>

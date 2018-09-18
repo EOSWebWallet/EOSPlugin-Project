@@ -1,6 +1,9 @@
 import AES from 'aes-oop';
+import * as Eos from 'eosjs';
 
 import { IKeypair } from './keypair.interface';
+
+const { ecc } = Eos.modules;
 
 export class KeypairUtils {
 
@@ -24,5 +27,22 @@ export class KeypairUtils {
         ? AES.decrypt(keypairData.privateKey, seed)
         : keypairData.privateKey
     };
+  }
+
+  static validPrivateKey(privateKey: string): boolean {
+    return ecc.isValidPrivate(privateKey);
+  }
+
+  static privateToPublic(privateKey: string): string {
+    return ecc.privateToPublic(privateKey);
+  }
+
+  static makePublicKey(keypair: IKeypair): Promise<IKeypair> {
+    return new Promise(resolve => resolve({
+      privateKey: keypair.privateKey,
+      publicKey: keypair.privateKey.length > 50 && KeypairUtils.validPrivateKey(keypair.privateKey)
+        ? KeypairUtils.privateToPublic(keypair.privateKey)
+        : ''
+    }));
   }
 }

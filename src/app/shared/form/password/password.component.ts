@@ -16,7 +16,6 @@ import { IControlErrors } from '../form.interface';
 })
 export class PasswordComponent implements ControlValueAccessor {
 
-  @Input() controlName: string;
   @Input() label: string;
   @Input() errors: IControlErrors;
   @Input() required: boolean;

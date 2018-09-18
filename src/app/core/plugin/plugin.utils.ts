@@ -2,10 +2,10 @@ import AES from 'aes-oop';
 
 import { IPlugin } from './plugin.interface';
 
-import { KeychainService } from '../keychain/keychain.service';
-import { SettingsService } from '../settings/settings.service';
+import { KeychainUtils } from '../keychain/keychain.utils';
+import { SettingsUtils } from '../settings/settings.utils';
 
-export class PluginService {
+export class PluginUtils {
   static PLUGIN_STORE = 'PLUGIN_STORE';
   static PLUGIN_STORE_SUCCESS = 'PLUGIN_STORE_SUCCESS';
   static PLUGIN_LOAD = 'PLUGIN_LOAD';
@@ -16,9 +16,9 @@ export class PluginService {
       hasEncryptionKey: json.hasEncryptionKey,
       keychain: typeof json.keychain === 'string'
         ? json.keychain
-        : KeychainService.fromJson(json.keychain),
+        : KeychainUtils.fromJson(json.keychain),
       settings: json.settings
-        ? SettingsService.fromJson(json.settings)
+        ? SettingsUtils.fromJson(json.settings)
         : null
     };
   }
@@ -30,8 +30,8 @@ export class PluginService {
   static decrypt(pluginData: any, seed: string): IPlugin {
     return {
       ...pluginData,
-      keychain: PluginService.isEncrypted(pluginData)
-        ? KeychainService.fromJson(AES.decrypt(pluginData.keychain, seed))
+      keychain: PluginUtils.isEncrypted(pluginData)
+        ? KeychainUtils.fromJson(AES.decrypt(pluginData.keychain, seed))
         : pluginData.keychain
     };
   }
@@ -39,7 +39,7 @@ export class PluginService {
   static encrypt(plugin: IPlugin, seed: string): any {
     return {
       ...plugin,
-      keychain: PluginService.isEncrypted(plugin)
+      keychain: PluginUtils.isEncrypted(plugin)
         ? plugin.keychain
         : AES.encrypt(plugin.keychain, seed)
     };

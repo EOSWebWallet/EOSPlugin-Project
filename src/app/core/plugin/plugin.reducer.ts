@@ -2,7 +2,7 @@ import { SafeAction, UnsafeAction } from '../../core/state/state.interface';
 
 import { IPluginState, IPlugin } from './plugin.interface';
 
-import { PluginService } from './plugin.service';
+import { PluginUtils } from './plugin.utils';
 
 export const defaultState: IPluginState = {
   plugin: null,
@@ -13,8 +13,8 @@ export function reducer(
   action: UnsafeAction
 ): IPluginState {
   switch (action.type) {
-    case PluginService.PLUGIN_STORE_SUCCESS:
-    case PluginService.PLUGIN_LOAD_SUCCESS:
+    case PluginUtils.PLUGIN_STORE_SUCCESS:
+    case PluginUtils.PLUGIN_LOAD_SUCCESS:
       return {
         plugin: action.payload
       };

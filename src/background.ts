@@ -5,10 +5,10 @@ import { ExtensionMessageType, IExtensionMessage } from './app/core/message/mess
 
 import { IPlugin } from './app/core/plugin/plugin.interface';
 
-import { PluginService } from './app/core/plugin/plugin.service';
-import { KeypairService } from './app/core/keypair/keypair.service';
-import { StorageService } from './app/core/storage/storage.service';
-import { BrowserAPIService } from './app/core/browser/browser.service';
+import { PluginUtils } from './app/core/plugin/plugin.utils';
+import { KeypairUtils } from './app/core/keypair/keypair.utils';
+import { StorageUtils } from './app/core/storage/storage.service';
+import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 
 export class Background {
 
@@ -19,7 +19,7 @@ export class Background {
   }
 
   initExtensionMessaging(): void {
-    BrowserAPIService.localStream.watch((request, cb) => {
+    BrowserAPIUtils.localStream.watch((request, cb) => {
       this.dispenseMessage(cb, request);
     });
   }
@@ -35,10 +35,10 @@ export class Background {
 
   isAuthorized(cb: Function) {
     if (this.seed.length) {
-      StorageService.get().then(pluginData => {
+      StorageUtils.get().then(pluginData => {
         try {
-          const plugin = PluginService.decrypt(pluginData, this.seed);
-          cb(!PluginService.isEncrypted(plugin));
+          const plugin = PluginUtils.decrypt(pluginData, this.seed);
+          cb(!PluginUtils.isEncrypted(plugin));
         } catch (e) {
           this.seed = '';
           cb(false);
@@ -55,21 +55,21 @@ export class Background {
   }
 
   srorePlugin(pluginData: any, cb: Function): void {
-    const plugin = PluginService.fromJson(pluginData);
+    const plugin = PluginUtils.fromJson(pluginData);
 
-    plugin.keychain.keypairs = plugin.keychain.keypairs.map(keypair => KeypairService.encrypt(keypair, this.seed));
+    plugin.keychain.keypairs = plugin.keychain.keypairs.map(keypair => KeypairUtils.encrypt(keypair, this.seed));
 
-    const encryptedPlugin = PluginService.encrypt(plugin, this.seed);
+    const encryptedPlugin = PluginUtils.encrypt(plugin, this.seed);
 
-    StorageService.save(encryptedPlugin)
-      .then(saved => cb(PluginService.decrypt(saved, this.seed)));
+    StorageUtils.save(encryptedPlugin)
+      .then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
   }
 
   load(cb: Function): void {
-    StorageService.get().then(pluginData => {
+    StorageUtils.get().then(pluginData => {
       cb(!this.seed.length
         ? pluginData
-        : PluginService.decrypt(pluginData, this.seed)
+        : PluginUtils.decrypt(pluginData, this.seed)
       );
     });
   }

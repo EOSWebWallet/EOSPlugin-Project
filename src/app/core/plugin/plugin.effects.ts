@@ -6,15 +6,15 @@ import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
 import { defer } from 'rxjs/internal/observable/defer';
 
-import { StorageService } from '../storage/storage.service';
-import { Encrypt } from '../encrypt/encrypt';
+import { StorageUtils } from '../storage/storage.service';
+import { EncryptUtils } from '../encrypt/encrypt.utils';
 import { IPlugin } from '../plugin/plugin.interface';
 import { UnsafeAction } from '../state/state.interface';
 import { ExtensionMessageType } from '../message/message.interface';
 
 import { AuthService } from '../auth/auth.service';
 import { ExtensionMessageService } from '../message/message.service';
-import { PluginService } from '../plugin/plugin.service';
+import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
 export class PluginEffects {
@@ -23,10 +23,10 @@ export class PluginEffects {
   createPlugin$ = this.actions.pipe(
     ofType(AuthService.AUTH_REGISTER_SUCCESS),
     switchMap(() => {
-      return of(PluginService.createPlugin(true))
+      return of(PluginUtils.createPlugin(true))
         .pipe(
           map(plugin => ({
-            type: PluginService.PLUGIN_STORE,
+            type: PluginUtils.PLUGIN_STORE,
             payload: plugin
           }))
         );
@@ -35,12 +35,12 @@ export class PluginEffects {
 
   @Effect()
   storePlugin$ = this.actions.pipe(
-    ofType(PluginService.PLUGIN_STORE),
+    ofType(PluginUtils.PLUGIN_STORE),
     switchMap((action: UnsafeAction) => {
       return from(this.messageService.send({ type: ExtensionMessageType.STORE_PLUGIN, payload: action.payload }))
         .pipe(
           map(() => ({
-            type: PluginService.PLUGIN_STORE_SUCCESS,
+            type: PluginUtils.PLUGIN_STORE_SUCCESS,
             payload: action.payload
           }))
         );
@@ -49,13 +49,13 @@ export class PluginEffects {
 
   @Effect()
   loadPlugin$ = this.actions.pipe(
-    ofType(PluginService.PLUGIN_LOAD),
+    ofType(PluginUtils.PLUGIN_LOAD),
     switchMap((action: UnsafeAction) => {
       return from(this.messageService.send({ type: ExtensionMessageType.LOAD_PLUGIN }))
         .pipe(
           map(plugin => ({
-            type: PluginService.PLUGIN_LOAD_SUCCESS,
-            payload: PluginService.fromJson(plugin)
+            type: PluginUtils.PLUGIN_LOAD_SUCCESS,
+            payload: PluginUtils.fromJson(plugin)
           }))
         );
     })
@@ -63,7 +63,7 @@ export class PluginEffects {
 
   @Effect()
   init$ = defer(() => of({
-    type: PluginService.PLUGIN_LOAD,
+    type: PluginUtils.PLUGIN_LOAD,
   }));
 
   constructor(

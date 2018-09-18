@@ -8,19 +8,7 @@ declare var browser: any;
 
 const BrowserAPI: IBrowserAPI = chrome || browser;
 
-// if (!BrowserAPI.storage) {
-//   BrowserAPI.storage = {
-//     local: {
-//       set: (value, cb) => Object.keys(value).map(key => {
-//         localStorage.setItem(key, JSON.stringify(value[key]));
-//         cb();
-//       }),
-//       get: (key, cb) => cb({ [key]: JSON.parse(localStorage.getItem(key)) })
-//     }
-//   };
-// }
-
-export class BrowserAPIService {
+export class BrowserAPIUtils {
 
   private static _localStream: any;
 
@@ -41,14 +29,14 @@ export class BrowserAPIService {
   }
 
   static get localStream(): any {
-    if (!BrowserAPIService._localStream) {
-      BrowserAPIService._localStream = BrowserAPIService.createLocalStream();
+    if (!BrowserAPIUtils._localStream) {
+      BrowserAPIUtils._localStream = BrowserAPIUtils.createLocalStream();
     }
-    return BrowserAPIService._localStream;
+    return BrowserAPIUtils._localStream;
   }
 
   private static createLocalStream(): any {
-    if (BrowserAPIService.isAPIAvailable()) {
+    if (BrowserAPIUtils.isAPIAvailable()) {
       return LocalStream;
     } else {
       const subject = new Subject<any>();

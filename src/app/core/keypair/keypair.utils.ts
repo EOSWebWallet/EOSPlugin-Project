@@ -2,7 +2,7 @@ import AES from 'aes-oop';
 
 import { IKeypair } from './keypair.interface';
 
-export class KeypairService {
+export class KeypairUtils {
 
   static fromJson(json: any): IKeypair {
     return { ...json };
@@ -15,7 +15,7 @@ export class KeypairService {
   static encrypt(keypair: IKeypair, seed: string): any {
     return  {
       ...keypair,
-      privateKey: KeypairService.isEncrypted(keypair)
+      privateKey: KeypairUtils.isEncrypted(keypair)
         ? keypair.privateKey
         : AES.encrypt(keypair.privateKey, seed)
     };
@@ -24,7 +24,7 @@ export class KeypairService {
   static decrypt(keypairData: any, seed: string): IKeypair {
     return {
       ...keypairData,
-      privateKey: KeypairService.isEncrypted(keypairData)
+      privateKey: KeypairUtils.isEncrypted(keypairData)
         ? AES.decrypt(keypairData.privateKey, seed)
         : keypairData.privateKey
     };

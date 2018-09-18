@@ -8,4 +8,10 @@ export class ButtonComponent {
 
   @Input() label: string;
   @Input() disabled: boolean;
+
+  onClick(event: MouseEvent): void {
+    if (this.disabled) {
+      event.stopPropagation();
+    }
+  }
 }

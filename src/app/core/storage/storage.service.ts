@@ -1,31 +1,31 @@
 import { IPlugin } from '../plugin/plugin.interface';
 
-import { BrowserAPIService } from '../browser/browser.service';
+import { BrowserAPIUtils } from '../browser/browser.utils';
 
-import { PluginService } from '../plugin/plugin.service';
+import { PluginUtils } from '../plugin/plugin.utils';
 
-export class StorageService {
+export class StorageUtils {
   private static KEY_SALT = 'salt';
 
   static save(plugin: IPlugin): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPIService.storage.local.set({ plugin }, () => resolve(plugin));
+      BrowserAPIUtils.storage.local.set({ plugin }, () => resolve(plugin));
     });
   }
 
   static get(): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPIService.storage.local.get('plugin', result => resolve(
+      BrowserAPIUtils.storage.local.get('plugin', result => resolve(
         result.plugin
-          ? PluginService.fromJson(result.plugin)
-          : PluginService.createPlugin()
+          ? PluginUtils.fromJson(result.plugin)
+          : PluginUtils.createPlugin()
         ));
     });
   }
 
   static getSalt(): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPIService.storage.local.get('salt', possible => {
+      BrowserAPIUtils.storage.local.get('salt', possible => {
         if (JSON.stringify(possible) !== '{}') {
           resolve(possible.salt);
         } else {
@@ -37,7 +37,7 @@ export class StorageService {
 
   static setSalt(salt: string): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPIService.storage.local.set({ salt }, () => resolve(salt));
+      BrowserAPIUtils.storage.local.set({ salt }, () => resolve(salt));
     });
   }
 }

@@ -2,11 +2,11 @@ import { entropyToMnemonic, generateMnemonic, mnemonicToSeedHex } from 'bip39';
 import * as scrypt from 'scrypt-async';
 import { first, map } from 'rxjs/operators';
 
-import { StorageService } from '../storage/storage.service';
+import { StorageUtils } from '../storage/storage.service';
 
 declare var eosjs_ecc: any;
 
-export class Encrypt {
+export class EncryptUtils {
 
   static insecureHash(cleartext): string {
     return eosjs_ecc.sha256(cleartext);
@@ -14,7 +14,7 @@ export class Encrypt {
 
   static async secureHash(cleartext): Promise<any> {
     return new Promise(async resolve => {
-      const salt = await StorageService.getSalt();
+      const salt = await StorageUtils.getSalt();
       scrypt(cleartext, salt, {
           N: 16384,
           r: 8,
@@ -28,7 +28,7 @@ export class Encrypt {
   }
 
   static async generateMnemonic(password): Promise<string[]> {
-    const hash = await Encrypt.secureHash(password);
+    const hash = await EncryptUtils.secureHash(password);
     const mnemonic = entropyToMnemonic(hash);
     return [ mnemonic, mnemonicToSeedHex(mnemonic) ];
   }
@@ -52,7 +52,7 @@ export class Encrypt {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < size; i++) {
-      text += possible.charAt(Math.floor(Encrypt.rand() * possible.length));
+      text += possible.charAt(Math.floor(EncryptUtils.rand() * possible.length));
     }
     return text;
   }
@@ -62,12 +62,12 @@ export class Encrypt {
     let max = 12 - add;
 
     if ( size > max ) {
-      return Encrypt.numeric(max) + Encrypt.numeric(size - max);
+      return EncryptUtils.numeric(max) + EncryptUtils.numeric(size - max);
     }
 
     max = Math.pow(10, size + add);
     const min = max / 10,
-          number = Math.floor(Encrypt.rand() * (max - min + 1)) + min;
+          number = Math.floor(EncryptUtils.rand() * (max - min + 1)) + min;
 
     return ('' + number).substring(add);
   }

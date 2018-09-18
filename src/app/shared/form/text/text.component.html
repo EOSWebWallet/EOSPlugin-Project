@@ -1,9 +1,15 @@
 <mat-form-field>
   <input
     matInput
-    placeholder="{{ label }}"
+    [placeholder]="label"
     [ngModel]="value"
+    [required]="required"
     (ngModelChange)="onChange($event)"
     (focusout)="onFocusOut()"
   />
+  <mat-hint *ngIf="errors">
+    <p *ngFor="let error of controlErrors">
+      {{ 'shared.form.errors.' + error | translate }}
+    </p>
+  </mat-hint>
 </mat-form-field>

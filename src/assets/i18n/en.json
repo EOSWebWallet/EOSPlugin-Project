@@ -21,7 +21,12 @@
       "networks": {
         "menu": "Networks",
         "title": "Select Network",
-        "add": "Add network"
+        "add": "Add network",
+        "name": "Network Name",
+        "host": "Network URL",
+        "port": "Port",
+        "save": "Save",
+        "cancel": "Cancel"
       },
       "language": "Language",
       "changePassword": "Change Password",

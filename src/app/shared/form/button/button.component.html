@@ -1,1 +1,3 @@
-<button mat-button>{{ label }}</button>
+<div (click)="onClick($event)">
+  <button mat-button [disabled]="disabled">{{ label }}</button>
+</div>

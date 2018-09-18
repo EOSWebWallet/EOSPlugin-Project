@@ -1,10 +1,24 @@
 <h2>{{ 'routes.settings.networks.title' | translate }}</h2>
 
 <mat-list>
-  <ng-template *ngFor="let network of networks">
-    <mat-list-item>{{ network.name }}</mat-list-item>
-    <mat-divider></mat-divider>
-  </ng-template>
+    <mat-list-item *ngFor="let network of networks">
+      <div>
+        <p>{{ network.name }}</p>
+        <app-icon type="done"></app-icon>
+        <app-icon type="edit" (click)="editableNetwork = network"></app-icon>
+        <app-icon type="clear"></app-icon>
+      </div>
+      <div *ngIf="network === editableNetwork">
+        <form #form="ngForm">
+          <app-text name="name" [(ngModel)]="network.name" [label]="'routes.settings.networks.name' | translate" required></app-text>
+          <app-text name="host" [(ngModel)]="network.host" [label]="'routes.settings.networks.host' | translate" required></app-text>
+          <app-text name="port" [(ngModel)]="network.port" [label]="'routes.settings.networks.port' | translate" required></app-text>
+          <app-button [label]="'routes.settings.networks.save' | translate" (click)="onSave()" [disabled]="form.invalid"></app-button>
+          <app-button [label]="'routes.settings.networks.cancel' | translate" (click)="onCancel()"></app-button>
+        </form>
+      </div>
+      <mat-divider></mat-divider>
+    </mat-list-item>
 </mat-list>
 
-<app-button [label]="'routes.settings.networks.add' | translate" (click)="addNetwork()"></app-button>
+<app-button [label]="'routes.settings.networks.add' | translate" (click)="onAdd()"></app-button>

@@ -1,6 +1,8 @@
 import { Component, ChangeDetectorRef, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
+import { IControlErrors } from '../form.interface';
+
 @Component({
   providers: [
     {
@@ -15,6 +17,8 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 export class TextComponent implements ControlValueAccessor {
 
   @Input() label: string;
+  @Input() errors: IControlErrors;
+  @Input() required: boolean;
 
   value: string;
   disabled = false;

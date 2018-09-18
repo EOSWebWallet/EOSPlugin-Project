@@ -57,7 +57,10 @@ export class Background {
   srorePlugin(pluginData: any, cb: Function): void {
     const plugin = PluginUtils.fromJson(pluginData);
 
-    plugin.keychain.keypairs = plugin.keychain.keypairs.map(keypair => KeypairUtils.encrypt(keypair, this.seed));
+    plugin.keychain.accounts = plugin.keychain.accounts.map(account => ({
+      ...account,
+      keypair: KeypairUtils.encrypt(account.keypair, this.seed)
+    }));
 
     const encryptedPlugin = PluginUtils.encrypt(plugin, this.seed);
 

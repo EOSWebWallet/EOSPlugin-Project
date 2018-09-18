@@ -1,13 +1,13 @@
 import { IKeypair } from '../keypair/keypair.interface';
 import { IKeychain } from './keychain.interface';
 
-import { KeypairUtils } from '../keypair/keypair.utils';
+import { AccountUtils } from '../account/account.utils';
 
 export class KeychainUtils {
 
   static fromJson(json: any): IKeychain {
     return {
-      keypairs: (json.keypairs || []).map(x => KeypairUtils.fromJson(x))
+      accounts: (json.accounts || []).map(x => AccountUtils.fromJson(x))
     };
   }
 }

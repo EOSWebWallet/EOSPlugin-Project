@@ -1,14 +1,24 @@
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators/map';
+import { map, first } from 'rxjs/internal/operators';
 
 import { IAppState, SafeAction } from './state.interface';
+import { IPlugin } from '../plugin/plugin.interface';
 
 export abstract class AbstractActionService {
 
   protected abstract actions: Actions;
   protected abstract store: Store<IAppState>;
+
+  get plugin$(): Observable<IPlugin> {
+    return this.store
+      .pipe(
+        select(state => state.plugin),
+        map(pluginState => pluginState.plugin),
+        first()
+      );
+  }
 
   dispatchAction<T>(type: string, payload: T = null): void {
     const action: SafeAction<T> = { type, payload };

@@ -4,3 +4,8 @@ export interface INetwork {
   port: number;
   selected?: boolean;
 }
+
+export interface INetworkAccount {
+  name: string;
+  selected?: boolean;
+}

@@ -4,10 +4,6 @@ import { IKeypair } from './keypair.interface';
 
 export class KeypairUtils {
 
-  static fromJson(json: any): IKeypair {
-    return { ...json };
-  }
-
   static isEncrypted(keypair: IKeypair): boolean {
     return keypair.privateKey.length > 51;
   }

@@ -13,7 +13,11 @@
       "submit": "Unlock"
     },
     "keys": {
-      "accounts": "Accounts",
+      "accounts": {
+        "menu": "Accounts",
+        "title": "Accounts",
+        "add": "Group"
+      },
       "generate": "Generate Key Pair",
       "import": "Import Keypairs"
     },

@@ -5,49 +5,39 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map, first } from 'rxjs/internal/operators';
 
 import { IAppState } from '../state/state.interface';
-import { INetwork } from './network.interface';
+import { IAccount } from './account.interface';
+import { IPlugin } from '../plugin/plugin.interface';
 
 import { AbstractActionService } from '../state/actions.service';
-import { SettingsService } from '../settings/settings.service';
-
-import { IPlugin } from '../plugin/plugin.interface';
 
 import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
-export class NetworksService extends AbstractActionService {
+export class AccountService extends AbstractActionService {
 
   constructor(
     protected actions: Actions,
     protected store: Store<IAppState>,
-    private settingsService: SettingsService
   ) {
     super();
   }
 
-  get networks$(): Observable<INetwork[]> {
-    return this.settingsService.settings$
+  get accounts$(): Observable<IAccount[]> {
+    return this.plugin$
       .pipe(
-        map(settings => settings.networks)
+        map(plugin => plugin.keychain.accounts)
       );
   }
 
-  get selectedNetwork$(): Observable<INetwork> {
-    return this.networks$
-      .pipe(
-        map(networks => networks.find(n => n.selected))
-      );
-  }
-
-  setNetworks(networks: INetwork[]): void {
+  setAccounts(accounts: IAccount[]): void {
     this.plugin$
       .pipe(first())
       .subscribe((plugin: IPlugin) =>
         this.dispatchAction(PluginUtils.PLUGIN_STORE, {
           ...plugin,
-          settings: {
-            ...plugin.settings,
-            networks: networks
+          keychain: {
+            ...plugin.keychain,
+            accounts
           }
         })
       );

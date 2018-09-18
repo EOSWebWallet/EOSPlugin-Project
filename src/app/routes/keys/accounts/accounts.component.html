@@ -1,0 +1,21 @@
+<h2>{{ 'routes.keys.accounts.title' | translate }}</h2>
+<app-button [label]="'routes.keys.accounts.add' | translate" (click)="onAdd()"></app-button>
+
+<mat-list>
+  <mat-list-item *ngFor="let account of accounts">
+    <div>
+      <p>{{ account.name }}</p>
+      <app-icon type="edit" (click)="onEdit()"></app-icon>
+      <app-icon type="clear" (click)="onRemoveGroup(network)"></app-icon>
+    </div>
+    <mat-list>
+      <mat-list-item *ngFor="let networkAccount of account.accounts">
+        <p>{{ networkAccount.name }}</p>
+        <app-icon type="check_box_outline_blank" *ngIf="!networkAccount.selected" (click)="onSelect(networkAccount)"></app-icon>
+        <app-icon type="check_box" *ngIf="networkAccount.selected" (click)="onSelect(networkAccount)"></app-icon>
+        <app-icon type="clear" (click)="onRemoveAccount(networkAccount)"></app-icon>
+      </mat-list-item>
+    </mat-list>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>

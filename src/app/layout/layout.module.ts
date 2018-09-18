@@ -18,6 +18,10 @@ import { DashboardComponent } from '../routes/dashboard/dashboard.component';
 import { KeysComponent } from '../routes/keys/keys.component';
 import { SettingsComponent } from '../routes/settings/settings.component';
 import { NetworksComponent } from '../routes/settings/networks/networks.component';
+import { AccountsComponent } from '../routes/keys/accounts/accounts.component';
+import { AccountsModule } from '../routes/keys/accounts/accounts.module';
+import { AccountComponent } from '../routes/keys/accounts/account/account.component';
+import { AccountModule } from '../routes/keys/accounts/account/account.module';
 
 const routes: Routes = [
   {
@@ -28,6 +32,8 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: DashboardComponent },
       { path: 'keys', component: KeysComponent },
+      { path: 'keys/accounts', component: AccountsComponent },
+      { path: 'keys/accounts/account', component: AccountComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'settings/networks', component: NetworksComponent },
     ]
@@ -46,6 +52,8 @@ const routes: Routes = [
     KeysModule,
     SettingsModule,
     NetworksModule,
+    AccountsModule,
+    AccountModule,
   ],
   declarations: [
     LayoutComponent,

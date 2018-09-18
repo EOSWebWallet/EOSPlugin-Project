@@ -5,27 +5,25 @@ import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SharedModule } from '../../../shared/shared.module';
-import { AccountsComponent } from './accounts.component';
-
+import { SharedModule } from '../../../../shared/shared.module';
+import { AccountComponent } from './account.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: AccountsComponent
+    component: AccountComponent
   },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
-    MatListModule,
-    MatDividerModule,
+    FormsModule,
     TranslateModule,
     SharedModule,
   ],
   declarations: [
-    AccountsComponent,
+    AccountComponent,
   ],
 })
-export class AccountsModule { }
+export class AccountModule { }

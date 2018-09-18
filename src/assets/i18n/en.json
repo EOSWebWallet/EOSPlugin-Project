@@ -16,7 +16,13 @@
       "accounts": {
         "menu": "Accounts",
         "title": "Accounts",
-        "add": "Group"
+        "add": "Group",
+        "account": {
+          "title": "Add Group",
+          "name": "Group Name",
+          "publicKey": "Public Key",
+          "privateKey": "Private Key"
+        }
       },
       "generate": "Generate Key Pair",
       "import": "Import Keypairs"

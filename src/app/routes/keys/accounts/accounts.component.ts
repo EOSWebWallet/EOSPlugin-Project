@@ -1,13 +1,12 @@
 import { Component, ViewChildren, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
+import { Subscribable, Subscription } from 'rxjs';
 
 import { IAccount } from '../../../core/account/account.interface';
 import { INetworkAccount } from '../../../core/network/network.interface';
 
 import { AccountService } from '../../../core/account/account.service';
-import { NetworksService } from '../../../core/network/networks.service';
-import { Subscribable, Subscription } from 'rxjs';
 
 import { NetworkUtils } from '../../../core/network/network.utils';
 
@@ -16,6 +15,7 @@ import { NetworkUtils } from '../../../core/network/network.utils';
   templateUrl: './accounts.component.html',
 })
 export class AccountsComponent implements OnInit, OnDestroy {
+  static PATH_ACCOUNT = '/app/keys/accounts/account';
 
   accounts: IAccount[];
 
@@ -37,6 +37,10 @@ export class AccountsComponent implements OnInit, OnDestroy {
 
   get accounts$(): Observable<IAccount[]> {
     return this.accountService.accounts$;
+  }
+
+  onAdd(): void {
+    this.router.navigateByUrl(AccountsComponent.PATH_ACCOUNT);
   }
 
   onSelect(networkAccount: INetworkAccount): void {

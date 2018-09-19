@@ -16,6 +16,8 @@ import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
 export class NetworksService extends AbstractActionService {
+  private
+
 
   constructor(
     protected actions: Actions,
@@ -39,7 +41,44 @@ export class NetworksService extends AbstractActionService {
       );
   }
 
-  setNetworks(networks: INetwork[]): void {
+  save(network: INetwork): void {
+    this.networks$
+      .pipe(first())
+      .subscribe(networks => {
+        this.set([ ...networks, network ])
+      });
+  }
+
+  update(network: INetwork): void {
+    this.networks$
+      .pipe(first())
+      .subscribe(networks =>
+        this.set(networks.map(n => n.name === network.name ? network : n))
+      );
+  }
+
+  delete(network: INetwork): void {
+    this.networks$
+      .pipe(first())
+      .subscribe(networks =>
+        this.set(networks.filter(n => n.name !== network.name))
+      );
+  }
+
+  select(network: INetwork): void {
+    this.networks$
+      .pipe(first())
+      .subscribe(networks =>
+        this.set(networks.map(n => ({
+          ...n,
+          selected: n === network
+            ? !network.selected
+            : n.selected
+        })))
+      );
+  }
+
+  private set(networks: INetwork[]): void {
     this.plugin$
       .pipe(first())
       .subscribe((plugin: IPlugin) =>

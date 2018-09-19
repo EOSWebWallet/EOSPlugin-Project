@@ -1,11 +1,10 @@
-import { Component, ViewChildren, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { first } from 'rxjs/operators';
 
 import { INetwork } from '../../../core/network/network.interface';
 
 import { NetworksService } from '../../../core/network/networks.service';
-import { Subscribable, Subscription } from 'rxjs';
 
 import { NetworkUtils } from '../../../core/network/network.utils';
 
@@ -13,48 +12,41 @@ import { NetworkUtils } from '../../../core/network/network.utils';
   selector: 'app-networks',
   templateUrl: './networks.component.html',
 })
-export class NetworksComponent implements OnInit, OnDestroy {
-
-  networks: INetwork[];
-  editableNetwork: INetwork;
-
-  private networksSub: Subscription;
+export class NetworksComponent {
 
   constructor(
-    private router: Router,
     private networskService: NetworksService,
   ) { }
-
-  ngOnInit(): void {
-    this.networksSub = this.networks$.subscribe(networks => this.networks = networks);
-  }
-
-  ngOnDestroy(): void {
-    this.networksSub.unsubscribe();
-  }
 
   get networks$(): Observable<INetwork[]> {
     return this.networskService.networks$;
   }
 
   onAdd(): void {
-    this.networskService.setNetworks([ ...this.networks, NetworkUtils.createNetwork() ]);
+    this.networskService.networks$
+      .pipe(first())
+      .subscribe(networks => this.networskService.save(this.createNew(networks)));
   }
 
-  onSave(): void {
-    this.networskService.setNetworks(this.networks);
+  onUpdate(network: INetwork): void {
+    this.networskService.update(network);
   }
 
-  onRemove(network: INetwork): void {
-    this.networskService.setNetworks(this.networks.filter(n => n !== network));
+  onDelete(network: INetwork): void {
+    this.networskService.delete(network);
   }
 
   onSelect(network: INetwork): void {
-    this.networskService.setNetworks(this.networks.map(n => ({
-      ...n,
-      selected: n === network
-        ? !network.selected
-        : n.selected
-    })));
+    this.networskService.select(network);
+  }
+
+  private createNew(networks: INetwork[]): INetwork {
+    const last = networks
+      .map(n => n.name)
+      .filter(n => n.startsWith(NetworkUtils.NETWORK_PREFIX))
+      .map(n => parseInt(n.replace(NetworkUtils.NETWORK_PREFIX, '')))
+      .sort((a, b) => a - b)
+      .pop() || 0;
+    return NetworkUtils.createNetwork(NetworkUtils.NETWORK_PREFIX + (last + 1))
   }
 }

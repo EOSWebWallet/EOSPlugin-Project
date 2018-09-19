@@ -1,17 +1,21 @@
-<div>
-  <div>
-    EOS PLUGIN
+<div class="flex-container">
+  <div class="d-flex flex-grow-1">
+    <p class="align-self-center">
+      EOS PLUGIN
+    </p>
   </div>
-  <form #form="ngForm">
-    <app-password
-      name="password"
-      [ngModel]="value"
-      [ngModelOptions]="{updateOn: 'blur'}"
-      #password="ngModel"
-      [label]="'routes.login.password' | translate"
-      [errors]="passwordErrors"
-      required
-    ></app-password>
-    <app-button [label]="'routes.login.submit' | translate" (click)="onLogin()" [disabled]="form.invalid"></app-button>
-  </form>
+  <div class="d-flex flex-column">
+    <form #form="ngForm">
+      <app-password
+        name="password"
+        [ngModel]="value"
+        [ngModelOptions]="{updateOn: 'blur'}"
+        #password="ngModel"
+        [label]="'routes.login.password' | translate"
+        [errors]="passwordErrors"
+        required
+      ></app-password>
+      <app-button [label]="'routes.login.submit' | translate" (click)="onLogin()" [disabled]="form.invalid"></app-button>
+    </form>
+  </div>
 </div>

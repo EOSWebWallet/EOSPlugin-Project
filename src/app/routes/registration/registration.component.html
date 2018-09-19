@@ -1,26 +1,30 @@
-<div>
-  <div>
-    EOS PLUGIN
+<div class="flex-container">
+  <div class="d-flex flex-grow-1">
+    <p class="align-self-center">
+      EOS PLUGIN
+    </p>
   </div>
-  <form #form="ngForm">
-    <app-password
-      name="password"
-      [ngModel]="value"
-      [ngModelOptions]="{updateOn: 'blur'}"
-      #password="ngModel"
-      [label]="'routes.registration.password' | translate"
-      [errors]="passwordErrors"
-      required
-    ></app-password>
-    <app-password
-      name="passwordConfirm"
-      ngModel
-      [ngModelOptions]="{updateOn: 'blur'}"
-      #passwordConfirm="ngModel"
-      [label]="'routes.registration.passwordConfirm' | translate"
-      [errors]="passwordConfirmErrors"
-      required
-    ></app-password>
-    <app-button [label]="'routes.registration.submit' | translate" (click)="onRegister()" [disabled]="form.invalid"></app-button>
-  </form>
+  <div class="d-flex flex-column">
+    <form #form="ngForm">
+      <app-password
+        name="password"
+        [ngModel]="value"
+        [ngModelOptions]="{updateOn: 'blur'}"
+        #password="ngModel"
+        [label]="'routes.registration.password' | translate"
+        [errors]="passwordErrors"
+        required
+      ></app-password>
+      <app-password
+        name="passwordConfirm"
+        ngModel
+        [ngModelOptions]="{updateOn: 'blur'}"
+        #passwordConfirm="ngModel"
+        [label]="'routes.registration.passwordConfirm' | translate"
+        [errors]="passwordConfirmErrors"
+        required
+      ></app-password>
+      <app-button [label]="'routes.registration.submit' | translate" (click)="onRegister()" [disabled]="form.invalid"></app-button>
+    </form>
+  </div>
 </div>

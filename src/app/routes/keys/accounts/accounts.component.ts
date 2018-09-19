@@ -43,26 +43,15 @@ export class AccountsComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(AccountsComponent.PATH_ACCOUNT);
   }
 
-  onSelect(networkAccount: INetworkAccount): void {
-    this.accountService.setAccounts(this.accounts.map(account => ({
-      ...account,
-      accounts: account.accounts.map(networkAcc => ({
-        ...networkAcc,
-        selected: networkAcc === networkAccount
-          ? !networkAccount.selected
-          : networkAcc.selected
-      }))
-    })));
+  onDelete(account: IAccount): void {
+    this.accountService.delete(account);
   }
 
-  onRemoveAccount(networkAccount: INetworkAccount): void {
-    this.accountService.setAccounts(this.accounts.map(account => ({
-      ...account,
-      accounts: account.accounts.filter(networkAcc => networkAcc !== networkAccount)
-    })));
+  onSelectAccount(networkAccount: INetworkAccount): void {
+    this.accountService.selectAccount(networkAccount);
   }
 
-  onRemoveGroup(account: IAccount): void {
-    this.accountService.setAccounts(this.accounts.filter(a => a !== account));
+  onDeleteAccount(networkAccount: INetworkAccount): void {
+    this.accountService.deleteAccount(networkAccount);
   }
 }

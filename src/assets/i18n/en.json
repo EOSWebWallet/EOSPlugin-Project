@@ -21,7 +21,10 @@
           "title": "Add Group",
           "name": "Group Name",
           "publicKey": "Public Key",
-          "privateKey": "Private Key"
+          "privateKey": "Private Key",
+          "network": "Network",
+          "networkAccounts": "Account Name",
+          "save": "Save"
         }
       },
       "generate": "Generate Key Pair",

@@ -44,9 +44,9 @@ export class NetworksComponent {
     const last = networks
       .map(n => n.name)
       .filter(n => n.startsWith(NetworkUtils.NETWORK_PREFIX))
-      .map(n => parseInt(n.replace(NetworkUtils.NETWORK_PREFIX, '')))
+      .map(n => parseInt(n.replace(NetworkUtils.NETWORK_PREFIX, ''), 10))
       .sort((a, b) => a - b)
       .pop() || 0;
-    return NetworkUtils.createNetwork(NetworkUtils.NETWORK_PREFIX + (last + 1))
+    return NetworkUtils.createNetwork(NetworkUtils.NETWORK_PREFIX + (last + 1));
   }
 }

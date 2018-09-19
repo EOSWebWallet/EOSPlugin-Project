@@ -23,9 +23,9 @@ export class TextComponent implements ControlValueAccessor {
   value: string;
   disabled = false;
 
-  constructor(
-    private cdRef: ChangeDetectorRef,
-  ) {}
+  get controlErrors(): string[] {
+    return this.errors && Object.keys(this.errors);
+  }
 
   onChange(value: string): void {
     this.value = value;
@@ -34,7 +34,6 @@ export class TextComponent implements ControlValueAccessor {
 
   writeValue(value: string): void {
     this.value = value;
-    this.cdRef.markForCheck();
   }
 
   registerOnChange(fn: Function): void {
@@ -47,7 +46,6 @@ export class TextComponent implements ControlValueAccessor {
 
   setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
-    this.cdRef.markForCheck();
   }
 
   onFocusOut(): void {

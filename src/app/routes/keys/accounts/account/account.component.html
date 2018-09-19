@@ -2,8 +2,44 @@
 
 <div>
   <form #form="ngForm">
-    <app-text name="name" [(ngModel)]="account.name" [label]="'routes.keys.accounts.account.name' | translate" required></app-text>
-    <app-password name="privateKey" [(ngModel)]="account.keypair.privateKey" [label]="'routes.keys.accounts.account.privateKey' | translate" (focusout)="generatePublicKey()" required></app-password>
-    <app-text name="publicKey" [(ngModel)]="account.keypair.publicKey" [label]="'routes.keys.accounts.account.publicKey' | translate" required></app-text>
+    <app-text
+      name="name"
+      [ngModel]="account.name"
+      [label]="'routes.keys.accounts.account.name' | translate"
+      required
+    ></app-text>
+    <app-password
+      name="privateKey"
+      [(ngModel)]="account.keypair.privateKey"
+      [label]="'routes.keys.accounts.account.privateKey' | translate"
+      (focusout)="generatePublicKey()"
+      required
+    ></app-password>
+    <app-text
+      name="publicKey"
+      [(ngModel)]="account.keypair.publicKey"
+      [label]="'routes.keys.accounts.account.publicKey' | translate"
+      required
+    ></app-text>
+
+    <app-select
+      name="network"
+      [ngModel]="account.network?.name"
+      [label]="'routes.keys.accounts.account.network' | translate"
+      [options]="networkOptions"
+      (select)="onNetworkSelect($event)"
+      required
+    ></app-select>
+
+    <app-select
+      name="account"
+      [multiple]="true"
+      ngModel
+      [label]="'routes.keys.accounts.account.networkAccounts' | translate"
+      [options]="accountOptions"
+      required
+    ></app-select>
+
+    <app-button [label]="'routes.keys.accounts.account.save' | translate" (click)="onSave(form.value)" [disabled]="form.invalid"></app-button>
   </form>
 </div>

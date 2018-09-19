@@ -1,0 +1,17 @@
+<mat-form-field>
+  <mat-select *ngIf="!multiple" [placeholder]="label" [ngModel]="value" (selectionChange)="onSelect($event)" [required]="required">
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+  <mat-select *ngIf="multiple" [placeholder]="label" [ngModel]="value" (selectionChange)="onSelect($event)" [required]="required" multiple>
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+  <mat-hint *ngIf="errors">
+    <p *ngFor="let error of controlErrors">
+      {{ 'shared.form.errors.' + error | translate }}
+    </p>
+  </mat-hint>
+</mat-form-field>

@@ -16,7 +16,6 @@ export abstract class AbstractActionService {
       .pipe(
         select(state => state.plugin),
         map(pluginState => pluginState.plugin),
-        first()
       );
   }
 

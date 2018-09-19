@@ -16,8 +16,6 @@ import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
 export class NetworksService extends AbstractActionService {
-  private
-
 
   constructor(
     protected actions: Actions,
@@ -44,9 +42,9 @@ export class NetworksService extends AbstractActionService {
   save(network: INetwork): void {
     this.networks$
       .pipe(first())
-      .subscribe(networks => {
+      .subscribe(networks =>
         this.set([ ...networks, network ])
-      });
+      );
   }
 
   update(network: INetwork): void {

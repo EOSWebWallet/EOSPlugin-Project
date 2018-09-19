@@ -23,10 +23,6 @@ export class PasswordComponent implements ControlValueAccessor {
   value: string;
   disabled = false;
 
-  constructor(
-    private cdRef: ChangeDetectorRef,
-  ) { }
-
   get controlErrors(): string[] {
     return this.errors && Object.keys(this.errors);
   }
@@ -38,7 +34,6 @@ export class PasswordComponent implements ControlValueAccessor {
 
   writeValue(value: string): void {
     this.value = value;
-    this.cdRef.markForCheck();
   }
 
   registerOnChange(fn: Function): void {
@@ -51,7 +46,6 @@ export class PasswordComponent implements ControlValueAccessor {
 
   setDisabledState(disabled: boolean): void {
     this.disabled = disabled;
-    this.cdRef.markForCheck();
   }
 
   onFocusOut(): void {

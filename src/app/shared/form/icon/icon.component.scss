@@ -1,0 +1,44 @@
+@import "~src/variables";
+
+.icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  mask-repeat: no-repeat !important;
+  mask-size: 100% !important;
+}
+
+.icon-home {
+  mask-image: url('../../../../../../assets/icon-home.png');
+  background: $color-primary !important;
+}
+
+.icon-user {
+  mask-image: url('../../../../../../assets/icon-user.png');
+  background: $color-primary !important;
+}
+
+.icon-key {
+  mask-image: url('../../../../../../assets/icon-key.png');
+  background: $color-primary !important;
+}
+
+.icon-settings {
+  mask-image: url('../../../../../../assets/icon-settings.png');
+  background: $color-primary !important;
+}
+
+.icon-edit {
+  mask-image: url('../../../../../../assets/icon-edit.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-generate-key {
+  mask-image: url('../../../../../../assets/icon-generate-key.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-import-key {
+  mask-image: url('../../../../../../assets/icon-import-key.png');
+  background: $color-inactive-dark !important;
+}

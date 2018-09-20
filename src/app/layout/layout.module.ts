@@ -22,6 +22,7 @@ import { AccountsComponent } from '../routes/keys/accounts/accounts.component';
 import { AccountsModule } from '../routes/keys/accounts/accounts.module';
 import { AccountComponent } from '../routes/keys/accounts/account/account.component';
 import { AccountModule } from '../routes/keys/accounts/account/account.module';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -54,6 +55,7 @@ const routes: Routes = [
     NetworksModule,
     AccountsModule,
     AccountModule,
+    SharedModule,
   ],
   declarations: [
     LayoutComponent,

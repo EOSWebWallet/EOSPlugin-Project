@@ -1,1 +1,3 @@
-<mat-icon>{{ type }}</mat-icon>
+
+<mat-icon *ngIf="showDefaultIcon">{{ type }}</mat-icon>
+<span class="icon" *ngIf="!showDefaultIcon" [ngClass]="type"></span>

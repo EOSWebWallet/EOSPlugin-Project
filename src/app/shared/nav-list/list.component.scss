@@ -1,0 +1,23 @@
+
+@import "~src/variables";
+
+:host {
+  width: 100%;
+  padding: 0px 30px 0 25px;
+}
+
+app-icon {
+  margin: 0 15px 0 0;
+  width: 20px;
+  height: 20px;
+}
+
+::ng-deep .mat-list-item {
+  color: $color-inactive-dark !important;
+}
+
+app-icon[type='keyboard_arrow_right'] {
+  position: absolute;
+  right: 0;
+  color: $color-primary !important;
+}

@@ -8,11 +8,11 @@
           [routerLink]="link.path"
           [active]="rla.isActive"
       >
-        <mat-icon>{{ link.icon }}</mat-icon>
+        <app-icon [type]="link.icon"></app-icon>
       </a>
-      <span>
+      <div class="controls">
         {{ selectedNetwork$ | async }}
-      </span>
+      </div>
     </nav>
   </div>
   <div class="content">

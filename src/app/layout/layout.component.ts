@@ -14,9 +14,10 @@ import { NetworksService } from '../core/network/networks.service';
 export class LayoutComponent {
 
   navLinks: INavLink[] = [
-    { icon: 'home', path: 'home' },
-    { icon: 'vpn_key', path: 'keys' },
-    { icon: 'settings', path: 'settings' }
+    { icon: 'icon-home', path: 'home' },
+    { icon: 'icon-user', path: 'user' },
+    { icon: 'icon-key', path: 'keys' },
+    { icon: 'icon-settings', path: 'settings' }
   ];
 
   constructor(private networkService: NetworksService) {

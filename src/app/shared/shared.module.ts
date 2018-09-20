@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DialogModule } from './dialog/dialog.module';
 import { FormModule } from './form/form.module';
 import { NavListModule } from './nav-list/list.module';
+import { NavHeaderModule } from './nav-header/header.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { NavListModule } from './nav-list/list.module';
     DialogModule,
     FormModule,
     NavListModule,
+    NavHeaderModule,
   ],
 })
 export class SharedModule { }

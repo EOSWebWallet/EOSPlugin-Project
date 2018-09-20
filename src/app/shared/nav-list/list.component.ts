@@ -1,5 +1,5 @@
-import { Component, Input } from "@angular/core";
-import { INavListItem } from "./list.interface";
+import { Component, Input } from '@angular/core';
+import { INavListItem } from './list.interface';
 
 @Component({
   selector: 'app-nav-list',

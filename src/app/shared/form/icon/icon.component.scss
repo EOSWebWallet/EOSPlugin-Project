@@ -1,5 +1,9 @@
 @import "~src/variables";
 
+mat-icon {
+  font-size: inherit;
+}
+
 .icon {
   display: block;
   width: 100%;

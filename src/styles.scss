@@ -5,8 +5,17 @@
 @import "~src/variables";
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: $font-family-primary;
   font-size: 14px;
+}
+
+h1, h2 {
+  font-family: $font-family-secondary;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 22px;
 }
 
 body {

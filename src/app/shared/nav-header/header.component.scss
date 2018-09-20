@@ -1,0 +1,15 @@
+h1 {
+  width: 100%;
+  text-align: center;
+  padding: 25px 0 15px 0;
+}
+
+a {
+  position: absolute;
+  top: 18px;
+  left: 10px;
+
+  app-icon {
+    font-size: 32px;
+  }
+}

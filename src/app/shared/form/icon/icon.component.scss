@@ -38,7 +38,37 @@
   background: $color-inactive-dark !important;
 }
 
-.icon-import-key {
-  mask-image: url('../../../../../../assets/icon-import-key.png');
+.icon-import {
+  mask-image: url('../../../../../../assets/icon-import.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-about {
+  mask-image: url('../../../../../../assets/icon-about.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-destroy {
+  mask-image: url('../../../../../../assets/icon-destroy.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-export {
+  mask-image: url('../../../../../../assets/icon-export.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-lock {
+  mask-image: url('../../../../../../assets/icon-lock.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-language {
+  mask-image: url('../../../../../../assets/icon-language.png');
+  background: $color-inactive-dark !important;
+}
+
+.icon-network {
+  mask-image: url('../../../../../../assets/icon-network.png');
   background: $color-inactive-dark !important;
 }

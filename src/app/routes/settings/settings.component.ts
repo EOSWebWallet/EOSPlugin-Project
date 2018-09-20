@@ -1,13 +1,21 @@
-import { Component, ViewChildren, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+
+import { INavListItem } from '../../shared/nav-list/list.interface';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
+  styleUrls: [ './settings.component.scss' ]
 })
 export class SettingsComponent {
 
-  constructor(
-    private router: Router,
-  ) { }
+  items: INavListItem[] = [
+    { link: '/app/settings/networks', label: 'routes.settings.networks.menu', icon: 'icon-network' },
+    { link: '', label: 'routes.settings.language', icon: 'icon-language' },
+    { link: '', label: 'routes.settings.changePassword', icon: 'icon-lock' },
+    { link: '', label: 'routes.settings.import', icon: 'icon-import' },
+    { link: '', label: 'routes.settings.export', icon: 'icon-export' },
+    { link: '', label: 'routes.settings.destroy', icon: 'icon-destroy' },
+    { link: '', label: 'routes.settings.about', icon: 'icon-about' },
+  ];
 }

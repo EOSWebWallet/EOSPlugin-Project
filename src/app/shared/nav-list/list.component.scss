@@ -8,12 +8,21 @@
 
 app-icon {
   margin: 0 15px 0 0;
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
+}
+
+::ng-deep .icon-lock {
+  width: 14px !important;
+}
+
+::ng-deep .icon-destroy {
+  width: 14px !important;
 }
 
 ::ng-deep .mat-list-item {
   color: $color-inactive-dark !important;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 app-icon[type='keyboard_arrow_right'] {

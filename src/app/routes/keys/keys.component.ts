@@ -12,6 +12,6 @@ export class KeysComponent {
   items: INavListItem[] = [
     { link: '/app/keys/accounts', label: 'routes.keys.accounts.menu', icon: 'icon-edit' },
     { link: '', label: 'routes.keys.generate', icon: 'icon-generate-key' },
-    { link: '', label: 'routes.keys.import', icon: 'keyboard_arrow_right' }
+    { link: '', label: 'routes.keys.import', icon: 'icon-import' }
   ];
 }

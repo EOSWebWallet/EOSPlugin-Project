@@ -4,10 +4,9 @@
     <div class="content">
       <div>
         <p class="grow primary">{{ network.name }}</p>
-        <app-icon type="check_box_outline_blank" *ngIf="!network.selected" (click)="onSelect(network)"></app-icon>
-        <app-icon type="check_box" *ngIf="network.selected" (click)="onSelect(network)"></app-icon>
-        <app-icon type="edit" (click)="editableNetwork = network"></app-icon>
-        <app-icon type="clear" (click)="onDelete(network)"></app-icon>
+        <app-toolbar-icon [type]="network.selected ? 'selected' : 'select'" (click)="onSelect(network)"></app-toolbar-icon>
+        <app-toolbar-icon type="edit" (click)="editableNetwork = network"></app-toolbar-icon>
+        <app-toolbar-icon type="remove" (click)="onDelete(network)"></app-toolbar-icon>
       </div>
       <div>
         <a class="grow" [href]="network.host">{{ network.host }}</a>

@@ -1,0 +1,30 @@
+@import "~src/variables";
+
+mat-icon {
+  height: 17px;
+  width: 17px;
+  font-size: 12px;
+  line-height: 16px;
+  padding: 0 2px;
+  margin: 0 0 0 10px;
+}
+
+.select {
+  border: 1px solid $color-accept;
+}
+
+.selected {
+  border: 1px solid $color-accept;
+  color: white;
+  background: $color-accept;
+}
+
+.edit {
+  border: 1px solid $color-info;
+  color: $color-info;
+}
+
+.remove {
+  border: 1px solid $color-danger;
+  color: $color-danger;
+}

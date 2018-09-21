@@ -6,6 +6,7 @@ import { FormModule } from './form/form.module';
 import { NavListModule } from './nav-list/list.module';
 import { HeaderModule } from './header/header.module';
 import { FooterModule } from './footer/footer.module';
+import { ToolbarIconModule } from './icon-toolbar/icon.module';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { FooterModule } from './footer/footer.module';
     NavListModule,
     HeaderModule,
     FooterModule,
+    ToolbarIconModule,
   ],
 })
 export class SharedModule { }

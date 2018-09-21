@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatDividerModule } from '@angular/material/divider';
 import { TranslateModule } from '@ngx-translate/core';
+import { ScrollbarModule } from 'ngx-scrollbar';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -24,6 +25,7 @@ const routes: Routes = [
     MatDividerModule,
     TranslateModule,
     SharedModule,
+    ScrollbarModule,
   ],
   declarations: [
     NetworksComponent,

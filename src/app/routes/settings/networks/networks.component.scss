@@ -1,0 +1,26 @@
+@import "~src/variables";
+
+.mat-list-item {
+  height: inherit;
+  font-size: 14px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 15px 10px;
+
+  > div {
+    display: flex;
+
+    .grow {
+      flex-grow: 1;
+    }
+
+    .primary {
+      color: $color-primary;
+      font-weight: 700;
+    }
+  }
+}

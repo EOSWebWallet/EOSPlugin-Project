@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap-reboot.css";
-@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap/dist/css/bootstrap-grid.css";
 @import "theme";
 @import "~src/variables";
 
@@ -15,7 +15,23 @@ h1, h2 {
 }
 
 h1 {
-  font-size: 22px;
+  font-size: 24px;
+}
+
+p {
+  font-family: $font-family-primary;
+  color: $color-dark;
+  margin-bottom: 5px;
+}
+
+a {
+  color: $color-dark;
+  text-decoration: underline;
+}
+
+button {
+  font-family: $font-family-secondary !important;
+  font-weight: 600 !important;
 }
 
 body {
@@ -29,4 +45,8 @@ body {
   align-items: center;
   flex-direction: column;
   display: flex;
+}
+
+.w-100 {
+  width: 100%;
 }

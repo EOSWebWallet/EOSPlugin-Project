@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators';
+import { map, filter } from 'rxjs/internal/operators';
 
 import { INavLink } from './layout.interface';
 
@@ -20,8 +20,9 @@ export class LayoutComponent {
     { icon: 'icon-settings', path: 'settings' }
   ];
 
-  constructor(private networkService: NetworksService) {
-  }
+  constructor(
+    private networkService: NetworksService,
+  ) { }
 
   get selectedNetwork$(): Observable<string> {
     return this.networkService.selectedNetwork$

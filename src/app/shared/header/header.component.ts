@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-nav-header',
+  selector: 'app-header',
   templateUrl: 'header.component.html',
   styleUrls: [ 'header.component.scss' ]
 })
-export class NavHeaderComponent {
+export class HeaderComponent {
 
   @Input() backLink: string;
   @Input() title: string;

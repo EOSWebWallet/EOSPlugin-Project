@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormModule } from '../form/form.module';
 
-import { NavHeaderComponent } from './header.component';
+import { HeaderComponent } from './header.component';
 
 @NgModule({
   imports: [
@@ -14,10 +14,10 @@ import { NavHeaderComponent } from './header.component';
     FormModule,
   ],
   declarations: [
-    NavHeaderComponent,
+    HeaderComponent,
   ],
   exports: [
-    NavHeaderComponent,
+    HeaderComponent,
   ]
 })
-export class NavHeaderModule { }
+export class HeaderModule { }

@@ -1,0 +1,15 @@
+@import "~src/variables";
+
+:host {
+  > div {
+    padding: 20px 25px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    border: 1px solid $color-primary;
+    color: $color-primary;
+    text-transform: uppercase;
+  }
+}

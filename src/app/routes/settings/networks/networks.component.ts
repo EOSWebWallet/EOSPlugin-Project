@@ -11,6 +11,7 @@ import { NetworkUtils } from '../../../core/network/network.utils';
 @Component({
   selector: 'app-networks',
   templateUrl: './networks.component.html',
+  styleUrls: [ './networks.component.scss' ]
 })
 export class NetworksComponent {
 

@@ -1,13 +1,17 @@
-<app-nav-header backLink="/app/settings" title="routes.settings.networks.title"></app-nav-header>
-
+<app-header backLink="/app/settings" title="routes.settings.networks.title"></app-header>
 <mat-list>
-    <mat-list-item *ngFor="let network of networks$ | async">
+  <mat-list-item *ngFor="let network of networks$ | async">
+    <div class="content">
       <div>
-        <p>{{ network.name }}</p>
+        <p class="grow primary">{{ network.name }}</p>
         <app-icon type="check_box_outline_blank" *ngIf="!network.selected" (click)="onSelect(network)"></app-icon>
         <app-icon type="check_box" *ngIf="network.selected" (click)="onSelect(network)"></app-icon>
         <app-icon type="edit" (click)="editableNetwork = network"></app-icon>
         <app-icon type="clear" (click)="onDelete(network)"></app-icon>
+      </div>
+      <div>
+        <a class="grow" [href]="network.host">{{ network.host }}</a>
+        <p> <span class="primary">Port:</span> {{ network.port }}</p>
       </div>
       <div *ngIf="network === editableNetwork">
         <form #form="ngForm">
@@ -18,8 +22,8 @@
           <app-button [label]="'routes.settings.networks.cancel' | translate" (click)="editableNetwork = null"></app-button>
         </form>
       </div>
-      <mat-divider></mat-divider>
-    </mat-list-item>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
 </mat-list>
-
-<app-button [label]="'routes.settings.networks.add' | translate" (click)="onAdd()"></app-button>
+<app-footer title="routes.settings.networks.add" (action)="onAdd()"></app-footer>

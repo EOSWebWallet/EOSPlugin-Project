@@ -1,4 +1,4 @@
-export interface INavListItem {
+export interface IListItem {
   link: string;
   label: string;
   icon: string;

@@ -3,26 +3,20 @@ import { CommonModule } from '@angular/common';
 
 import { DialogModule } from './dialog/dialog.module';
 import { FormModule } from './form/form.module';
-import { NavListModule } from './nav-list/list.module';
-import { HeaderModule } from './header/header.module';
-import { FooterModule } from './footer/footer.module';
-import { ToolbarIconModule } from './icon-toolbar/icon.module';
+import { ListModule } from './list/list.module';
 
 @NgModule({
   imports: [
     CommonModule,
     DialogModule,
     FormModule,
-    NavListModule,
+    ListModule,
   ],
   exports: [
     CommonModule,
     DialogModule,
     FormModule,
-    NavListModule,
-    HeaderModule,
-    FooterModule,
-    ToolbarIconModule,
+    ListModule,
   ],
 })
 export class SharedModule { }

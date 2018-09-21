@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { INavListItem } from './list.interface';
+import { IListItem } from './list.interface';
 
 @Component({
-  selector: 'app-nav-list',
+  selector: 'app-list',
   templateUrl: 'list.component.html',
   styleUrls: [ 'list.component.scss' ]
 })
-export class NavListComponent {
+export class ListComponent {
 
-  @Input() items: INavListItem[];
+  @Input() items: IListItem[];
 }

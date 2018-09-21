@@ -13,6 +13,7 @@ import { ButtonComponent } from './button/button.component';
 import { PasswordComponent } from './password/password.component';
 import { IconComponent } from './icon/icon.component';
 import { SelectComponent } from './select/select.component';
+import { ToolbarIconComponent } from './icon/toolbar/icon.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { SelectComponent } from './select/select.component';
     ButtonComponent,
     PasswordComponent,
     IconComponent,
+    ToolbarIconComponent,
     SelectComponent
   ],
   exports: [
@@ -37,7 +39,8 @@ import { SelectComponent } from './select/select.component';
     ButtonComponent,
     PasswordComponent,
     IconComponent,
-    SelectComponent
+    SelectComponent,
+    ToolbarIconComponent,
   ],
 })
 export class FormModule { }

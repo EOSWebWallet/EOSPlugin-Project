@@ -1,4 +1,3 @@
-<app-header backLink="/app/settings" title="routes.settings.networks.title"></app-header>
 <mat-list>
   <mat-list-item *ngFor="let network of networks$ | async">
     <div class="content">
@@ -25,4 +24,3 @@
     <mat-divider></mat-divider>
   </mat-list-item>
 </mat-list>
-<app-footer title="routes.settings.networks.add" (action)="onAdd()"></app-footer>

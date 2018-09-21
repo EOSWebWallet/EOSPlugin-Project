@@ -1,0 +1,16 @@
+<div class="content">
+  <ng-scrollbar>
+    <div class="header" *ngIf="page.header">
+      <a [routerLink]="page.backLink">
+        <app-icon type="keyboard_arrow_left"></app-icon>
+      </a>
+      <h1>{{ page.header | translate }}</h1>
+    </div>
+    <ng-content></ng-content>
+  </ng-scrollbar>
+</div>
+
+<div class="footer" *ngIf="page.footer">
+  <mat-divider></mat-divider>
+  <app-button [label]="page.footer | translate" (click)="page.action()"></app-button>
+</div>

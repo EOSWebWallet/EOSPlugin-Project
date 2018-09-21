@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { INavListItem } from '../../shared/nav-list/list.interface';
+import { IListItem } from '../../shared/list/list.interface';
 
 @Component({
   selector: 'app-settings',
@@ -9,7 +9,7 @@ import { INavListItem } from '../../shared/nav-list/list.interface';
 })
 export class SettingsComponent {
 
-  items: INavListItem[] = [
+  items: IListItem[] = [
     { link: '/app/settings/networks', label: 'routes.settings.networks.menu', icon: 'icon-network' },
     { link: '', label: 'routes.settings.language', icon: 'icon-language' },
     { link: '', label: 'routes.settings.changePassword', icon: 'icon-lock' },

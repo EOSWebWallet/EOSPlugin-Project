@@ -1,23 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef, Inject, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { first } from 'rxjs/operators';
 
 import { INetwork } from '../../../core/network/network.interface';
+import { IPage } from '../../../layout/page/page.interface';
 
 import { NetworksService } from '../../../core/network/networks.service';
+
+import { PageComponent } from '../../../layout/page/page.component';
 
 import { NetworkUtils } from '../../../core/network/network.utils';
 
 @Component({
   selector: 'app-networks',
   templateUrl: './networks.component.html',
-  styleUrls: [ './networks.component.scss' ]
+  styleUrls: [ './networks.component.scss' ],
 })
-export class NetworksComponent {
+export class NetworksComponent implements AfterViewInit {
+
+  private page: IPage = {
+    backLink: '/app/settings',
+    header: 'routes.settings.networks.title',
+    footer: 'routes.settings.networks.add',
+    action: () => this.onAdd()
+  };
 
   constructor(
+    @Inject(forwardRef(() => PageComponent)) private navPage: PageComponent,
     private networskService: NetworksService,
-  ) { }
+  ) {
+    navPage.page = this.page;
+  }
+
+  ngAfterViewInit(): void {
+    this.navPage.update();
+  }
 
   get networks$(): Observable<INetwork[]> {
     return this.networskService.networks$;

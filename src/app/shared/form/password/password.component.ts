@@ -12,7 +12,8 @@ import { IControlErrors } from '../form.interface';
     }
   ],
   selector: 'app-password',
-  templateUrl: 'password.component.html'
+  templateUrl: 'password.component.html',
+  styleUrls: [ 'password.component.scss' ]
 })
 export class PasswordComponent implements ControlValueAccessor {
 

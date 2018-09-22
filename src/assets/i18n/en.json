@@ -24,7 +24,8 @@
           "privateKey": "Private Key",
           "network": "Network",
           "networkAccounts": "Account Name",
-          "save": "Save"
+          "save": "Save",
+          "eos": "EOS Account"
         }
       },
       "generate": "Generate Key Pair",

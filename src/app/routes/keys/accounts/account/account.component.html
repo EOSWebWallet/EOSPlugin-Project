@@ -1,5 +1,3 @@
-<h2>{{ 'routes.keys.accounts.account.title' | translate }}</h2>
-
 <div>
   <form #form="ngForm">
     <app-text
@@ -22,6 +20,10 @@
       required
     ></app-text>
 
+    <mat-divider></mat-divider>
+
+    <h1>{{ 'routes.keys.accounts.account.eos' | translate }}</h1>
+
     <app-select
       name="network"
       [ngModel]="account.network?.name"
@@ -39,7 +41,5 @@
       [options]="accountOptions"
       required
     ></app-select>
-
-    <app-button [label]="'routes.keys.accounts.account.save' | translate" (click)="onSave(form.value)" [disabled]="form.invalid"></app-button>
   </form>
 </div>

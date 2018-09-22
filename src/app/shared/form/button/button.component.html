@@ -1,3 +1,6 @@
 <div (click)="onClick($event)">
-  <button mat-button [ngClass]="type" [disabled]="disabled">{{ label }}</button>
+  <button mat-button [ngClass]="type" [disabled]="disabled">
+    <ng-content></ng-content>
+    {{ label }}
+  </button>
 </div>

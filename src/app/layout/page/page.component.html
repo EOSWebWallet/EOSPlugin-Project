@@ -1,7 +1,7 @@
 <div class="content">
   <ng-scrollbar>
     <div class="header" *ngIf="page.header">
-      <a [routerLink]="page.backLink">
+      <a [routerLink]="page.backLink" *ngIf="page.backLink">
         <app-icon type="keyboard_arrow_left"></app-icon>
       </a>
       <h1>{{ page.header | translate }}</h1>

@@ -1,0 +1,61 @@
+@import "~src/variables";
+
+.mat-list-item {
+  height: inherit;
+  font-size: 14px;
+}
+
+.account-panel {
+  width: 100%;
+  padding: 0 9px 15px 9px;
+}
+
+.network-panel {
+  display: flex;
+  padding: 10px 0;
+
+  .name {
+    color: $color-primary;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .host {
+    font-size: 12px;
+  }
+
+  div:first-child {
+    flex-grow: 1;
+  }
+
+  div:last-child {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.network-account-panel {
+  display: flex;
+  padding: 5px 0;
+
+  p {
+    flex-grow: 1;
+  }
+}
+
+app-button {
+  display: block;
+  position: absolute;
+  width: 70px;
+  font-size: 12px;
+  line-height: 22px;
+  right: 25px;
+  top: 33px;
+}
+
+.mat-icon {
+  font-size: 14px;
+  line-height: 10px;
+  height: 12px;
+  width: 12px;
+}

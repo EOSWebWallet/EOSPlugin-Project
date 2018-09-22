@@ -1,4 +1,4 @@
-import { Component, ViewChildren, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Component, ViewChildren, ViewChild, OnInit, OnDestroy, forwardRef, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscribable, Subscription } from 'rxjs';
@@ -8,13 +8,17 @@ import { INetworkAccount } from '../../../core/network/network.interface';
 
 import { AccountService } from '../../../core/account/account.service';
 
+import { AbstractPageComponent } from '../../../layout/page/page.interface';
+import { PageLayoutComponent } from '../../../layout/page/page.component';
+
 import { NetworkUtils } from '../../../core/network/network.utils';
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
+  styleUrls: [ './accounts.component.scss' ]
 })
-export class AccountsComponent implements OnInit, OnDestroy {
+export class AccountsComponent extends AbstractPageComponent implements OnInit, OnDestroy {
   static PATH_ACCOUNT = '/app/keys/accounts/account';
 
   accounts: IAccount[];
@@ -22,9 +26,15 @@ export class AccountsComponent implements OnInit, OnDestroy {
   private accountsSub: Subscription;
 
   constructor(
+    @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private router: Router,
     private accountService: AccountService,
-  ) { }
+  ) {
+    super(pageLayout, {
+      backLink: '/app/keys',
+      header: 'routes.keys.accounts.title',
+    });
+  }
 
   ngOnInit(): void {
     this.accountsSub = this.accounts$

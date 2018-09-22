@@ -17,3 +17,11 @@ a {
 .content {
   height: 445px;
 }
+
+app-button {
+  display: block;
+  padding: 20px 25px;
+  width: 100%;
+  line-height: 36px;
+  text-transform: uppercase;
+}

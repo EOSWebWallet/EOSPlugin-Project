@@ -7,7 +7,7 @@ import { MatDividerModule } from '@angular/material/divider';
 
 import { SharedModule } from '../../shared/shared.module';
 
-import { PageComponent } from './page.component';
+import { PageLayoutComponent } from './page.component';
 
 @NgModule({
   imports: [
@@ -19,11 +19,11 @@ import { PageComponent } from './page.component';
     SharedModule
   ],
   declarations: [
-    PageComponent,
+    PageLayoutComponent,
   ],
   exports: [
     ScrollbarComponent,
-    PageComponent,
+    PageLayoutComponent,
   ]
 })
 export class PageModule { }

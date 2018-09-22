@@ -5,7 +5,7 @@
   font-size: 14px;
 }
 
-.content {
+.network-panel {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -13,14 +13,34 @@
 
   > div {
     display: flex;
+  }
 
-    .grow {
-      flex-grow: 1;
-    }
+  .name, .host {
+    flex-grow: 1;
+  }
 
-    .primary {
-      color: $color-primary;
-      font-weight: 700;
-    }
+  .name, .port span {
+    color: $color-primary;
+    font-weight: 700;
+  }
+}
+
+.network-edit {
+  background: #f5f9fd;
+
+  form {
+    padding: 15px 10px;
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+  }
+
+  app-button {
+    width: 70px;
+    line-height: 23px;
+    margin: 0 10px;
+    font-size: 12px;
   }
 }

@@ -3,11 +3,11 @@ import { Observable } from 'rxjs/internal/Observable';
 import { first } from 'rxjs/operators';
 
 import { INetwork } from '../../../core/network/network.interface';
-import { IPage } from '../../../layout/page/page.interface';
+import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 
 import { NetworksService } from '../../../core/network/networks.service';
 
-import { PageComponent } from '../../../layout/page/page.component';
+import { PageLayoutComponent } from '../../../layout/page/page.component';
 
 import { NetworkUtils } from '../../../core/network/network.utils';
 
@@ -16,24 +16,18 @@ import { NetworkUtils } from '../../../core/network/network.utils';
   templateUrl: './networks.component.html',
   styleUrls: [ './networks.component.scss' ],
 })
-export class NetworksComponent implements AfterViewInit {
-
-  private page: IPage = {
-    backLink: '/app/settings',
-    header: 'routes.settings.networks.title',
-    footer: 'routes.settings.networks.add',
-    action: () => this.onAdd()
-  };
+export class NetworksComponent extends AbstractPageComponent implements AfterViewInit {
 
   constructor(
-    @Inject(forwardRef(() => PageComponent)) private navPage: PageComponent,
+    @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private networskService: NetworksService,
   ) {
-    navPage.page = this.page;
-  }
-
-  ngAfterViewInit(): void {
-    this.navPage.update();
+    super(pageLayout, {
+      backLink: '/app/settings',
+      header: 'routes.settings.networks.title',
+      footer: 'routes.settings.networks.add',
+      action: () => this.onAdd()
+    });
   }
 
   get networks$(): Observable<INetwork[]> {

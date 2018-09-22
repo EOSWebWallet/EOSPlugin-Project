@@ -1,3 +1,3 @@
 <div (click)="onClick($event)">
-  <button mat-button [disabled]="disabled">{{ label }}</button>
+  <button mat-button [ngClass]="type" [disabled]="disabled">{{ label }}</button>
 </div>

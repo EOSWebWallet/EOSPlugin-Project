@@ -12,7 +12,8 @@ import { IControlErrors } from '../form.interface';
     }
   ],
   selector: 'app-text',
-  templateUrl: 'text.component.html'
+  templateUrl: 'text.component.html',
+  styleUrls: [ 'text.component.scss' ]
 })
 export class TextComponent implements ControlValueAccessor {
 

@@ -1,0 +1,14 @@
+@import "~src/variables";
+
+mat-form-field {
+  width: 100%;
+}
+
+::ng-deep .mat-form-field-label {
+  padding: 0 10px;
+  color: $color-primary !important;
+}
+
+::ng-deep .mat-input-element {
+  padding: 0 10px;
+}

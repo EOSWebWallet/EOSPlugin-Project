@@ -30,7 +30,7 @@ a {
 }
 
 button {
-  font-family: $font-family-secondary !important;
+  font-family: $font-family-primary !important;
   font-weight: 600 !important;
 }
 
@@ -45,8 +45,4 @@ body {
   align-items: center;
   flex-direction: column;
   display: flex;
-}
-
-.w-100 {
-  width: 100%;
 }

@@ -1,17 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
 import { ScrollbarComponent } from 'ngx-scrollbar';
 
-import { IPage } from './page.interface';
+import { IPageConfig } from './page.interface';
 
 @Component({
-  selector: 'app-page',
+  selector: 'app-page-layout',
   templateUrl: './page.component.html',
   styleUrls: [ './page.component.scss' ]
 })
-export class PageComponent {
+export class PageLayoutComponent {
   @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
 
-  page: IPage = {};
+  page: IPageConfig = {};
 
   update(): void {
     setTimeout(() => this.scrollRef.update());

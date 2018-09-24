@@ -1,0 +1,43 @@
+@import "~src/variables";
+
+form {
+  padding: 20px 25px;
+
+  a {
+    width: 100%;
+    text-align: right;
+    display: block;
+  }
+}
+
+app-button {
+  display: block;
+  width: 100%;
+  line-height: 36px;
+  text-transform: uppercase;
+  margin: 25px 0;
+}
+
+app-icon {
+  width: 40px;
+  height: 65px;
+  margin-right: 20px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 0 58px;
+
+    p {
+      font-size: 30px;
+      color: $color-primary;
+    }
+  }
+}

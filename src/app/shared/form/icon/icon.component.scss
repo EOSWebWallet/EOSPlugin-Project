@@ -78,3 +78,8 @@ mat-icon {
   mask-image: url('../../../../../../assets/icon-network.png');
   background: $color-inactive-dark !important;
 }
+
+.icon-logo {
+  mask-image: url('../../../../../../assets/icon-logo.png');
+  background: $color-primary !important;
+}

@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Inject, forwardRef } from '@angular/core';
 
 import { IListItem } from '../../shared/list/list.interface';
+
+import { AbstractPageComponent } from '../../layout/page/page.interface';
+import { PageLayoutComponent } from '../../layout/page/page.component';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: [ './settings.component.scss' ]
 })
-export class SettingsComponent {
+export class SettingsComponent extends AbstractPageComponent {
 
   items: IListItem[] = [
     { link: '/app/settings/networks', label: 'routes.settings.networks.menu', icon: 'icon-network' },
@@ -18,4 +21,10 @@ export class SettingsComponent {
     { link: '', label: 'routes.settings.destroy', icon: 'icon-destroy' },
     { link: '', label: 'routes.settings.about', icon: 'icon-about' },
   ];
+
+  constructor(
+    @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
+  ) {
+    super(pageLayout, {});
+  }
 }

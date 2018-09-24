@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" [ngClass]="page.footer || 'full-height'">
   <ng-scrollbar>
     <div class="header" *ngIf="page.header">
       <a [routerLink]="page.backLink" *ngIf="page.backLink">

@@ -24,7 +24,7 @@ export class AuthEffects {
       return from(StorageUtils.setSalt(EncryptUtils.insecureHash(EncryptUtils.text(32))))
         .pipe(
           flatMap(() => from(EncryptUtils.generateMnemonic(action.payload))),
-          flatMap(([ mnemonic, seed ]) => this.messageService.send({ type: ExtensionMessageType.SET_SEED, payload: seed })),
+          flatMap(([ mnemonic, seed ]) => from(ExtensionMessageService.send({ type: ExtensionMessageType.SET_SEED, payload: seed }))),
           map(() => ({
             type: AuthService.AUTH_REGISTER_SUCCESS,
             payload: action.payload
@@ -39,7 +39,7 @@ export class AuthEffects {
     switchMap((action: UnsafeAction) => {
       return from(EncryptUtils.generateMnemonic(action.payload))
         .pipe(
-          flatMap(([ mnemonic, seed ]) => this.messageService.send({ type: ExtensionMessageType.SET_SEED, payload: seed })),
+          flatMap(([ mnemonic, seed ]) => from(ExtensionMessageService.send({ type: ExtensionMessageType.SET_SEED, payload: seed }))),
           flatMap(() => this.authService.isAuthorized),
           filter(Boolean),
           map(() => ({
@@ -52,7 +52,6 @@ export class AuthEffects {
 
   constructor(
     private actions: Actions,
-    private messageService: ExtensionMessageService,
     private authService: AuthService
   ) {}
 }

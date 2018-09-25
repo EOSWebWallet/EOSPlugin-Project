@@ -6,6 +6,7 @@ import { Store, select } from '@ngrx/store';
 import { of } from 'rxjs/internal/observable/of';
 import { map, flatMap, first, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
+import { from } from 'rxjs/internal/observable/from';
 
 import { IPlugin } from '../plugin/plugin.interface';
 import { IAppState } from '../state/state.interface';
@@ -30,7 +31,6 @@ export class AuthService extends AbstractActionService implements CanActivate {
     protected actions: Actions,
     private router: Router,
     protected store: Store<IAppState>,
-    private messageService: ExtensionMessageService
   ) {
     super();
 
@@ -41,7 +41,7 @@ export class AuthService extends AbstractActionService implements CanActivate {
   }
 
   get isAuthorized(): Observable<boolean> {
-    return this.messageService.send({ type: ExtensionMessageType.IS_AUTHORIZED });
+    return from(ExtensionMessageService.send({ type: ExtensionMessageType.IS_AUTHORIZED }));
   }
 
   get hasAuthorization(): Observable<boolean> {

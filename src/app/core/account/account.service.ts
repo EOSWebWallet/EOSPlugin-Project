@@ -75,7 +75,7 @@ export class AccountService extends AbstractActionService {
   }
 
   getKeyAccounts(network: INetwork, publicKey: string): Observable<INetworkAccount[]> {
-    return from(AccountUtils.getKeyAccounts(network.host, network.port, publicKey))
+    return from(AccountUtils.getKeyAccounts(network.protocol, network.host, network.port, publicKey))
       .pipe(
         map(({ account_names }) => account_names.map(account => ({ name: account })))
       );

@@ -52,7 +52,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
       header: 'routes.keys.accounts.account.title',
       footer: 'routes.keys.accounts.account.save',
       action: () => this.onSave()
-    })
+    });
   }
 
   ngOnInit(): void {

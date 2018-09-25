@@ -10,8 +10,17 @@ export class NetworkUtils {
   static createNetwork(name: string): INetwork {
     return {
       name,
+      protocol: 'https',
       host: 'network.host',
       port: 443
     };
+  }
+
+  static isValid(network: INetwork) {
+    return network.host.length && network.port;
+  }
+
+  static fullhost(network: INetwork): string {
+    return `${network.protocol}://${network.host}${network.port ? ':' : ''}${network.port}`;
   }
 }

@@ -11,7 +11,7 @@ export class AccountUtils {
     };
   }
 
-  static getKeyAccounts(host: string, port: number, publicKey: string): Promise<any> {
-    return Eos({ httpEndpoint: `https://${host}:${port}` }).getKeyAccounts(publicKey);
+  static getKeyAccounts(protocol: string, host: string, port: number, publicKey: string): Promise<any> {
+    return Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getKeyAccounts(publicKey);
   }
 }

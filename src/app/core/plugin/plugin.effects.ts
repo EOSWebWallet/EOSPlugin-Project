@@ -37,7 +37,7 @@ export class PluginEffects {
   storePlugin$ = this.actions.pipe(
     ofType(PluginUtils.PLUGIN_STORE),
     switchMap((action: UnsafeAction) => {
-      return from(this.messageService.send({ type: ExtensionMessageType.STORE_PLUGIN, payload: action.payload }))
+      return from(ExtensionMessageService.send({ type: ExtensionMessageType.STORE_PLUGIN, payload: action.payload }))
         .pipe(
           map(() => ({
             type: PluginUtils.PLUGIN_STORE_SUCCESS,
@@ -51,7 +51,7 @@ export class PluginEffects {
   loadPlugin$ = this.actions.pipe(
     ofType(PluginUtils.PLUGIN_LOAD),
     switchMap((action: UnsafeAction) => {
-      return from(this.messageService.send({ type: ExtensionMessageType.LOAD_PLUGIN }))
+      return from(ExtensionMessageService.send({ type: ExtensionMessageType.LOAD_PLUGIN }))
         .pipe(
           map(plugin => ({
             type: PluginUtils.PLUGIN_LOAD_SUCCESS,
@@ -74,6 +74,5 @@ export class PluginEffects {
 
   constructor(
     private actions: Actions,
-    private messageService: ExtensionMessageService,
   ) {}
 }

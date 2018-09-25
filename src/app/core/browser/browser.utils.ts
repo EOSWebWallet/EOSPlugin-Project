@@ -35,6 +35,17 @@ export class BrowserAPIUtils {
     return BrowserAPIUtils._localStream;
   }
 
+  static get extension(): any {
+    return BrowserAPI.extension;
+  }
+
+  static get host() {
+    const host = location.hostname;
+    return host.indexOf('www.') === 0
+      ? host.replace('www.', '')
+      : host;
+  }
+
   private static createLocalStream(): any {
     if (BrowserAPIUtils.isAPIAvailable()) {
       return LocalStream;

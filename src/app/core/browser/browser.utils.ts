@@ -39,6 +39,14 @@ export class BrowserAPIUtils {
     return BrowserAPI.extension;
   }
 
+  static get windows(): any {
+    return BrowserAPI.windows;
+  }
+
+  static get runtime(): any {
+    return BrowserAPI.runtime;
+  }
+
   static get host() {
     const host = location.hostname;
     return host.indexOf('www.') === 0

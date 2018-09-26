@@ -54,7 +54,8 @@ class Content {
 
     switch (msg.type) {
       case 'sync': this.sync(msg); break;
-      case NetworkMessageType.GET_ACCOUNT: this.getAccount(msg); break;
+      case NetworkMessageType.GET_IDENTITY: this.getIdentity(msg); break;
+      case NetworkMessageType.REQUEST_SIGNATURE: this.requestSignature(msg); break;
       default: this.stream.send({ type: NetworkMessageType.ERROR, payload: NetworkError.maliciousEvent() }, Content.STREAM_NAME);
     }
   }
@@ -78,12 +79,21 @@ class Content {
     this.stream.synced = true;
   }
 
-  getAccount(message: any): void {
+  getIdentity(message: INetworkMessage): void {
     if (!this.isReady) {
       return;
     }
 
-    ExtensionMessageService.send({ type: ExtensionMessageType.GET_ACCOUNT, payload: message.payload })
+    ExtensionMessageService.send({ type: ExtensionMessageType.GET_IDENTITY, payload: message.payload })
+      .then(res => this.respond(message, res));
+  }
+
+  requestSignature(message: INetworkMessage): void {
+    if (!this.isReady) {
+      return;
+    }
+
+    ExtensionMessageService.send({ type: ExtensionMessageType.REQUEST_SIGNATURE, payload: message.payload })
       .then(res => this.respond(message, res));
   }
 }

@@ -15,14 +15,16 @@ export enum ExtensionMessageType {
   STORE_PLUGIN = 'STORE_PLUGIN',
   IS_AUTHORIZED = 'IS_AUTHORIZED',
   LOAD_PLUGIN = 'LOAD_PLUGIN',
-  GET_ACCOUNT = 'GET_ACCOUNT',
+  GET_IDENTITY = 'GET_IDENTITY',
+  SET_PROMPT = 'SET_PROMPT',
+  REQUEST_SIGNATURE = 'REQUEST_SIGNATURE',
 }
 
 export enum NetworkMessageType {
   ABI_CACHE = 'ABI_CACHE',
   ERROR = 'ERROR',
   PUSH_PLUGIN = 'PUSH_PLUGIN',
-  GET_ACCOUNT = 'GET_ACCOUNT',
+  GET_IDENTITY = 'GET_IDENTITY',
   REQUEST_SIGNATURE = 'REQUEST_SIGNATURE',
 }
 
@@ -67,5 +69,17 @@ export class NetworkError {
 
   static malformedRequiredFields(): NetworkError {
     return new NetworkError('malformed_requirements', 'The requiredFields you passed in were malformed', NetworkErrorCode.NO_SIGNATURE);
+  }
+
+  static promptClosedWithoutAction(): NetworkError {
+    return new NetworkError('prompt_closed', 'The user closed the prompt without any action.', NetworkErrorCode.TIMED_OUT);
+  }
+
+  static signatureError(_type, _message): NetworkError {
+    return new NetworkError(_type, _message, NetworkErrorCode.NO_SIGNATURE);
+  }
+
+  static identityMissing(): NetworkError {
+    return this.signatureError('identity_missing', 'Identity no longer exists on the user\'s keychain');
   }
 }

@@ -1,7 +1,7 @@
 
 import { LocalStream } from 'extension-streams/dist';
 
-import { ExtensionMessageType, IExtensionMessage } from './app/core/message/message.interface';
+import { ExtensionMessageType, IExtensionMessage, NetworkError } from './app/core/message/message.interface';
 
 import { IPlugin } from './app/core/plugin/plugin.interface';
 
@@ -9,6 +9,7 @@ import { PluginUtils } from './app/core/plugin/plugin.utils';
 import { KeypairUtils } from './app/core/keypair/keypair.utils';
 import { StorageUtils } from './app/core/storage/storage.service';
 import { BrowserAPIUtils } from './app/core/browser/browser.utils';
+import { AccountUtils } from './app/core/account/account.utils';
 
 export class Background {
 
@@ -30,6 +31,8 @@ export class Background {
       case ExtensionMessageType.SET_SEED: this.setSeed(message.payload, cb); break;
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
+      case ExtensionMessageType.GET_IDENTITY: this.getIdentity(cb); break;
+      case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message, cb); break;
     }
   }
 
@@ -75,6 +78,24 @@ export class Background {
         : PluginUtils.decrypt(pluginData, this.seed)
       );
     });
+  }
+
+  getIdentity(cb: Function): void {
+    this.load(plugin => {
+      AccountUtils.getIdentity(identity => {
+        if (!identity) {
+          cb(NetworkError.signatureError('identity_rejected', 'User rejected the provision of an Identity'));
+          return false;
+        }
+        cb(identity);
+      });
+    });
+  }
+
+  requestSignature(payload: any, cb: Function): void {
+    // this.load(scatter => {
+    //   SignatureService.requestSignature(payload, scatter, this, cb);
+    // });
   }
 }
 

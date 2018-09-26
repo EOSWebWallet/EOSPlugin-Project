@@ -18,20 +18,20 @@ export class EOSPlugin {
 
   private stream: EncryptedStream | any;
   private resolvers: IResolver[] = [];
-  private account: IAccount;
+  private identity: IAccount;
 
-  private signatureProvider = new EOSUtils().signatureProvider(this.send, this.throwIfNoIdentity);
+  readonly signatureProvider = new EOSUtils().signatureProvider(this.send, this.throwIfNoIdentity);
 
   constructor(stream: EncryptedStream) {
     this.stream = stream;
     this.subscribe();
   }
 
-  getAccount(fields = {}): Promise<IAccount> {
-    return this.send(NetworkMessageType.GET_ACCOUNT, { fields })
-      .then(account => {
-        this.account = account;
-        return account;
+  getIdentity(): Promise<IAccount> {
+    return this.send(NetworkMessageType.GET_IDENTITY, {})
+      .then(identity => {
+        this.identity = identity;
+        return identity;
       });
   }
 
@@ -63,7 +63,7 @@ export class EOSPlugin {
   }
 
   private throwIfNoIdentity() {
-    if (!this.account || !this.account.keypair.publicKey) {
+    if (!this.identity || !this.identity.keypair.publicKey) {
       this.throws('There is no identity with an account set on your Scatter instance.');
     }
   }

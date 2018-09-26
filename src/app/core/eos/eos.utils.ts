@@ -3,7 +3,7 @@ import * as ricardianParser from 'eos-rc-parser';
 
 import { NetworkUtils } from '../network/network.utils';
 import { NetworkError, NetworkMessageType } from '../message/message.interface';
-import { INetwork } from '../network/network.interface';
+import { INetwork, INetworkAccount } from '../network/network.interface';
 import { AccountUtils } from '../account/account.utils';
 import { BrowserAPIUtils } from '../browser/browser.utils';
 
@@ -33,8 +33,6 @@ export class EOSUtils {
       const chainId = network.hasOwnProperty('chainId') && network.chainId.length ? network.chainId : _options.chainId;
       network.chainId = chainId;
 
-      // The proxy stands between the eosjs object and scatter.
-      // This is used to add special functionality like adding `requiredFields` arrays to transactions
       return proxy(_eos({ httpEndpoint }), {
         get(eosInstance, method) {
           let returnedFields = null;
@@ -182,4 +180,20 @@ export class EOSUtils {
     }));
   }
 
+  actionParticipants(payload) {
+    const flatten = (array) => {
+      return array.reduce(
+          (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
+      );
+    };
+    return flatten(
+      payload.messages
+        .map(message => message.authorization
+          .map(auth => `${auth.actor}@${auth.permission}`))
+    );
+  }
+
+  accountFormatter(account: any): string {
+    return `${account.name}@${account.authority}`;
+  }
 }

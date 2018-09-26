@@ -49,11 +49,12 @@ export class PluginUtils {
     return {
       hasEncryptionKey,
       keychain: {
-        accounts: []
+        accounts: [],
+        permissions: []
       },
       settings: {
         networks: []
-      }
+      },
     };
   }
 }

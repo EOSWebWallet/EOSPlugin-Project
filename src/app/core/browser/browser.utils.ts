@@ -49,7 +49,7 @@ export class BrowserAPIUtils {
     return this.isAPIAvailable()
       ? BrowserAPI.runtime
       : {
-        getURL: () => 'http://localhost:4201'
+        getURL: () => 'http://localhost:4200/prompt'
       };
   }
 

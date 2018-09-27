@@ -24,6 +24,7 @@ import { reducers, initialState } from './core/state/root.reducer';
 import { background, Background } from '../background';
 import { content, Content } from '../content';
 import { inject, Inject } from '../inject';
+import { PromptModule } from './prompt/prompt.module';
 
 export function getInitialState(): Partial<IAppState> {
   return { ...initialState };
@@ -51,6 +52,7 @@ export function getInitialState(): Partial<IAppState> {
       }
     }),
     StoreModule.forRoot(reducers, { initialState: getInitialState }),
+    PromptModule
   ],
   providers: [
     TranslateService

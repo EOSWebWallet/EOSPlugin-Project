@@ -10,6 +10,7 @@ import { KeypairUtils } from './app/core/keypair/keypair.utils';
 import { StorageUtils } from './app/core/storage/storage.service';
 import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 import { AccountUtils } from './app/core/account/account.utils';
+import { IAccountFields } from './app/core/account/account.interface';
 
 export class Background {
 
@@ -26,12 +27,13 @@ export class Background {
   }
 
   dispenseMessage(cb: Function, message: IExtensionMessage): void {
+    const payload = message.payload || {};
     switch (message.type) {
       case ExtensionMessageType.IS_AUTHORIZED: this.isAuthorized(cb); break;
       case ExtensionMessageType.SET_SEED: this.setSeed(message.payload, cb); break;
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
-      case ExtensionMessageType.GET_IDENTITY: this.getIdentity(cb); break;
+      case ExtensionMessageType.GET_IDENTITY: this.getIdentity(payload.domain, payload.requirements, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message, cb); break;
     }
   }
@@ -80,9 +82,9 @@ export class Background {
     });
   }
 
-  getIdentity(cb: Function): void {
+  getIdentity(domain: string, fields: IAccountFields, cb: Function): void {
     this.load(plugin => {
-      AccountUtils.getIdentity(identity => {
+      AccountUtils.getIdentity(domain, fields, identity => {
         if (!identity) {
           cb(NetworkError.signatureError('identity_rejected', 'User rejected the provision of an Identity'));
           return false;

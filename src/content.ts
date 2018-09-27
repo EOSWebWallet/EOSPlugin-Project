@@ -4,7 +4,7 @@ import { NetworkMessageType, NetworkError, ExtensionMessageType, INetworkMessage
 import { ExtensionMessageService } from './app/core/message/message.service';
 import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 
-class Content {
+export class Content {
 
   static INJECTION_SCRIPT_FILENAME = 'inject.js';
   static STREAM_NAME = 'injected';
@@ -31,10 +31,12 @@ class Content {
   }
 
   injectInteractionScript(): void {
-    const script = document.createElement('script');
-    script.src = BrowserAPIUtils.extension.getURL(Content.INJECTION_SCRIPT_FILENAME);
-    (document.head || document.documentElement).appendChild(script);
-    script.onload = () => script.remove();
+    if (BrowserAPIUtils.extension) {
+      const script = document.createElement('script');
+      script.src = BrowserAPIUtils.extension.getURL(Content.INJECTION_SCRIPT_FILENAME);
+      (document.head || document.documentElement).appendChild(script);
+      script.onload = () => script.remove();
+    }
   }
 
   contentListener(msg: INetworkMessage): void {

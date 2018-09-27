@@ -22,6 +22,8 @@ import { AppComponent } from './app.component';
 import { reducers, initialState } from './core/state/root.reducer';
 
 import { background, Background } from '../background';
+import { content, Content } from '../content';
+import { inject, Inject } from '../inject';
 
 export function getInitialState(): Partial<IAppState> {
   return { ...initialState };
@@ -60,12 +62,16 @@ export function getInitialState(): Partial<IAppState> {
 export class AppModule {
 
   private background: Background;
+  private content: Content;
+  private inject: Inject;
 
   constructor(private translate: TranslateService) {
     translate.setDefaultLang('en');
     translate.use('en');
 
-    // this.background = background;
+    this.background = background;
+    this.content = content;
+    this.inject = inject;
   }
 
 }

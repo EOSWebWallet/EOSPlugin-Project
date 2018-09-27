@@ -1,8 +1,8 @@
 import Eos from 'eosjs';
 
-import { IAccount } from './account.interface';
+import { IAccount, IAccountFields } from './account.interface';
 import { INetwork } from '../network/network.interface';
-import { NotificationUrils } from '../notification/notification.utils';
+import { NotificationUtils } from '../notification/notification.utils';
 import { PromptType } from '../notification/notification.interface';
 import { NetworkUtils } from '../network/network.utils';
 
@@ -18,9 +18,11 @@ export class AccountUtils {
     return Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getKeyAccounts(publicKey);
   }
 
-  static getIdentity(callback: Function): Promise<void> {
-    return NotificationUrils.open({
+  static getIdentity(domain: string, requirements: IAccountFields, callback: Function): Promise<void> {
+    return NotificationUtils.open({
       type: PromptType.REQUEST_IDENTITY,
+      domain,
+      requirements,
       responder: identity => {
         if (!identity || identity.hasOwnProperty('isError')) {
             callback(null, null);

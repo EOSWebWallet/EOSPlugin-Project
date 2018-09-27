@@ -44,7 +44,11 @@ export class BrowserAPIUtils {
   }
 
   static get runtime(): any {
-    return BrowserAPI.runtime;
+    return this.isAPIAvailable()
+      ? BrowserAPI.runtime
+      : {
+        getURL: () => 'http://localhost:4201'
+      };
   }
 
   static get host() {

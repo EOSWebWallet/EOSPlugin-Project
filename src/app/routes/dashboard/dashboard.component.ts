@@ -13,9 +13,18 @@ export class DashboardComponent {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '250px',
-      data: { message: 'Everything is ok)' }
+    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    //   width: '250px',
+    //   data: { message: 'Everything is ok)' }
+    // });
+
+    (window as any).plugin.getIdentity({
+      accounts: [
+        {
+          port: 443,
+          host: 'jungle.eos.smartz.io',
+        }
+      ]
     });
   }
 

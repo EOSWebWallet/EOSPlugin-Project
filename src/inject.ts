@@ -5,7 +5,7 @@ import { EOSPlugin } from './plugin';
 
 declare var window: any;
 
-class Inject {
+export class Inject {
   static STREAM_NAME = 'injected';
   static PLUGIN_NAME = 'eosPlugin';
 

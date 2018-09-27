@@ -1,6 +1,6 @@
 export interface IExtensionMessage {
   type: string;
-  payload?: string;
+  payload?: any;
 }
 
 export interface INetworkMessage {

@@ -16,8 +16,8 @@ export class NetworkUtils {
     };
   }
 
-  static isValid(network: INetwork) {
-    return network.host.length && network.port;
+  static isValid(network: INetwork): boolean {
+    return network.host.length && !!network.port;
   }
 
   static fullhost(network: INetwork): string {

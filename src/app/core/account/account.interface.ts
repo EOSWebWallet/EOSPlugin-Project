@@ -9,7 +9,5 @@ export interface IAccount {
 }
 
 export interface IAccountFields {
-  accounts: any[];
-  personal: any[];
-  location: any[];
+  accounts: INetwork[];
 }

@@ -6,14 +6,14 @@ import { IPrompt } from './notification.interface';
 declare var browser: any;
 declare var window: any;
 
-export class NotificationUrils {
+export class NotificationUtils {
 
   static openWindow = null;
 
   static async open(notification: IPrompt): Promise<void> {
-    if (NotificationUrils.openWindow) {
-      NotificationUrils.openWindow.close();
-      NotificationUrils.openWindow = null;
+    if (NotificationUtils.openWindow) {
+      NotificationUtils.openWindow.close();
+      NotificationUtils.openWindow = null;
     }
 
     const height = 600;
@@ -52,8 +52,6 @@ export class NotificationUrils {
         return null;
       }
     };
-
-    await ExtensionMessageService.send({ type: ExtensionMessageType.SET_PROMPT, payload: JSON.stringify(notification) });
 
     const popup = await getPopup();
 

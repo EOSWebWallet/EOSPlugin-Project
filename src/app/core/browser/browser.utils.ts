@@ -2,6 +2,8 @@ import { LocalStream } from 'extension-streams/dist';
 import { Subject } from 'rxjs/internal/Subject';
 
 import { IBrowserAPI } from './browser.interface';
+import { IPrompt } from '../notification/notification.interface';
+import { AccountsModule } from '../../routes/keys/accounts/accounts.module';
 
 declare var chrome: any;
 declare var browser: any;
@@ -56,6 +58,37 @@ export class BrowserAPIUtils {
     return host.indexOf('www.') === 0
       ? host.replace('www.', '')
       : host;
+  }
+
+  static openWindow(url: string, width: number, height: number, data: any): any {
+    let windowUrl = BrowserAPIUtils.isAPIAvailable() ? url : `${url}?${encodeURIComponent(JSON.stringify(data))}`;
+    // Notifications get bound differently depending on browser
+    // as Firefox does not support opening windows from background.
+    if (typeof browser !== 'undefined') {
+      (window as any).windowData = data;
+      return BrowserAPIUtils.windows.create({
+        windowUrl,
+        height,
+        width,
+        type: 'popup'
+      });
+    } else {
+      const middleX = window.screen.availWidth / 2 - (width / 2);
+      const middleY = window.screen.availHeight / 2 - (height / 2);
+      const win = window.open(
+        windowUrl,
+        'EOSPluginPrompt',
+        `width=${width},height=${height},resizable=0,top=${middleY},left=${middleX},titlebar=0`
+      );
+      (win as any).windowData = data;
+      return win;
+    }
+  }
+
+  static getWindowData(): any {
+    return BrowserAPIUtils.isAPIAvailable()
+      ? ((window as any).windowData || BrowserAPIUtils.extension.getBackgroundPage().notification)
+      : JSON.parse(decodeURIComponent(location.search.substring(1)));
   }
 
   private static createLocalStream(): any {

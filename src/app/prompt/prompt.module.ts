@@ -8,6 +8,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { HttpLoaderFactory } from '../core/translate/translate-loader.factory';
 
 import { CoreModule } from '../core/core.module';
+import { IdentityModule } from './identity/identity.module';
+
+import { PromptService } from './prompt.service';
 
 import { PromptComponent } from './prompt.component';
 
@@ -28,9 +31,11 @@ import { PromptComponent } from './prompt.component';
         deps: [ HttpClient ]
       }
     }),
+    IdentityModule
   ],
   providers: [
-    TranslateService
+    TranslateService,
+    PromptService
   ],
   bootstrap: [
     PromptComponent

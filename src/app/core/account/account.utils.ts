@@ -5,6 +5,7 @@ import { INetwork } from '../network/network.interface';
 import { NotificationUtils } from '../notification/notification.utils';
 import { PromptType } from '../notification/notification.interface';
 import { NetworkUtils } from '../network/network.utils';
+import { AccountRequiredFields } from './field.utils';
 
 export class AccountUtils {
 
@@ -35,5 +36,23 @@ export class AccountUtils {
 
   static networkedAccount(account: IAccount, network: INetwork): any {
     return account.accounts[ NetworkUtils.unique(network) ];
+  }
+
+  static hasAccount(account: IAccount, network: INetwork): boolean {
+    return account.accounts.hasOwnProperty(NetworkUtils.unique(network));
+  }
+
+  static hasRequirements(account: IAccount, requirements: IAccountFields): boolean {
+    const requiredFields = AccountRequiredFields.fromJson(requirements);
+    if (!AccountRequiredFields.isValid(requiredFields)) {
+      return false;
+    }
+
+    if (requiredFields.accounts.length
+      && !requiredFields.accounts.every(network => AccountUtils.hasAccount(account, network))) {
+      return false;
+    }
+
+    return true;
   }
 }

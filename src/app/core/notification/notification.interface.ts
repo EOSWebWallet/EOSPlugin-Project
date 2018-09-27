@@ -8,5 +8,5 @@ export interface IPrompt {
 }
 
 export enum PromptType {
-  REQUEST_IDENTITY,
+  REQUEST_IDENTITY = 'REQUEST_IDENTITY',
 }

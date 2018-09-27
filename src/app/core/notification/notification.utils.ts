@@ -24,29 +24,7 @@ export class NotificationUtils {
     const getPopup = async () => {
       try {
         const url = BrowserAPIUtils.runtime.getURL('/prompt.html');
-
-        // Notifications get bound differently depending on browser
-        // as Firefox does not support opening windows from background.
-        if (typeof browser !== 'undefined') {
-          const created = await BrowserAPIUtils.windows.create({
-            url,
-            height,
-            width,
-            type: 'popup'
-          });
-
-          window.notification = notification;
-          return created;
-        } else {
-          const win = window.open(
-            url,
-            'EOSPluginPrompt',
-            `width=${width},height=${height},resizable=0,top=${middleY},left=${middleX},titlebar=0`
-          );
-          win.data = notification;
-          this.openWindow = win;
-          return win;
-        }
+        this.openWindow = BrowserAPIUtils.openWindow(url, width, height, notification);
       } catch (e) {
         console.log('notification error', e);
         return null;

@@ -8,5 +8,6 @@ export interface INetwork {
 
 export interface INetworkAccount {
   name: string;
+  authority: string;
   selected?: boolean;
 }

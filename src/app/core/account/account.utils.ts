@@ -16,7 +16,25 @@ export class AccountUtils {
   }
 
   static getKeyAccounts(protocol: string, host: string, port: number, publicKey: string): Promise<any> {
-    return Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getKeyAccounts(publicKey);
+      return new Promise((resolve, reject) => {
+        const eos = Eos({ httpEndpoint: `${protocol}://${host}:${port}` });
+        eos.getKeyAccounts(publicKey).then(res => {
+          if(!res || !res.hasOwnProperty('account_names')){ resolve([]); return false; }
+
+          Promise.all(
+            res.account_names
+              .map(name => eos.getAccount(name).catch(e => resolve([])))
+          ).then(multires => {
+            let accounts = [];
+            multires.map(account => {
+              (<any>account).permissions.map(permission => {
+                accounts.push({name: (<any>account).account_name, authority:permission.perm_name});
+              });
+            });
+            resolve(accounts)
+          }).catch(e => resolve([]));
+        }).catch(e => resolve([]));
+    })
   }
 
   static getIdentity(domain: string, requirements: IAccountFields, callback: Function): Promise<void> {

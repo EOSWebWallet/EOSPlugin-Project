@@ -78,8 +78,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
       .subscribe(accounts => {
         this.accounts = accounts;
         this.accountOptions = this.accounts.map(account => ({
-          label: account.name,
-          value: account.name
+          label: this.getAccountName(account),
+          value: this.getAccountName(account),
         }));
       });
   }
@@ -93,7 +93,11 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
         publicKey: data.publicKey
       },
       network: this.networks.find(n => n.name === data.network.value),
-      accounts: this.accounts.filter(a => data.account.find(fa => fa.value === a.name))
+      accounts: this.accounts.filter(a => data.account.find(fa => fa.value === this.getAccountName(a)))
     });
+  }
+
+  private getAccountName(account: INetworkAccount): string {
+    return `${account.name}@${account.authority}`;
   }
 }

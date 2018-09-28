@@ -9,7 +9,11 @@ export class IdentityPromptService {
   getAccountIdentity(account: IAccount, networkAccount: INetworkAccount): IAccountIdentity {
     return {
       publicKey: account.keypair.publicKey,
-      account: networkAccount
+      accounts: [ {
+        blockchain: 'eos',
+        name: networkAccount.name,
+        authority: networkAccount.authority
+      } ]
     };
   }
 }

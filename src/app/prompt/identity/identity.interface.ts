@@ -1,6 +1,10 @@
-import { INetworkAccount } from "../../core/network/network.interface";
-
 export interface IAccountIdentity {
   publicKey: string;
-  account: INetworkAccount;
+  accounts: INetworkIdentityAccount[];
+}
+
+export interface INetworkIdentityAccount {
+  name: string;
+  authority: string;
+  blockchain: string;
 }

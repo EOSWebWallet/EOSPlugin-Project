@@ -19,6 +19,7 @@ import { ExtensionMessageService } from '../message/message.service';
 export class AuthService extends AbstractActionService implements CanActivate {
 
   static PATH_HOME = '/app/home';
+  static PATH_PROMPT = '/prompt';
   static PATH_LOGIN = '/login';
   static PATH_REGISTER = '/registration';
 
@@ -82,6 +83,8 @@ export class AuthService extends AbstractActionService implements CanActivate {
         this.router.navigateByUrl(AuthService.PATH_REGISTER);
       } else if (hasAuthorization && !isAuthorized) {
         this.router.navigateByUrl(AuthService.PATH_LOGIN);
+      } else if (location.search.indexOf('prompt') !== -1) {
+        this.router.navigateByUrl(AuthService.PATH_PROMPT);
       } else {
         this.router.navigateByUrl(AuthService.PATH_HOME);
       }

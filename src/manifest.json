@@ -16,7 +16,18 @@
 	"web_accessible_resources": [
     "assets/css/*",
     "assets/js/*",
-    "assets/fonts/*"
+    "assets/fonts/*",
+    "inject.js"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
   ],
   "background":{
     "scripts":[

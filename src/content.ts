@@ -7,7 +7,7 @@ import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 export class Content {
 
   static INJECTION_SCRIPT_FILENAME = 'inject.js';
-  static STREAM_NAME = 'injected';
+  static STREAM_NAME = 'eosPluginInjected';
   static PLUGIN_NAME = 'eosPlugin';
   static PLUGIN_LOADED = 'eosPluginLoaded';
 
@@ -71,7 +71,8 @@ export class Content {
       type: !payload || payload.hasOwnProperty('isError')
         ? NetworkMessageType.ERROR
         : message.type,
-      payload: message.payload
+      payload,
+      resolver: message.resolver
     }, Content.STREAM_NAME);
   }
 

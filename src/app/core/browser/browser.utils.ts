@@ -88,7 +88,7 @@ export class BrowserAPIUtils {
   static getWindowData(): any {
     return BrowserAPIUtils.isAPIAvailable()
       ? ((window as any).windowData || BrowserAPIUtils.extension.getBackgroundPage().notification)
-      : JSON.parse(decodeURIComponent(location.search.substring(1)));
+      : JSON.parse(decodeURIComponent(location.search.substring(1, location.search.length - 1)));
   }
 
   private static createLocalStream(): any {

@@ -1,3 +1,6 @@
-<div *ngFor="let account of accounts$ | async">
-  {{ account.name }}
+<div *ngFor="let account of accounts">
+  <div *ngFor="let networkAccount of account.accounts" (click)="onAccountSelect(account, networkAccount)">
+    <p>{{ networkAccount.name }}</p>
+    <p>{{ account.name }}</p>
+  </div>
 </div>

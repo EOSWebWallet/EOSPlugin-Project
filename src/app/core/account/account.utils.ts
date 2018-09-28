@@ -39,7 +39,7 @@ export class AccountUtils {
   }
 
   static hasAccount(account: IAccount, network: INetwork): boolean {
-    return account.accounts.hasOwnProperty(NetworkUtils.unique(network));
+    return NetworkUtils.unique(account.network) === NetworkUtils.unique(network);
   }
 
   static hasRequirements(account: IAccount, requirements: IAccountFields): boolean {

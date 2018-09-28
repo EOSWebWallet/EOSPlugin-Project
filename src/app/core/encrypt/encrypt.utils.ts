@@ -1,6 +1,5 @@
 import { entropyToMnemonic, generateMnemonic, mnemonicToSeedHex } from 'bip39';
 import * as scrypt from 'scrypt-async';
-import { first, map } from 'rxjs/operators';
 
 import { StorageUtils } from '../storage/storage.service';
 

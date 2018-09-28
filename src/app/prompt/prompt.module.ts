@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -28,6 +29,13 @@ export function getInitialState(): Partial<IAppState> {
   return { ...initialState };
 }
 
+const routes: Routes = [
+  {
+    path: '',
+    component: PromptComponent
+  },
+];
+
 @NgModule({
   declarations: [
     PromptComponent
@@ -35,6 +43,7 @@ export function getInitialState(): Partial<IAppState> {
   imports: [
     BrowserModule,
     CoreModule,
+    RouterModule.forChild(routes),
     EffectsModule.forRoot([
       AuthEffects,
       PluginEffects,

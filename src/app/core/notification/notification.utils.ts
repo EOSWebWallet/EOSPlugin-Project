@@ -23,7 +23,7 @@ export class NotificationUtils {
 
     const getPopup = async () => {
       try {
-        const url = BrowserAPIUtils.runtime.getURL('/prompt.html');
+        const url = BrowserAPIUtils.runtime.getURL('/index.html?prompt');
         this.openWindow = BrowserAPIUtils.openWindow(url, width, height, notification);
       } catch (e) {
         console.log('notification error', e);

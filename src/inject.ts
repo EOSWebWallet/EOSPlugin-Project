@@ -6,7 +6,7 @@ import { EOSPlugin } from './plugin';
 declare var window: any;
 
 export class Inject {
-  static STREAM_NAME = 'injected';
+  static STREAM_NAME = 'eosPluginInjected';
   static PLUGIN_NAME = 'eosPlugin';
 
   constructor() {
@@ -14,7 +14,7 @@ export class Inject {
 
     stream.listenWith(msg => {
       if (msg && msg.hasOwnProperty('type') && msg.type === NetworkMessageType.PUSH_PLUGIN) {
-        window.plugin = new EOSPlugin(stream);
+        window.eosPlugin = new EOSPlugin(stream);
       }
     });
 

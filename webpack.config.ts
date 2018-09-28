@@ -2,7 +2,10 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    background: './src/background.ts'
+    background: './src/background.ts',
+    content: './src/content.ts',
+    inject: './src/inject.ts',
+    plugin: './src/plugin.ts'
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js"]

@@ -3,8 +3,9 @@ const { ecc } = Eos.modules;
 import { NetworkMessageType, INetworkMessage, NetworkError } from './app/core/message/message.interface';
 import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
 import { EncryptedStream } from 'extension-streams/dist';
-import { IAccount, IAccountFields } from './app/core/account/account.interface';
+import { IAccountFields } from './app/core/account/account.interface';
 import { EOSUtils } from './app/core/eos/eos.utils';
+import { IAccountIdentity } from './app/prompt/identity/identity.interface';
 
 
 interface IResolver {
@@ -18,16 +19,16 @@ export class EOSPlugin {
 
   private stream: EncryptedStream | any;
   private resolvers: IResolver[] = [];
-  private identity: IAccount;
+  private identity: IAccountIdentity;
 
-  readonly signatureProvider = new EOSUtils().signatureProvider(this.send, this.throwIfNoIdentity);
+  readonly eos = EOSUtils.signatureProvider(this.send, () => this.throwIfNoIdentity());
 
   constructor(stream: EncryptedStream) {
     this.stream = stream;
     this.subscribe();
   }
 
-  getIdentity(requirements: IAccountFields): Promise<IAccount> {
+  getIdentity(requirements: IAccountFields): Promise<IAccountIdentity> {
     return this.send(NetworkMessageType.GET_IDENTITY, { requirements })
       .then(identity => {
         this.identity = identity;
@@ -63,7 +64,7 @@ export class EOSPlugin {
   }
 
   private throwIfNoIdentity() {
-    if (!this.identity || !this.identity.keypair.publicKey) {
+    if (!this.identity || !this.identity.publicKey) {
       this.throws('There is no identity with an account set on your Scatter instance.');
     }
   }

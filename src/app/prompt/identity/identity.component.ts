@@ -7,7 +7,6 @@ import { INetworkAccount } from '../../core/network/network.interface';
 
 import { PromptService } from '../prompt.service';
 import { AccountService } from '../../core/account/account.service';
-import { IdentityPromptService } from './identity.service';
 
 import { AccountUtils } from '../../core/account/account.utils';
 import { NotificationUtils } from '../../core/notification/notification.utils';
@@ -23,7 +22,6 @@ export class IdentityComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private promptService: PromptService,
-    private identityPromptService: IdentityPromptService
   ) { }
 
   ngOnInit(): void {
@@ -40,8 +38,7 @@ export class IdentityComponent implements OnInit {
   }
 
   onAccountSelect(account: IAccount, networkAccount: INetworkAccount): void {
-    debugger
-    this.promptService.prompt.responder(this.identityPromptService.getAccountIdentity(account, networkAccount));
+    this.promptService.prompt.responder(AccountUtils.createAccountIdentity(account, networkAccount));
     NotificationUtils.close();
   }
 }

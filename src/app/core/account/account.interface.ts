@@ -11,3 +11,16 @@ export interface IAccount {
 export interface IAccountFields {
   accounts: INetwork[];
 }
+
+export interface IAccountIdentity {
+  name: string;
+  publicKey: string;
+  accounts: INetworkAccountIdentity[];
+}
+
+export interface INetworkAccountIdentity {
+  name: string;
+  authority: string;
+  blockchain: string;
+}
+

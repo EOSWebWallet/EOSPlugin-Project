@@ -1,4 +1,4 @@
-import Eos from 'eosjs';
+import * as Eos from 'eosjs';
 import * as ricardianParser from 'eos-rc-parser';
 
 import { NetworkUtils } from '../network/network.utils';
@@ -6,7 +6,9 @@ import { NetworkError, NetworkMessageType } from '../message/message.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
 import { AccountUtils } from '../account/account.utils';
 import { BrowserAPIUtils } from '../browser/browser.utils';
+import { AccountRequiredFields } from '../account/field.utils';
 
+const { ecc } = Eos.modules;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
 
 export class EOSUtils {
@@ -16,12 +18,13 @@ export class EOSUtils {
   private messageSender: Function;
   private throwIfNoIdentity: Function;
 
-  signatureProvider(messageSender: Function, throwIfNoIdentity: Function): Function {
+  static signatureProvider(messageSender: Function, throwIfNoIdentity: Function): Function {
     this.messageSender = messageSender;
     this.throwIfNoIdentity = throwIfNoIdentity;
-    return (network, _eos, _options: any = {}) => {
+    const requestParser = this.requestParser;
+    return (network, _eos, _options: any = {}, protocol = EOSUtils.DEFAULT_PROTOCOL) => {
       if (!network.hasOwnProperty('protocol') || !network.protocol.length) {
-        network.protocol = EOSUtils.DEFAULT_PROTOCOL;
+        network.protocol = protocol;
       }
 
       network = NetworkUtils.fromJson(network);
@@ -43,7 +46,8 @@ export class EOSUtils {
 
             let requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'));
             requiredFields = AccountUtils.fromJson(requiredFields ? requiredFields.requiredFields : {});
-            if (!requiredFields.isValid()) {
+
+            if (!AccountRequiredFields.isValid(requiredFields)) {
               throw NetworkError.malformedRequiredFields();
             }
 
@@ -51,7 +55,7 @@ export class EOSUtils {
               throwIfNoIdentity();
 
               // Friendly formatting
-              signargs.messages = await this.requestParser(signargs, network);
+              signargs.messages = await requestParser(signargs, network);
 
               const payload = Object.assign(signargs, { domain: BrowserAPIUtils.host, network, requiredFields });
               const result = await messageSender(NetworkMessageType.REQUEST_SIGNATURE, payload);
@@ -113,7 +117,7 @@ export class EOSUtils {
     };
   }
 
-  async requestParser(signargs, network) {
+  static async requestParser(signargs, network) {
     const eos = Eos({ httpEndpoint: NetworkUtils.fullhost(network), chainId: network.chainId });
 
     const contracts = signargs.transaction.actions.map(action => action.account)
@@ -128,31 +132,7 @@ export class EOSUtils {
     const abis = {};
 
     await Promise.all(contracts.map(async contractAccount => {
-      const cachedABI = await Promise.race([
-        this.messageSender(NetworkMessageType.ABI_CACHE, { abiContractName: contractAccount, abiGet: true, chainId: network.chainId }),
-        new Promise(resolve => setTimeout(() => resolve('no cache'), 500))
-      ]);
-
-      if (cachedABI === 'object' && cachedABI.timestamp > +new Date((await eos.getAccount(contractAccount)).last_code_update)) {
-        abis[contractAccount] = eos.fc.abiCache.abi(contractAccount, cachedABI.abi);
-      } else {
-        abis[contractAccount] = (await eos.contract(contractAccount)).fc;
-        const savableAbi = JSON.parse(JSON.stringify(abis[contractAccount]));
-        delete savableAbi.schema;
-        delete savableAbi.structs;
-        delete savableAbi.types;
-        savableAbi.timestamp = +new Date();
-
-        await this.messageSender(
-          NetworkMessageType.ABI_CACHE,
-          {
-            abiContractName: contractAccount,
-            abi: savableAbi,
-            abiGet: false,
-            chainId: network.chainId
-          }
-        );
-      }
+      abis[contractAccount] = (await eos.contract(contractAccount)).fc;
     }));
 
     return await Promise.all(signargs.transaction.actions.map(async (action, index) => {
@@ -180,7 +160,7 @@ export class EOSUtils {
     }));
   }
 
-  actionParticipants(payload) {
+  static actionParticipants(payload): string[] {
     const flatten = (array) => {
       return array.reduce(
           (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
@@ -193,7 +173,19 @@ export class EOSUtils {
     );
   }
 
-  accountFormatter(account: any): string {
+  static accountFormatter(account: any): string {
     return `${account.name}@${account.authority}`;
+  }
+
+  static signer(privateKey: string, payload: any, cb: Function, arbitrary = false, isHash = false): void {
+    if (!privateKey) {
+      cb(null);
+    }
+
+    const sig = arbitrary && isHash
+      ? ecc.Signature.signHash(payload.data, privateKey).toString()
+      : ecc.sign(Buffer.from(arbitrary ? payload.data : payload.buf.data, 'utf8'), privateKey);
+
+    cb(sig);
   }
 }

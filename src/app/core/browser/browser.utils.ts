@@ -61,7 +61,7 @@ export class BrowserAPIUtils {
   }
 
   static openWindow(url: string, width: number, height: number, data: any): any {
-    let windowUrl = BrowserAPIUtils.isAPIAvailable() ? url : `${url}?${encodeURIComponent(JSON.stringify(data))}`;
+    const windowUrl = BrowserAPIUtils.isAPIAvailable() ? url : `${url}?${encodeURIComponent(JSON.stringify(data))}`;
     // Notifications get bound differently depending on browser
     // as Firefox does not support opening windows from background.
     if (typeof browser !== 'undefined') {

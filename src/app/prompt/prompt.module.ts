@@ -15,6 +15,7 @@ import { HttpLoaderFactory } from '../core/translate/translate-loader.factory';
 
 import { CoreModule } from '../core/core.module';
 import { IdentityModule } from './identity/identity.module';
+import { SignatureModule } from './signature/signature.module';
 
 import { IAppState } from '../core/state/state.interface';
 
@@ -58,7 +59,8 @@ const routes: Routes = [
       }
     }),
     StoreModule.forRoot(reducers, { initialState: getInitialState }),
-    IdentityModule
+    IdentityModule,
+    SignatureModule
   ],
   providers: [
     TranslateService,

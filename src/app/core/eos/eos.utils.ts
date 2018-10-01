@@ -15,12 +15,12 @@ export class EOSUtils {
 
   private static DEFAULT_PROTOCOL = 'http';
 
-  private messageSender: Function;
-  private throwIfNoIdentity: Function;
+  private static messageSender: Function;
+  private static throwIfNoIdentity: Function;
 
-  static signatureProvider(messageSender: Function, throwIfNoIdentity: Function): Function {
-    this.messageSender = messageSender;
-    this.throwIfNoIdentity = throwIfNoIdentity;
+  static signatureProvider(messageSender: Function, throwIfNoIdentity: Function, getIdentity: Function): Function {
+    EOSUtils.messageSender = messageSender;
+    EOSUtils.throwIfNoIdentity = throwIfNoIdentity;
     const requestParser = this.requestParser;
     return (network, _eos, _options: any = {}, protocol = EOSUtils.DEFAULT_PROTOCOL) => {
       if (!network.hasOwnProperty('protocol') || !network.protocol.length) {
@@ -57,7 +57,12 @@ export class EOSUtils {
               // Friendly formatting
               signargs.messages = await requestParser(signargs, network);
 
-              const payload = Object.assign(signargs, { domain: BrowserAPIUtils.host, network, requiredFields });
+              const payload = Object.assign(signargs, {
+                domain: BrowserAPIUtils.host,
+                network, requiredFields,
+                identity: getIdentity()
+              });
+
               const result = await messageSender(NetworkMessageType.REQUEST_SIGNATURE, payload);
 
               // No signature

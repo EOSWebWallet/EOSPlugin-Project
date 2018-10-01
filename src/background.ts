@@ -11,6 +11,7 @@ import { StorageUtils } from './app/core/storage/storage.service';
 import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 import { AccountUtils } from './app/core/account/account.utils';
 import { IAccountFields } from './app/core/account/account.interface';
+import { SignatureService } from './app/core/signature/signature.service';
 
 export class Background {
 
@@ -34,7 +35,7 @@ export class Background {
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(payload.domain, payload.requirements, cb); break;
-      case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message, cb); break;
+      case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
     }
   }
 
@@ -95,9 +96,11 @@ export class Background {
   }
 
   requestSignature(payload: any, cb: Function): void {
-    // this.load(scatter => {
-    //   SignatureService.requestSignature(payload, scatter, this, cb);
-    // });
+    this.load((plugin: IPlugin) => {
+      const account = AccountUtils.getAccount(payload.identity, plugin.keychain.accounts);
+      const keypair = KeypairUtils.decrypt(account.keypair, this.seed);
+      SignatureService.requestSignature(plugin, payload.identity, payload, keypair.privateKey, cb);
+    });
   }
 }
 

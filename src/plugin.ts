@@ -3,9 +3,8 @@ const { ecc } = Eos.modules;
 import { NetworkMessageType, INetworkMessage, NetworkError } from './app/core/message/message.interface';
 import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
 import { EncryptedStream } from 'extension-streams/dist';
-import { IAccountFields } from './app/core/account/account.interface';
+import { IAccountFields, IAccountIdentity } from './app/core/account/account.interface';
 import { EOSUtils } from './app/core/eos/eos.utils';
-import { IAccountIdentity } from './app/prompt/identity/identity.interface';
 
 
 interface IResolver {
@@ -21,7 +20,7 @@ export class EOSPlugin {
   private resolvers: IResolver[] = [];
   private identity: IAccountIdentity;
 
-  readonly eos = EOSUtils.signatureProvider(this.send, () => this.throwIfNoIdentity());
+  readonly eos = EOSUtils.signatureProvider(this.send.bind(this), this.throwIfNoIdentity.bind(this), () => this.identity);
 
   constructor(stream: EncryptedStream) {
     this.stream = stream;

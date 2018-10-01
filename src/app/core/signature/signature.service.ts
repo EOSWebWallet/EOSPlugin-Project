@@ -9,7 +9,7 @@ import { EOSPlugin } from '../../../plugin';
 import { PromptType } from '../notification/notification.interface';
 import { NotificationUtils } from '../notification/notification.utils';
 
-export default class SignatureService {
+export class SignatureService {
 
   static requestSignature(plugin: IPlugin, identity: IAccountIdentity, payload: any, privateKey: string, sendResponse: Function): void {
     const { domain, network, requiredFields } = payload;

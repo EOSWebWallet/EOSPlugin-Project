@@ -2,6 +2,16 @@
   "home": {
     "dashboard": "Dashboard"
   },
+  "prompt": {
+    "identity": {
+      "title": "Identity Request",
+      "requestAdditionalInfo": "is requesting additional information",
+      "select": "select",
+      "publicKey": "Public Key",
+      "deny": "Deny",
+      "accept": "Accept"
+    }
+  },
   "routes": {
     "registration": {
       "password": "New Password",

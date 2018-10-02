@@ -11,6 +11,7 @@ button {
   color: $color-primary;
   text-transform: inherit;
   font-size: inherit;
+  font-family: inherit;
 }
 
 .accept {
@@ -21,6 +22,32 @@ button {
 .reject {
   border-color: $color-danger;
   color: $color-danger;
+}
+
+.select {
+  border-color: $color-accept;
+  color: $color-accept;
+  font-weight: 400 !important;
+
+  mat-icon {
+    font-size: 20px;
+  }
+
+  &.selected {
+    background: $color-accept;
+    color: white;
+  }
+}
+
+.selected {
+  border-color: $color-accept;
+  background: $color-accept;
+  color: white;
+  font-weight: 400 !important;
+
+  mat-icon {
+    font-size: 20px;
+  }
 }
 
 ::ng-deep .mat-button {

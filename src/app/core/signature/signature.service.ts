@@ -6,13 +6,13 @@ import { NetworkUtils } from '../network/network.utils';
 import { IAccount, IAccountIdentity } from '../account/account.interface';
 import { EOSUtils } from '../eos/eos.utils';
 import { EOSPlugin } from '../../../plugin';
-import { PromptType } from '../notification/notification.interface';
-import { NotificationUtils } from '../notification/notification.utils';
+import { PromptType, ISignaturePromtOptions } from '../prompt/prompt.interface';
+import { PromptUtils } from '../prompt/prompt.utils';
 
 export class SignatureService {
 
   static requestSignature(plugin: IPlugin, identity: IAccountIdentity, payload: any, privateKey: string, sendResponse: Function): void {
-    const { domain, network, requiredFields } = payload;
+    const { network } = payload;
 
     const account = AccountUtils.getAccount(identity, plugin.keychain.accounts);
     if (!account) {
@@ -38,10 +38,8 @@ export class SignatureService {
       });
     };
 
-    NotificationUtils.open({
+    PromptUtils.open({
       type: PromptType.REQUEST_SIGNATURE,
-      domain,
-      network,
       payload,
       responder: approval => {
         if (!approval || !approval.hasOwnProperty('accepted')) {
@@ -50,6 +48,6 @@ export class SignatureService {
         }
         sign(approval.returnedFields);
       }
-    });
+    } as ISignaturePromtOptions);
   }
 }

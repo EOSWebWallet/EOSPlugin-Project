@@ -32,19 +32,6 @@
   padding: 0 25px;
 }
 
-::ng-deep .ng-scrollbar {
-  background: $color-inactive-light;
-  top: 0 !important;
-  bottom: 0 !important;
-  right: 0 !important;
-  width: 5px !important;
-}
-
-::ng-deep .ng-scrollbar-thumb {
-  border-radius: 0 !important;
-  background: $color-primary !important;
-}
-
 app-icon {
   width: 17px;
   height: 17px;

@@ -2,8 +2,6 @@ import { LocalStream } from 'extension-streams/dist';
 import { Subject } from 'rxjs/internal/Subject';
 
 import { IBrowserAPI } from './browser.interface';
-import { IPrompt } from '../notification/notification.interface';
-import { AccountsModule } from '../../routes/keys/accounts/accounts.module';
 
 declare var chrome: any;
 declare var browser: any;

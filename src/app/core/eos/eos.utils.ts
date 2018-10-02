@@ -6,7 +6,6 @@ import { NetworkError, NetworkMessageType } from '../message/message.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
 import { AccountUtils } from '../account/account.utils';
 import { BrowserAPIUtils } from '../browser/browser.utils';
-import { AccountRequiredFields } from '../account/field.utils';
 
 const { ecc } = Eos.modules;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
@@ -44,13 +43,6 @@ export class EOSUtils {
               throw NetworkError.usedKeyProvider();
             }
 
-            let requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'));
-            requiredFields = AccountUtils.fromJson(requiredFields ? requiredFields.requiredFields : {});
-
-            if (!AccountRequiredFields.isValid(requiredFields)) {
-              throw NetworkError.malformedRequiredFields();
-            }
-
             const signProvider = async signargs => {
               throwIfNoIdentity();
 
@@ -59,7 +51,7 @@ export class EOSUtils {
 
               const payload = Object.assign(signargs, {
                 domain: BrowserAPIUtils.host,
-                network, requiredFields,
+                network,
                 identity: getIdentity()
               });
 

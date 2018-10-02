@@ -67,10 +67,6 @@ export class NetworkError {
     );
   }
 
-  static malformedRequiredFields(): NetworkError {
-    return new NetworkError('malformed_requirements', 'The requiredFields you passed in were malformed', NetworkErrorCode.NO_SIGNATURE);
-  }
-
   static promptClosedWithoutAction(): NetworkError {
     return new NetworkError('prompt_closed', 'The user closed the prompt without any action.', NetworkErrorCode.TIMED_OUT);
   }

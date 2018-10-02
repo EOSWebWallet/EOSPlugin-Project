@@ -1,0 +1,76 @@
+@import "~src/variables";
+
+.content {
+  position: absolute;
+  top: 0;
+  bottom: 80px;
+  width: 100%;
+  background: #f5f8fc;
+}
+
+.header {
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    padding: 25px 0 0 0;
+  }
+  p {
+    margin: 10px 0;
+  }
+  a {
+    margin: 0 5px;
+  }
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: white;
+
+  div {
+    display: flex;
+    height: 80px;
+  }
+
+  app-button {
+    flex-grow: 1;
+    align-self: center;
+    padding: 15px;
+    line-height: 40px;
+    text-transform: uppercase;
+  }
+}
+
+.network {
+  text-align: center;
+}
+
+.account {
+  margin: 20px;
+  padding: 20px;
+  background: white;
+  box-shadow: 0 0 30px rgba(0, 0, 0, .05);
+}
+
+.network-account {
+  display: flex;
+  padding-bottom: 10px;
+
+  div:first-child {
+    flex-grow: 1;
+  }
+  div:last-child {
+    align-self: center;
+  }
+  app-button {
+    display: block;
+    width: 100px;
+    line-height: 35px;
+  }
+}
+
+.public-key {
+  overflow: hidden;
+}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IPrompt } from '../core/notification/notification.interface';
+import { IPromptOptions } from '../core/prompt/prompt.interface';
 
 import { PromptService } from './prompt.service';
 
@@ -18,7 +18,7 @@ export class PromptComponent {
   constructor(private promptService: PromptService) {
   }
 
-  get prompt(): IPrompt {
+  get prompt(): IPromptOptions {
     return this.promptService.prompt;
   }
 }

@@ -14,23 +14,31 @@ body {
   font-size: 14px;
 }
 
-h1, h2 {
+h1, h2, h3 {
   font-family: $font-family-secondary;
   font-weight: 600;
+  margin: 0;
 }
 
 h1 {
   font-size: 24px;
 }
 
+h3 {
+  color: $color-primary;
+  font-size: 16px;
+}
+
 p {
   font-family: $font-family-primary;
   color: $color-dark;
-  margin-bottom: 5px;
+  margin: 0;
+  font-size: 14px;
 }
 
 a {
-  color: $color-dark;
+  // color: $color-dark;
+  color: $color-primary;
   text-decoration: underline;
 }
 
@@ -41,6 +49,12 @@ button {
 
 input {
   color: $color-dark !important;
+}
+
+label {
+  font-size: 12px;
+  margin: 0;
+  color: $color-primary;
 }
 
 body {
@@ -54,4 +68,18 @@ body {
   align-items: center;
   flex-direction: column;
   display: flex;
+}
+
+
+.ng-scrollbar {
+  background: $color-inactive-light;
+  top: 0 !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  width: 5px !important;
+}
+
+.ng-scrollbar-thumb {
+  border-radius: 0 !important;
+  background: $color-primary !important;
 }

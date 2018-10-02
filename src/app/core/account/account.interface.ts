@@ -8,10 +8,6 @@ export interface IAccount {
   accounts: INetworkAccount[];
 }
 
-export interface IAccountFields {
-  accounts: INetwork[];
-}
-
 export interface IAccountIdentity {
   name: string;
   publicKey: string;

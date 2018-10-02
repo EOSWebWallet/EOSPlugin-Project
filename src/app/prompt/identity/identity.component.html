@@ -1,6 +1,35 @@
-<div *ngFor="let account of accounts">
-  <div *ngFor="let networkAccount of account.accounts" (click)="onAccountSelect(account, networkAccount)">
-    <p>{{ networkAccount.name }}</p>
-    <p>{{ account.name }}</p>
+<div class="content">
+  <ng-scrollbar>
+    <div class="header">
+      <h1>{{ 'prompt.identity.title' | translate }}</h1>
+      <p><a href="">eostoolkit.io</a>{{ 'prompt.identity.requestAdditionalInfo' | translate }}</p>
+    </div>
+    <div class="network">
+      {{ network.name }}
+    </div>
+    <div *ngFor="let account of accounts">
+      <div *ngFor="let networkAccount of account.accounts" class="account">
+        <div class="network-account">
+          <div>
+            <h3>{{ networkAccount.name }}@{{ networkAccount.authority }}</h3>
+            <p>{{ account.name }}</p>
+          </div>
+          <div>
+            <app-button [type]=" isSelected(networkAccount) ? 'selected' : 'select'" [label]="'prompt.identity.select' | translate" (click)="onSelect(account, networkAccount)"></app-button>
+          </div>
+        </div>
+        <div class="public-key">
+          <label>{{ 'prompt.identity.publicKey' | translate }}</label>
+          <p>{{ account.keypair.publicKey }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-scrollbar>
+</div>
+<div class="footer">
+  <mat-divider></mat-divider>
+  <div>
+    <app-button type="reject" [label]="'prompt.identity.deny' | translate" (click)="onDeny()"></app-button>
+    <app-button [label]="'prompt.identity.accept' | translate" (click)="onAccept()" [disabled]="!identity"></app-button>
   </div>
 </div>

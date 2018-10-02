@@ -1,32 +1,32 @@
 import { NetworkError, ExtensionMessageType } from '../message/message.interface';
 import { BrowserAPIUtils } from '../browser/browser.utils';
 import { ExtensionMessageService } from '../message/message.service';
-import { IPrompt } from './notification.interface';
+import { IPromptOptions } from './prompt.interface';
 
 declare var browser: any;
 declare var window: any;
 
-export class NotificationUtils {
+export class PromptUtils {
 
-  static openWindow = null;
+  private static openWindow = null;
 
-  static async open(notification: IPrompt): Promise<void> {
-    if (NotificationUtils.openWindow) {
-      NotificationUtils.openWindow.close();
-      NotificationUtils.openWindow = null;
+  static async open(options: IPromptOptions): Promise<void> {
+    if (PromptUtils.openWindow) {
+      PromptUtils.openWindow.close();
+      PromptUtils.openWindow = null;
     }
 
-    const height = 600;
-    const width = 700;
+    const height = 650;
+    const width = 400;
     const middleX = window.screen.availWidth / 2 - (width / 2);
     const middleY = window.screen.availHeight / 2 - (height / 2);
 
     const getPopup = async () => {
       try {
         const url = BrowserAPIUtils.runtime.getURL('/index.html?prompt');
-        this.openWindow = BrowserAPIUtils.openWindow(url, width, height, notification);
+        this.openWindow = BrowserAPIUtils.openWindow(url, width, height, options);
       } catch (e) {
-        console.log('notification error', e);
+        console.log('prompt error', e);
         return null;
       }
     };
@@ -35,7 +35,7 @@ export class NotificationUtils {
 
     // Handles the user closing the popup without taking any action
     popup.onbeforeunload = () => {
-      notification.responder(NetworkError.promptClosedWithoutAction());
+      options.responder(NetworkError.promptClosedWithoutAction());
 
       // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
       // Must return undefined to bypass form protection

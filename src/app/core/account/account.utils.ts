@@ -1,11 +1,10 @@
 import Eos from 'eosjs';
 
-import { IAccount, IAccountFields, IAccountIdentity, INetworkAccountIdentity } from './account.interface';
+import { IAccount, IAccountIdentity, INetworkAccountIdentity } from './account.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
-import { NotificationUtils } from '../notification/notification.utils';
-import { PromptType } from '../notification/notification.interface';
+import { PromptUtils } from '../prompt/prompt.utils';
+import { PromptType, IIdentityPromtOptions } from '../prompt/prompt.interface';
 import { NetworkUtils } from '../network/network.utils';
-import { AccountRequiredFields } from './field.utils';
 
 export class AccountUtils {
 
@@ -41,41 +40,18 @@ export class AccountUtils {
     });
   }
 
-  static getIdentity(domain: string, requirements: IAccountFields, callback: Function): Promise<void> {
-    return NotificationUtils.open({
+  static getIdentity(accounts: IAccount[], callback: Function): Promise<void> {
+    return PromptUtils.open({
       type: PromptType.REQUEST_IDENTITY,
-      domain,
-      requirements,
+      accounts,
       responder: identity => {
         if (!identity || identity.hasOwnProperty('isError')) {
-            callback(null, null);
+            callback(null);
             return false;
         }
         callback(identity);
       }
-    });
-  }
-
-  static networkedAccount(account: IAccount, network: INetwork): any {
-    return account.accounts[ NetworkUtils.unique(network) ];
-  }
-
-  static hasAccount(account: IAccount, network: INetwork): boolean {
-    return NetworkUtils.unique(account.network) === NetworkUtils.unique(network);
-  }
-
-  static hasRequirements(account: IAccount, requirements: IAccountFields): boolean {
-    const requiredFields = AccountRequiredFields.fromJson(requirements);
-    if (!AccountRequiredFields.isValid(requiredFields)) {
-      return false;
-    }
-
-    if (requiredFields.accounts.length
-      && !requiredFields.accounts.every(network => AccountUtils.hasAccount(account, network))) {
-      return false;
-    }
-
-    return true;
+    } as IIdentityPromtOptions);
   }
 
   static createAccountIdentity(account: IAccount, networkAccount: INetworkAccount): IAccountIdentity {
@@ -88,6 +64,10 @@ export class AccountUtils {
         authority: networkAccount.authority
       } ]
     };
+  }
+
+  static filterAccountsByNetwork(accounts: IAccount[], network: INetwork): IAccount[] {
+    return accounts.filter(a => a.network.host === network.host && a.network.port === network.port);
   }
 
   static getAccount(identity: IAccountIdentity, accounts: IAccount[]): IAccount {

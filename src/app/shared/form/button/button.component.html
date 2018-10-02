@@ -2,5 +2,6 @@
   <button mat-button [ngClass]="type" [disabled]="disabled">
     <ng-content></ng-content>
     {{ label }}
+    <mat-icon *ngIf="type === 'select' || type === 'selected'">done</mat-icon>
   </button>
 </div>

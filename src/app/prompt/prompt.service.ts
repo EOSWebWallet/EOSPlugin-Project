@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { IPrompt } from '../core/notification/notification.interface';
+import { IPromptOptions } from '../core/prompt/prompt.interface';
 
 import { BrowserAPIUtils } from '../core/browser/browser.utils';
 
@@ -9,7 +9,7 @@ declare var window: any;
 @Injectable()
 export class PromptService {
 
-  get prompt(): IPrompt {
+  get prompt(): IPromptOptions {
     return BrowserAPIUtils.getWindowData();
   }
 }

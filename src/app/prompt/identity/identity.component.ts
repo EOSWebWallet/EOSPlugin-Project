@@ -1,44 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
-import { map, first } from 'rxjs/internal/operators';
+import { Component } from '@angular/core';
 
-import { IAccount, IAccountFields } from '../../core/account/account.interface';
-import { INetworkAccount } from '../../core/network/network.interface';
+import { IAccount, IAccountIdentity } from '../../core/account/account.interface';
+import { INetworkAccount, INetwork } from '../../core/network/network.interface';
 
 import { PromptService } from '../prompt.service';
-import { AccountService } from '../../core/account/account.service';
 
 import { AccountUtils } from '../../core/account/account.utils';
-import { NotificationUtils } from '../../core/notification/notification.utils';
+import { PromptUtils } from '../../core/prompt/prompt.utils';
+import { IIdentityPromtOptions } from '../../core/prompt/prompt.interface';
 
 @Component({
   selector: 'app-prompt-identity',
   templateUrl: './identity.component.html',
+  styleUrls: [ './identity.component.scss' ]
 })
-export class IdentityComponent implements OnInit {
+export class IdentityComponent {
 
-  accounts: IAccount[];
+  identity: IAccountIdentity;
 
   constructor(
-    private accountService: AccountService,
     private promptService: PromptService,
   ) { }
 
-  ngOnInit(): void {
-    this.accountService.accounts$
-      .pipe(
-        map(accounts => accounts.filter(a => AccountUtils.hasRequirements(a, this.requirements))),
-        first()
-      )
-      .subscribe(accounts => this.accounts = accounts);
+  get accounts(): IAccount[] {
+    return (<IIdentityPromtOptions> this.promptService.prompt).accounts;
   }
 
-  get requirements(): IAccountFields {
-    return this.promptService.prompt.requirements;
+  get network(): INetwork {
+    return this.accounts[0].network;
   }
 
-  onAccountSelect(account: IAccount, networkAccount: INetworkAccount): void {
-    this.promptService.prompt.responder(AccountUtils.createAccountIdentity(account, networkAccount));
-    NotificationUtils.close();
+  isSelected(networkAccount: INetworkAccount): boolean {
+    return this.identity
+      && !!this.identity.accounts
+        .find(ia => ia.name === networkAccount.name && ia.authority === networkAccount.authority);
+  }
+
+  onSelect(account: IAccount, networkAccount: INetworkAccount): void {
+    this.identity = AccountUtils.createAccountIdentity(account, networkAccount);
+  }
+
+  onDeny(): void {
+    this.promptService.prompt.responder(null);
+    PromptUtils.close();
+  }
+
+  onAccept(): void {
+    this.promptService.prompt.responder(this.identity);
+    PromptUtils.close();
   }
 }

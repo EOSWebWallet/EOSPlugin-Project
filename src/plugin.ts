@@ -3,8 +3,9 @@ const { ecc } = Eos.modules;
 import { NetworkMessageType, INetworkMessage, NetworkError } from './app/core/message/message.interface';
 import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
 import { EncryptedStream } from 'extension-streams/dist';
-import { IAccountFields, IAccountIdentity } from './app/core/account/account.interface';
+import { IAccountIdentity } from './app/core/account/account.interface';
 import { EOSUtils } from './app/core/eos/eos.utils';
+import { INetwork } from './app/core/network/network.interface';
 
 
 interface IResolver {
@@ -27,8 +28,8 @@ export class EOSPlugin {
     this.subscribe();
   }
 
-  getIdentity(requirements: IAccountFields): Promise<IAccountIdentity> {
-    return this.send(NetworkMessageType.GET_IDENTITY, { requirements })
+  getIdentity(network: INetwork): Promise<IAccountIdentity> {
+    return this.send(NetworkMessageType.GET_IDENTITY, { network })
       .then(identity => {
         this.identity = identity;
         return identity;

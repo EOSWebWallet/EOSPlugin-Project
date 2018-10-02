@@ -62,6 +62,19 @@ export class PluginEffects {
   );
 
   @Effect()
+  destroyPlugin$ = this.actions.pipe(
+    ofType(PluginUtils.PLUGIN_DESTROY),
+    switchMap((action: UnsafeAction) => {
+      return from(ExtensionMessageService.send({ type: ExtensionMessageType.DESTROY_PLUGIN }))
+        .pipe(
+          map(plugin => ({
+            type: PluginUtils.PLUGIN_DESTROY_SUCCESS,
+          }))
+        );
+    })
+  );
+
+  @Effect()
   init$ = defer(() => of({
     type: PluginUtils.PLUGIN_LOAD,
   }));

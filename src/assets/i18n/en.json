@@ -56,7 +56,12 @@
       "changePassword": "Change Password",
       "import": "Import Data",
       "export": "Export Data",
-      "destroy": "Destroy",
+      "destroy": {
+        "title": "Destroy",
+        "menu": "Destroy",
+        "message": "Reseting your account will clear all your data.",
+        "destroy": "Destroy"
+      },
       "about": "About"
     }
   },

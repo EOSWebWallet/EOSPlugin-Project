@@ -10,6 +10,8 @@ export class PluginUtils {
   static PLUGIN_STORE_SUCCESS = 'PLUGIN_STORE_SUCCESS';
   static PLUGIN_LOAD = 'PLUGIN_LOAD';
   static PLUGIN_LOAD_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
+  static PLUGIN_DESTROY = 'PLUGIN_DESTROY';
+  static PLUGIN_DESTROY_SUCCESS = 'PLUGIN_DESTROY_SUCCESS';
 
   static fromJson(json: any): IPlugin {
     return {

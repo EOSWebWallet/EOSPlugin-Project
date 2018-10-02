@@ -23,7 +23,8 @@ export class BrowserAPIUtils {
           localStorage.setItem(key, JSON.stringify(value[key]));
           cb();
         }),
-        get: (key, cb) => cb({ [key]: JSON.parse(localStorage.getItem(key)) })
+        get: (key, cb) => cb({ [key]: JSON.parse(localStorage.getItem(key)) }),
+        clear: () => localStorage.clear()
       }
     };
   }

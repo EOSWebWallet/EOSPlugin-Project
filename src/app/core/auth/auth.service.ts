@@ -15,6 +15,8 @@ import { ExtensionMessageType } from '../message/message.interface';
 import { AbstractActionService } from '../state/actions.service';
 import { ExtensionMessageService } from '../message/message.service';
 
+import { PluginUtils } from '../plugin/plugin.utils';
+
 @Injectable()
 export class AuthService extends AbstractActionService implements CanActivate {
 
@@ -70,6 +72,11 @@ export class AuthService extends AbstractActionService implements CanActivate {
       type: AuthService.AUTH_LOGIN,
       payload: password
     });
+  }
+
+  destroy(): void {
+    this.dispatchAction(PluginUtils.PLUGIN_DESTROY);
+    this.router.navigateByUrl(AuthService.PATH_REGISTER);
   }
 
   private navigateToInitialRoute(): void {

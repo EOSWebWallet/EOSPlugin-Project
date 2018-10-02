@@ -1,7 +1,7 @@
 import { Store, select } from '@ngrx/store';
 import { Actions, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, first } from 'rxjs/internal/operators';
+import { map, first, filter } from 'rxjs/internal/operators';
 
 import { IAppState, SafeAction } from './state.interface';
 import { IPlugin } from '../plugin/plugin.interface';
@@ -16,6 +16,7 @@ export abstract class AbstractActionService {
       .pipe(
         select(state => state.plugin),
         map(pluginState => pluginState.plugin),
+        filter(Boolean),
       );
   }
 

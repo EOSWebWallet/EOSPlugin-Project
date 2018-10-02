@@ -74,9 +74,9 @@ export class AppModule {
     translate.setDefaultLang('en');
     translate.use('en');
 
-    // this.background = background;
-    // this.content = content;
-    // this.inject = inject;
+    this.background = background;
+    this.content = content;
+    this.inject = inject;
   }
 
 }

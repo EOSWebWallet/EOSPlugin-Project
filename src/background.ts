@@ -33,6 +33,7 @@ export class Background {
       case ExtensionMessageType.SET_SEED: this.setSeed(message.payload, cb); break;
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
+      case ExtensionMessageType.DESTROY_PLUGIN: this.destroy(cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(message.payload, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
     }
@@ -80,6 +81,12 @@ export class Background {
         : PluginUtils.decrypt(pluginData, this.seed)
       );
     });
+  }
+
+  destroy(cb: Function): void {
+    this.seed = '';
+    BrowserAPIUtils.storage.local.clear();
+    cb(true);
   }
 
   getIdentity(requestData: any, cb: Function): void {

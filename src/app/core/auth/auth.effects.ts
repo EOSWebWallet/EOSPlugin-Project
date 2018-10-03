@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, throttleTime, tap, flatMap, filter } from 'rxjs/operators';
+import { map, switchMap, tap, flatMap, filter, withLatestFrom } from 'rxjs/operators';
 import { from } from 'rxjs/internal/observable/from';
 
 import { EncryptUtils } from '../encrypt/encrypt.utils';
@@ -27,6 +27,30 @@ export class AuthEffects {
           flatMap(([ mnemonic, seed ]) => from(ExtensionMessageService.send({ type: ExtensionMessageType.SET_SEED, payload: seed }))),
           map(() => ({
             type: AuthService.AUTH_REGISTER_SUCCESS,
+            payload: action.payload
+          }))
+        );
+    })
+  );
+
+  @Effect()
+  changePassword$ = this.actions.pipe(
+    ofType(AuthService.AUTH_PASSWORD_CAHNGE),
+    switchMap((action: UnsafeAction) => {
+      return from(EncryptUtils.generateMnemonic(action.payload.password))
+        .pipe(
+          tap(() => from(StorageUtils.setSalt(EncryptUtils.insecureHash(EncryptUtils.text(32))))),
+          flatMap(([ mnemonic, seed ]) =>
+            from(EncryptUtils.generateMnemonic(action.payload.newPassword))
+              .pipe(
+                map(( [ newMnemonic, newSeed ]) => [ seed, newSeed ])
+              )
+          ),
+          flatMap(([ seed, newSeed ]) =>
+            from(ExtensionMessageService.send({ type: ExtensionMessageType.CHANGE_SEED, payload: { seed, newSeed } }))
+          ),
+          map(() => ({
+            type: AuthService.AUTH_PASSWORD_CAHNGE_SUCCESS,
             payload: action.payload
           }))
         );

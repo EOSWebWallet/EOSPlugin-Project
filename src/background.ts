@@ -31,6 +31,7 @@ export class Background {
     switch (message.type) {
       case ExtensionMessageType.IS_AUTHORIZED: this.isAuthorized(cb); break;
       case ExtensionMessageType.SET_SEED: this.setSeed(message.payload, cb); break;
+      case ExtensionMessageType.CHANGE_SEED: this.changeSeed(message.payload, cb); break;
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
       case ExtensionMessageType.DESTROY_PLUGIN: this.destroy(cb); break;
@@ -107,6 +108,16 @@ export class Background {
       const { plugin, salt } = PluginUtils.createPluginData(<string> payload.file.value);
       StorageUtils.setSalt(salt);
       StorageUtils.save(plugin).then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
+    } else {
+      cb(false);
+    }
+  }
+
+  changeSeed(payload: any, cb: Function): void {
+    const { seed, newSeed } = payload;
+    if (seed === this.seed) {
+      this.seed = newSeed;
+      cb(this.seed);
     } else {
       cb(false);
     }

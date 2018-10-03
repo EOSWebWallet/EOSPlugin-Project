@@ -27,6 +27,8 @@ export class AuthService extends AbstractActionService implements CanActivate {
 
   static AUTH_REGISTER = 'AUTH_REGISTER';
   static AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
+  static AUTH_PASSWORD_CAHNGE = 'AUTH_PASSWORD_CAHNGE';
+  static AUTH_PASSWORD_CAHNGE_SUCCESS = 'AUTH_PASSWORD_CAHNGE_SUCCESS';
   static AUTH_LOGIN = 'AUTH_LOGIN';
   static AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
 
@@ -77,6 +79,10 @@ export class AuthService extends AbstractActionService implements CanActivate {
   destroy(): void {
     this.dispatchAction(PluginUtils.PLUGIN_DESTROY);
     this.router.navigateByUrl(AuthService.PATH_REGISTER);
+  }
+
+  changePassword(password: string, newPassword: string): void {
+    this.dispatchAction(AuthService.AUTH_PASSWORD_CAHNGE, { password, newPassword });
   }
 
   private navigateToInitialRoute(): void {

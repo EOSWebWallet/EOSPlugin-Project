@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, throttleTime, tap, flatMap } from 'rxjs/operators';
+import { catchError, map, switchMap, throttleTime, tap, flatMap, first } from 'rxjs/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
 import { defer } from 'rxjs/internal/observable/defer';
@@ -13,7 +13,9 @@ import { UnsafeAction } from '../state/state.interface';
 import { ExtensionMessageType } from '../message/message.interface';
 
 import { AuthService } from '../auth/auth.service';
+import { PluginService } from './plugin.service';
 import { ExtensionMessageService } from '../message/message.service';
+
 import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
@@ -99,7 +101,15 @@ export class PluginEffects {
     map(() => ({ type: PluginUtils.PLUGIN_LOAD }))
   );
 
+  @Effect()
+  changeEncryption$ = this.actions.pipe(
+    ofType(AuthService.AUTH_PASSWORD_CAHNGE_SUCCESS),
+    flatMap(() => this.pluginService.plugin$.pipe(first())),
+    map(plugin => ({ type: PluginUtils.PLUGIN_STORE, payload: plugin }))
+  );
+
   constructor(
     private actions: Actions,
+    private pluginService: PluginService
   ) {}
 }

@@ -17,6 +17,7 @@ import { SharedModule } from '../shared/shared.module';
 import { PageModule } from './page/page.module';
 import { ExportModule } from '../routes/settings/export/export.module';
 import { ImportModule } from '../routes/settings/import/import.module';
+import { PasswordModule } from '../routes/settings/password/password.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
@@ -30,6 +31,7 @@ import { NetworksComponent } from '../routes/settings/networks/networks.componen
 import { SettingsComponent } from '../routes/settings/settings.component';
 import { ExportComponent } from '../routes/settings/export/export.component';
 import { ImportComponent } from '../routes/settings/import/import.component';
+import { PasswordComponent } from '../routes/settings/password/password.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,7 @@ const routes: Routes = [
       { path: 'settings/destroy', component: DestroyComponent },
       { path: 'settings/export', component: ExportComponent },
       { path: 'settings/import', component: ImportComponent },
+      { path: 'settings/password', component: PasswordComponent },
     ]
   },
 ];
@@ -71,6 +74,7 @@ const routes: Routes = [
     PageModule,
     ExportModule,
     ImportModule,
+    PasswordModule,
   ],
   declarations: [
     LayoutComponent,

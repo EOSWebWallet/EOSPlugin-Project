@@ -53,7 +53,15 @@
         "cancel": "Cancel"
       },
       "language": "Language",
-      "changePassword": "Change Password",
+      "password": {
+        "title": "Change Password",
+        "menu": "Change Password",
+        "message": "By changing your password you will be decrypting all of the saved information which is usually always encrypted, and then re-encrypting it with a seed from the new password.",
+        "change": "Change",
+        "password": "Old password",
+        "newPassword": "New password",
+        "newPasswordConfirm": "Confirm password"
+      },
       "import": {
         "title": "Import Data",
         "menu": "Import Data",

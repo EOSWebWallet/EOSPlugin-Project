@@ -1,0 +1,8 @@
+<div class="file" (click)="fileInput.click()">
+  <app-icon type="icon-file"></app-icon>
+  <div class="file-info">
+    <h3>{{ label | translate }}</h3>
+    <p>{{ value?.name }}</p>
+  </div>
+</div>
+<input type="file" #fileInput>

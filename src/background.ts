@@ -35,6 +35,7 @@ export class Background {
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
       case ExtensionMessageType.DESTROY_PLUGIN: this.destroy(cb); break;
       case ExtensionMessageType.EXPORT_PLUGIN: this.export(message.payload, cb); break;
+      case ExtensionMessageType.IMPORT_PLUGIN: this.import(message.payload, cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(message.payload, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
     }
@@ -92,7 +93,22 @@ export class Background {
 
   export(payload: any, cb: Function): void {
     if (payload.seed === this.seed) {
-      this.load(plugin => cb(PluginUtils.createBlob(plugin)));
+      Promise.all([
+        StorageUtils.get(),
+        StorageUtils.getSalt()
+      ]).then(([ pluginData, salt ]) => cb(PluginUtils.createBlob(pluginData, salt)));
+    } else {
+      cb(false);
+    }
+  }
+
+  import(payload: any, cb: Function): void {
+    if (payload.seed === this.seed) {
+      const { plugin, salt } = PluginUtils.createPluginData(<string> payload.file.value);
+      StorageUtils.setSalt(salt);
+      StorageUtils.save(plugin).then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
+    } else {
+      cb(false);
     }
   }
 

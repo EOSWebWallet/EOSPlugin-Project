@@ -14,6 +14,7 @@ import { PasswordComponent } from './password/password.component';
 import { IconComponent } from './icon/icon.component';
 import { SelectComponent } from './select/select.component';
 import { ToolbarIconComponent } from './icon/toolbar/icon.component';
+import { FileComponent } from './file/file.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { ToolbarIconComponent } from './icon/toolbar/icon.component';
     PasswordComponent,
     IconComponent,
     ToolbarIconComponent,
-    SelectComponent
+    SelectComponent,
+    FileComponent,
   ],
   exports: [
     TextComponent,
@@ -41,6 +43,7 @@ import { ToolbarIconComponent } from './icon/toolbar/icon.component';
     IconComponent,
     SelectComponent,
     ToolbarIconComponent,
+    FileComponent,
   ],
 })
 export class FormModule { }

@@ -62,6 +62,20 @@ export class PluginEffects {
   );
 
   @Effect()
+  importPlugin$ = this.actions.pipe(
+    ofType(PluginUtils.PLUGIN_IMPORT),
+    switchMap((action: UnsafeAction) => {
+      return from(ExtensionMessageService.send({ type: ExtensionMessageType.IMPORT_PLUGIN, payload: action.payload }))
+        .pipe(
+          map(plugin => ({
+            type: PluginUtils.PLUGIN_IMPORT_SUCCESS,
+            payload: PluginUtils.fromJson(plugin)
+          }))
+        );
+    })
+  );
+
+  @Effect()
   destroyPlugin$ = this.actions.pipe(
     ofType(PluginUtils.PLUGIN_DESTROY),
     switchMap((action: UnsafeAction) => {

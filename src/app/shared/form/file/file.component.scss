@@ -1,0 +1,34 @@
+app-icon {
+  display: block;
+  width: 25px;
+  height: 32px;
+}
+
+.file {
+  display: flex;
+  height: 45px;
+  cursor: pointer;
+
+  app-icon {
+    display: block;
+    width: 25px;
+    height: 32px;
+    align-self: center;
+    margin: 0 15px 0 0;
+  }
+
+  .file-info {
+    flex-grow: 1;
+
+    p {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 300px;
+    }
+  }
+}
+
+input {
+  display: none;
+}

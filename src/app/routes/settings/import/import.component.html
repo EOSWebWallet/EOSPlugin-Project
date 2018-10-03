@@ -1,0 +1,6 @@
+<div class="content">
+  <p>{{ 'routes.settings.import.message' | translate }}</p>
+  <app-password [(ngModel)]="password" [label]="'routes.settings.import.password' | translate"></app-password>
+  <app-file [label]="'routes.settings.import.file'" (select)="onSelect($event)"></app-file>
+</div>
+

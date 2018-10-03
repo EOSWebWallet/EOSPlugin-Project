@@ -20,8 +20,6 @@ export class ExportComponent extends AbstractPageComponent {
 
   password: string;
 
-  url: string;
-
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,

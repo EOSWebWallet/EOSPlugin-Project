@@ -10,6 +10,8 @@ export class PluginUtils {
   static PLUGIN_STORE_SUCCESS = 'PLUGIN_STORE_SUCCESS';
   static PLUGIN_LOAD = 'PLUGIN_LOAD';
   static PLUGIN_LOAD_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
+  static PLUGIN_IMPORT = 'PLUGIN_IMPORT';
+  static PLUGIN_IMPORT_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
   static PLUGIN_DESTROY = 'PLUGIN_DESTROY';
   static PLUGIN_DESTROY_SUCCESS = 'PLUGIN_DESTROY_SUCCESS';
 
@@ -60,8 +62,11 @@ export class PluginUtils {
     };
   }
 
-  static createBlob(plugin: IPlugin): Blob {
-    return new Blob([ JSON.stringify(plugin) ], { type: 'text/csv' });
-    // return new Blob(['Test,Text'], {type: 'text/csv'});
+  static createBlob(plugin: IPlugin, salt: string): Blob {
+    return new Blob([ JSON.stringify({ plugin, salt }) ], { type: 'text/json' });
+  }
+
+  static createPluginData(pluginText: string): any {
+    return JSON.parse(pluginText);
   }
 }

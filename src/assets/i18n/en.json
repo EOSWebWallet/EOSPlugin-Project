@@ -54,7 +54,14 @@
       },
       "language": "Language",
       "changePassword": "Change Password",
-      "import": "Import Data",
+      "import": {
+        "title": "Import Data",
+        "menu": "Import Data",
+        "password": "Enter password to continue",
+        "message": "If you ever change browsers or move computers, you will need this seed file to access your accounts. Save them somewhere safe and secret.",
+        "import": "Import",
+        "file": "Select file on your computer"
+      },
       "export": {
         "title": "Export Data",
         "menu": "Export Data",

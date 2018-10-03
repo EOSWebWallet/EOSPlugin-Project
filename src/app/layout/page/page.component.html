@@ -12,5 +12,5 @@
 
 <div class="footer" *ngIf="page.footer">
   <mat-divider></mat-divider>
-  <app-button [label]="page.footer | translate" (click)="page.action()"></app-button>
+  <app-button [label]="page.footer | translate" (click)="page.action()" [disabled]="!page.disabled || page.disabled()"></app-button>
 </div>

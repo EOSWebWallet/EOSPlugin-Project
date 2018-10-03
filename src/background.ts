@@ -34,6 +34,7 @@ export class Background {
       case ExtensionMessageType.STORE_PLUGIN: this.srorePlugin(message.payload, cb); break;
       case ExtensionMessageType.LOAD_PLUGIN: this.load(cb); break;
       case ExtensionMessageType.DESTROY_PLUGIN: this.destroy(cb); break;
+      case ExtensionMessageType.EXPORT_PLUGIN: this.export(message.payload, cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(message.payload, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
     }
@@ -87,6 +88,12 @@ export class Background {
     this.seed = '';
     BrowserAPIUtils.storage.local.clear();
     cb(true);
+  }
+
+  export(payload: any, cb: Function): void {
+    if (payload.seed === this.seed) {
+      this.load(plugin => cb(PluginUtils.createBlob(plugin)));
+    }
   }
 
   getIdentity(requestData: any, cb: Function): void {

@@ -6,6 +6,7 @@ export interface IPageConfig {
   header?: string;
   footer?: string;
   action?: () => void;
+  disabled?: () => void;
 }
 
 

@@ -59,4 +59,9 @@ export class PluginUtils {
       },
     };
   }
+
+  static createBlob(plugin: IPlugin): Blob {
+    return new Blob([ JSON.stringify(plugin) ], { type: 'text/csv' });
+    // return new Blob(['Test,Text'], {type: 'text/csv'});
+  }
 }

@@ -17,7 +17,7 @@ export class SettingsComponent extends AbstractPageComponent {
     { link: '', label: 'routes.settings.language', icon: 'icon-language' },
     { link: '', label: 'routes.settings.changePassword', icon: 'icon-lock' },
     { link: '', label: 'routes.settings.import', icon: 'icon-import' },
-    { link: '', label: 'routes.settings.export', icon: 'icon-export' },
+    { link: '/app/settings/export', label: 'routes.settings.export.menu', icon: 'icon-export' },
     { link: '/app/settings/destroy', label: 'routes.settings.destroy.menu', icon: 'icon-destroy' },
     { link: '', label: 'routes.settings.about', icon: 'icon-about' },
   ];

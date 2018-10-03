@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap, throttleTime, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, throttleTime, tap, flatMap } from 'rxjs/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
 import { defer } from 'rxjs/internal/observable/defer';

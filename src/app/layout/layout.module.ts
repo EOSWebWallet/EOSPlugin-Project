@@ -18,6 +18,7 @@ import { PageModule } from './page/page.module';
 import { ExportModule } from '../routes/settings/export/export.module';
 import { ImportModule } from '../routes/settings/import/import.module';
 import { PasswordModule } from '../routes/settings/password/password.module';
+import { AboutModule } from '../routes/settings/about/about.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
@@ -32,6 +33,7 @@ import { SettingsComponent } from '../routes/settings/settings.component';
 import { ExportComponent } from '../routes/settings/export/export.component';
 import { ImportComponent } from '../routes/settings/import/import.component';
 import { PasswordComponent } from '../routes/settings/password/password.component';
+import { AboutComponent } from '../routes/settings/about/about.component';
 
 const routes: Routes = [
   {
@@ -51,6 +53,7 @@ const routes: Routes = [
       { path: 'settings/export', component: ExportComponent },
       { path: 'settings/import', component: ImportComponent },
       { path: 'settings/password', component: PasswordComponent },
+      { path: 'settings/about', component: AboutComponent },
     ]
   },
 ];
@@ -75,6 +78,7 @@ const routes: Routes = [
     ExportModule,
     ImportModule,
     PasswordModule,
+    AboutModule
   ],
   declarations: [
     LayoutComponent,

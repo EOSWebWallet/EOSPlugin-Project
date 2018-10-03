@@ -19,7 +19,7 @@ export class SettingsComponent extends AbstractPageComponent {
     { link: '/app/settings/import', label: 'routes.settings.import.menu', icon: 'icon-import' },
     { link: '/app/settings/export', label: 'routes.settings.export.menu', icon: 'icon-export' },
     { link: '/app/settings/destroy', label: 'routes.settings.destroy.menu', icon: 'icon-destroy' },
-    { link: '', label: 'routes.settings.about', icon: 'icon-about' },
+    { link: '/app/settings/about', label: 'routes.settings.about.menu', icon: 'icon-about' },
   ];
 
   constructor(

@@ -83,7 +83,15 @@
         "message": "Reseting your account will clear all your data.",
         "destroy": "Destroy"
       },
-      "about": "About"
+      "about": {
+        "title": "About",
+        "menu": "About",
+        "plugin": "EOS PLUGIN",
+        "version": "version",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Usage",
+        "attribution": "Attribution"
+      }
     }
   },
   "shared": {

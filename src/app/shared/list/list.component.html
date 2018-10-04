@@ -1,8 +1,9 @@
 <mat-nav-list>
-  <mat-list-item *ngFor="let item of items" [routerLink]="item.link">
+  <mat-list-item *ngFor="let item of items" [routerLink]="item.link"
+    [class.selected]="item.selected && item.selected()" (click)="onSelect(item)">
     <app-icon [type]="item.icon"></app-icon>
     {{ item.label | translate }}
-    <app-icon type="keyboard_arrow_right"></app-icon>
+    <app-icon type="keyboard_arrow_right" *ngIf="item.link"></app-icon>
     <mat-divider></mat-divider>
   </mat-list-item>
 </mat-nav-list>

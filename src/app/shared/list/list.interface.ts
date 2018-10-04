@@ -1,5 +1,7 @@
 export interface IListItem {
-  link: string;
+  link?: string;
   label: string;
   icon: string;
+  value?: any;
+  selected?: () => boolean;
 }

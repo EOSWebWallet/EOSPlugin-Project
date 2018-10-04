@@ -20,6 +20,7 @@ import { ImportModule } from '../routes/settings/import/import.module';
 import { PasswordModule } from '../routes/settings/password/password.module';
 import { AboutModule } from '../routes/settings/about/about.module';
 import { GenerateModule } from '../routes/keys/generate/generate.module';
+import { LanguageModule } from '../routes/settings/language/language.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
@@ -36,6 +37,7 @@ import { ImportComponent } from '../routes/settings/import/import.component';
 import { PasswordComponent } from '../routes/settings/password/password.component';
 import { AboutComponent } from '../routes/settings/about/about.component';
 import { GenerateComponent } from '../routes/keys/generate/generate.component';
+import { LanguageComponent } from '../routes/settings/language/language.component';
 
 const routes: Routes = [
   {
@@ -57,6 +59,7 @@ const routes: Routes = [
       { path: 'settings/import', component: ImportComponent },
       { path: 'settings/password', component: PasswordComponent },
       { path: 'settings/about', component: AboutComponent },
+      { path: 'settings/language', component: LanguageComponent },
     ]
   },
 ];
@@ -83,6 +86,7 @@ const routes: Routes = [
     PasswordModule,
     AboutModule,
     GenerateModule,
+    LanguageModule,
   ],
   declarations: [
     LayoutComponent,

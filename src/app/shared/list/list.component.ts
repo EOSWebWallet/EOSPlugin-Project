@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { MatNavList } from '@angular/material/list';
+
 import { IListItem } from './list.interface';
 
 @Component({
@@ -9,4 +11,10 @@ import { IListItem } from './list.interface';
 export class ListComponent {
 
   @Input() items: IListItem[];
+
+  @Output() select = new EventEmitter<IListItem>();
+
+  onSelect(item: IListItem): void {
+    this.select.emit(item);
+  }
 }

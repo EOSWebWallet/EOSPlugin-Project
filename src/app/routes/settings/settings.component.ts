@@ -14,7 +14,7 @@ export class SettingsComponent extends AbstractPageComponent {
 
   items: IListItem[] = [
     { link: '/app/settings/networks', label: 'routes.settings.networks.menu', icon: 'icon-network' },
-    { link: '', label: 'routes.settings.language', icon: 'icon-language' },
+    { link: '/app/settings/language', label: 'routes.settings.language.menu', icon: 'icon-language' },
     { link: '/app/settings/password', label: 'routes.settings.password.menu', icon: 'icon-lock' },
     { link: '/app/settings/import', label: 'routes.settings.import.menu', icon: 'icon-import' },
     { link: '/app/settings/export', label: 'routes.settings.export.menu', icon: 'icon-export' },

@@ -40,4 +40,16 @@ export class StorageUtils {
       BrowserAPIUtils.storage.local.set({ salt }, () => resolve(salt));
     });
   }
+
+  static setLang(lang: string): Promise<string> {
+    return new Promise(resolve => {
+      BrowserAPIUtils.storage.local.set({ lang }, () => resolve(lang));
+    });
+  }
+
+  static getLang(): Promise<string> {
+    return new Promise(resolve => {
+      BrowserAPIUtils.storage.local.get('lang', possible => resolve(possible.lang));
+    });
+  }
 }

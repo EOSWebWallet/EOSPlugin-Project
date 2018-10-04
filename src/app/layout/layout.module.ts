@@ -19,6 +19,7 @@ import { ExportModule } from '../routes/settings/export/export.module';
 import { ImportModule } from '../routes/settings/import/import.module';
 import { PasswordModule } from '../routes/settings/password/password.module';
 import { AboutModule } from '../routes/settings/about/about.module';
+import { GenerateModule } from '../routes/keys/generate/generate.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
@@ -34,6 +35,7 @@ import { ExportComponent } from '../routes/settings/export/export.component';
 import { ImportComponent } from '../routes/settings/import/import.component';
 import { PasswordComponent } from '../routes/settings/password/password.component';
 import { AboutComponent } from '../routes/settings/about/about.component';
+import { GenerateComponent } from '../routes/keys/generate/generate.component';
 
 const routes: Routes = [
   {
@@ -45,6 +47,7 @@ const routes: Routes = [
       { path: 'home', component: DashboardComponent },
       { path: 'keys', component: KeysComponent },
       { path: 'keys/accounts', component: AccountsComponent },
+      { path: 'keys/generate', component: GenerateComponent },
       { path: 'keys/accounts/account', component: AccountComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'settings/networks', component: NetworksComponent },
@@ -78,7 +81,8 @@ const routes: Routes = [
     ExportModule,
     ImportModule,
     PasswordModule,
-    AboutModule
+    AboutModule,
+    GenerateModule,
   ],
   declarations: [
     LayoutComponent,

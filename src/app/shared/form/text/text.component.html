@@ -1,6 +1,7 @@
 <mat-form-field>
   <input
     matInput
+    #inputField="ngModel"
     [placeholder]="label"
     [ngModel]="value"
     [required]="required"

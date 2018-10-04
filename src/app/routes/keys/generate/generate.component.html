@@ -1,0 +1,23 @@
+<div class="content">
+  <p>{{ 'routes.keys.generate.message' | translate }}</p>
+  <form>
+    <app-text
+      name="privateKey"
+      #private="ngModel"
+      [(ngModel)]="privateKey"
+      [ngModelOptions]="{updateOn: 'blur'}"
+      [label]="'routes.keys.generate.privateKey' | translate"
+      required
+    ></app-text>
+    <a href="" (click)="onCopyPrivateKey($event)">Copy</a>
+    <app-text
+      name="publicKey"
+      #public="ngModel"
+      [(ngModel)]="publicKey"
+      [ngModelOptions]="{updateOn: 'blur'}"
+      [label]="'routes.keys.generate.publicKey' | translate"
+      required
+    ></app-text>
+    <a href="" (click)="onCopyPublicKey($event)">Copy</a>
+  </form>
+</div>

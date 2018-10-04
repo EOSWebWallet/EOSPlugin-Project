@@ -45,4 +45,18 @@ export class KeypairUtils {
         : ''
     }));
   }
+
+  static generateKeyPair(): Promise<IKeypair> {
+    return new Promise(resolve => {
+      ecc.randomKey().then(privateKey => {
+        const publicKey = ecc.privateToPublic(privateKey);
+        if (ecc.isValidPublic(publicKey) && ecc.isValidPrivate(privateKey)) {
+          resolve({
+            publicKey,
+            privateKey
+          });
+        }
+      });
+    });
+  }
 }

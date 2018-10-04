@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, Input, forwardRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Input, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 import { IControlErrors } from '../form.interface';
@@ -16,6 +16,8 @@ import { IControlErrors } from '../form.interface';
   styleUrls: [ 'text.component.scss' ]
 })
 export class TextComponent implements ControlValueAccessor {
+
+  @ViewChild('inputField', { read: ElementRef }) inputField: ElementRef;
 
   @Input() label: string;
   @Input() errors: IControlErrors;

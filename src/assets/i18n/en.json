@@ -38,7 +38,14 @@
           "eos": "EOS Account"
         }
       },
-      "generate": "Generate Key Pair",
+      "generate": {
+        "title": "Generate Key Pair",
+        "menu": "Generate Key Pair",
+        "generate": "Generate",
+        "message": "You can use this panel to generate key pairs. These key pairs are generated locally on your machine and are never sent anywhere. You can also paste in a private key and it will automatically generate the public key.",
+        "privateKey": "Private Key",
+        "publicKey": "Public Key"
+      },
       "import": "Import Keypairs"
     },
     "settings": {

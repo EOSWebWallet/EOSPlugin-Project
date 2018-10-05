@@ -1,7 +1,4 @@
 {
-  "home": {
-    "dashboard": "Dashboard"
-  },
   "prompt": {
     "identity": {
       "title": "Identity Request",
@@ -13,6 +10,13 @@
     }
   },
   "routes": {
+    "dashboard": {
+      "totalBalance": "Total Balance",
+      "unstaked": "Unstaked",
+      "staked": "Staked",
+      "send": "Send",
+      "transactions": "Transactions"
+    },
     "registration": {
       "password": "New Password",
       "passwordConfirm": "Confirm Password",

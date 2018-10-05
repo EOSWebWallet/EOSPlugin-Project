@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SharedModule } from '../../shared/shared.module';
 
@@ -21,6 +22,7 @@ const routes: Routes = [
     FormsModule,
     TranslateModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     SharedModule,
   ],
   declarations: [

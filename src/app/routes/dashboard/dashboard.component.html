@@ -1,50 +1,108 @@
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<!-- <h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
-<h1>{{ 'home.dashboard' | translate }}</h1>
 
-<button mat-button (click)="openDialog()">Dialog</button>
-
-<form #form="ngForm">
-  <app-text name="text-input" [label]="'Test input'" ngModel></app-text>
-  <app-button [label]="'Submit'" (click)="onSubmit(form)"></app-button>
-</form> -->
-
-<button mat-button (click)="openDialog()">Dialog</button>
+<div class="content">
+  <!-- <h2>{{ selectedNetworkAccountName$ | async }}</h2> -->
+  <h2> TestNetworkAccount </h2>
+  <div class="balance">
+    <table>
+      <tr>
+        <td>{{ 'routes.dashboard.totalBalance' | translate }}:</td>
+        <td>{{ accountInfo.totalBalance }} EOS / {{ accountInfo.usdTotal }} USD</td>
+      </tr>
+      <tr>
+        <td>{{ 'routes.dashboard.unstaked' | translate }}:</td>
+        <td>{{ accountInfo.unstaked }} EOS</td>
+      </tr>
+      <tr>
+        <td>{{ 'routes.dashboard.staked' | translate }}:</td>
+        <td>{{ accountInfo.staked }} EOS</td>
+      </tr>
+    </table>
+  </div>
+  <div class="dashboard">
+    <div class="chart">
+      <div>
+        <h4>CPU</h4>
+        <mat-progress-spinner
+          class="background"
+          diameter="60"
+          mode="determinate"
+          [value]="100"
+        ></mat-progress-spinner>
+        <mat-progress-spinner
+          diameter="60"
+          mode="determinate"
+          [value]="accountInfo.cpuPercent"
+        ></mat-progress-spinner>
+        <div class="caption">
+          {{ accountInfo.cpuUsedSec }} <br/> {{ accountInfo.cpuMaxSec }} sec
+        </div>
+      </div>
+    </div>
+    <div class="chart">
+      <div>
+        <h4>NET</h4>
+        <mat-progress-spinner
+          class="background"
+          diameter="60"
+          mode="determinate"
+          [value]="100"
+        ></mat-progress-spinner>
+        <mat-progress-spinner
+          diameter="60"
+          mode="determinate"
+          [value]="accountInfo.netPercent"
+        ></mat-progress-spinner>
+        <div class="caption">
+          {{ accountInfo.netUsedKb }} <br/> {{ accountInfo.netMaxKb }} kb
+        </div>
+      </div>
+    </div>
+    <div class="chart">
+      <div>
+        <h4>RAM</h4>
+        <mat-progress-spinner
+          class="background"
+          diameter="60"
+          mode="determinate"
+          [value]="100"
+        ></mat-progress-spinner>
+        <mat-progress-spinner
+          diameter="60"
+          mode="determinate"
+          [value]="accountInfo.ramPercent"
+        ></mat-progress-spinner>
+        <div class="caption">
+          {{ accountInfo.ramUsedKb }} <br/> {{ accountInfo.ramMaxKb }} kb
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="controls">
+    <app-button [label]="'routes.dashboard.send' | translate"></app-button>
+  </div>
+  <div class="transactions">
+    <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>
+    <table>
+      <tr>
+        <td>jul 29m 10.56 AM</td>
+        <td>from account1</td>
+        <td>1000 IPOS</td>
+      </tr>
+      <tr>
+        <td>jul 29m 10.56 AM</td>
+        <td>from account1</td>
+        <td>1000 IPOS</td>
+      </tr>
+      <tr>
+        <td>jul 29m 10.56 AM</td>
+        <td>from account1</td>
+        <td>1000 IPOS</td>
+      </tr>
+      <tr>
+        <td>jul 29m 10.56 AM</td>
+        <td>from account1</td>
+        <td>1000 IPOS</td>
+      </tr>
+    </table>
+  </div>
+</div>

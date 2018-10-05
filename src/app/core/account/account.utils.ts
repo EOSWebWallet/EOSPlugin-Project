@@ -40,6 +40,14 @@ export class AccountUtils {
     });
   }
 
+  static getInfo(protocol: string, host: string, port: number, accountName: string): Promise<any> {
+    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getAccount(accountName);
+  }
+
+  static getActions(protocol: string, host: string, port: number, accountName: string): Promise<any> {
+    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getActions(accountName, undefined, -150000);
+  }
+
   static getIdentity(accounts: IAccount[], callback: Function): Promise<void> {
     return PromptUtils.open({
       type: PromptType.REQUEST_IDENTITY,

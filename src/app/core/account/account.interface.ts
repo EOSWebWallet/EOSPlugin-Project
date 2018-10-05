@@ -20,3 +20,24 @@ export interface INetworkAccountIdentity {
   blockchain: string;
 }
 
+export interface INetworkAccountInfo {
+  netPercent?: number;
+  cpuPercent?: number;
+  ramPercent?: number;
+  netData?: string;
+  cpuData?: string;
+  unstaked?: number;
+  staked?: number;
+  totalBalance?: number;
+  usdTotal?: number;
+  cpuUsedSec?: number;
+  cpuMaxSec?: number;
+  netUsedKb?: number;
+  netMaxKb?: number;
+  ramUsedKb?: number;
+  ramMaxKb?: number;
+}
+
+export interface INetworkAccountAction {
+  [key: string]: string;
+}

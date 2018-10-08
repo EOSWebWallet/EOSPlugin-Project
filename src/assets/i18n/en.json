@@ -14,8 +14,18 @@
       "totalBalance": "Total Balance",
       "unstaked": "Unstaked",
       "staked": "Staked",
-      "send": "Send",
-      "transactions": "Transactions"
+      "transactions": "Transactions",
+      "send": {
+        "title": "Send",
+        "send": "Send",
+        "unstaked": "Unstaked",
+        "staked": "Staked",
+        "sender": "Sender",
+        "recipient": "Recipient",
+        "quantity": "Quantity",
+        "symbol": "Symbol",
+        "memo": "Memo"
+      }
     },
     "registration": {
       "password": "New Password",

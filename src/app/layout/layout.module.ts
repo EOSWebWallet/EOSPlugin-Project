@@ -21,6 +21,7 @@ import { PasswordModule } from '../routes/settings/password/password.module';
 import { AboutModule } from '../routes/settings/about/about.module';
 import { GenerateModule } from '../routes/keys/generate/generate.module';
 import { LanguageModule } from '../routes/settings/language/language.module';
+import { SendModule } from '../routes/dashboard/send/send.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
@@ -38,6 +39,7 @@ import { PasswordComponent } from '../routes/settings/password/password.componen
 import { AboutComponent } from '../routes/settings/about/about.component';
 import { GenerateComponent } from '../routes/keys/generate/generate.component';
 import { LanguageComponent } from '../routes/settings/language/language.component';
+import { SendComponent } from '../routes/dashboard/send/send.component';
 
 const routes: Routes = [
   {
@@ -47,6 +49,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: DashboardComponent },
+      { path: 'home/send', component: SendComponent },
       { path: 'keys', component: KeysComponent },
       { path: 'keys/accounts', component: AccountsComponent },
       { path: 'keys/generate', component: GenerateComponent },
@@ -87,6 +90,7 @@ const routes: Routes = [
     AboutModule,
     GenerateModule,
     LanguageModule,
+    SendModule,
   ],
   declarations: [
     LayoutComponent,

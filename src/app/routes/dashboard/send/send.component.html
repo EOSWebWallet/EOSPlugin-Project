@@ -1,0 +1,27 @@
+<div class="content">
+  <div class="info">
+    <table>
+      <tr>
+        <td>{{ 'routes.dashboard.send.unstaked' | translate }}:</td>
+        <td>4303.5373 EOS</td>
+      </tr>
+      <tr>
+        <td>{{ 'routes.dashboard.send.staked' | translate }}:</td>
+        <td>5798.5588 EOS</td>
+      </tr>
+    </table>
+  </div>
+  <div class="sender">
+    {{ 'routes.dashboard.send.sender' | translate }}: <span>testaccount1</span>
+  </div>
+  <div class="fields">
+    <form #form="ngForm">
+      <app-text name="recipient" ngModel [label]="'routes.dashboard.send.recipient' | translate" required></app-text>
+      <div>
+        <app-text name="quantity" ngModel [label]="'routes.dashboard.send.quantity' | translate" required></app-text>
+        <app-text name="symbol" ngModel [label]="'routes.dashboard.send.symbol' | translate" required></app-text>
+      </div>
+      <app-text name="memo" ngModel [label]="'routes.dashboard.send.memo' | translate"></app-text>
+    </form>
+  </div>
+</div>

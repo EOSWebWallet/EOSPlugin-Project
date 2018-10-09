@@ -11,3 +11,7 @@ export interface INetworkAccount {
   authority: string;
   selected?: boolean;
 }
+
+export interface INetworkInfo {
+  chainId: string;
+}

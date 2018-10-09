@@ -23,9 +23,7 @@ export class SignatureComponent {
   ) { }
 
   onAccept(): void {
-    this.promptService.prompt.responder({
-      accepted: true,
-    });
+    this.promptService.prompt.responder(true);
     PromptUtils.close();
   }
 }

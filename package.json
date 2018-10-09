@@ -34,7 +34,7 @@
     "core-js": "^2.5.4",
     "eos-rc-parser": "^1.0.4",
     "eosjs": "^16.0.6",
-    "eosjs-api": "^6.3.2",
+    "eosjs-api": "^7.0.0",
     "eosjs-ecc": "^4.0.4",
     "extension-streams": "^1.0.7",
     "ngx-scrollbar": "^2.2.0-beta.0",

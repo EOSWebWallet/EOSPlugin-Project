@@ -1,4 +1,5 @@
 import { ISignatureResult } from '../../../core/eos/eos.interface';
+import { IKeypair } from '../../../core/keypair/keypair.interface';
 
 export interface ISendParams {
   recipient: string;
@@ -10,4 +11,5 @@ export interface ISendParams {
 export interface ISignupOptions {
   signup: (result: ISignatureResult) => void;
   signargs: any;
+  keypair: IKeypair;
 }

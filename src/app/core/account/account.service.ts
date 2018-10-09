@@ -95,9 +95,9 @@ export class AccountService extends AbstractActionService {
     return from(AccountUtils.getKeyAccounts(network.protocol, network.host, network.port, publicKey));
   }
 
-  getInfo(account: IAccount, networkAccount: INetworkAccount): Observable<INetworkAccountInfo> {
+  getAccountInfo(account: IAccount, networkAccount: INetworkAccount): Observable<INetworkAccountInfo> {
     const { protocol, host, port } = account.network;
-    return from(AccountUtils.getInfo(protocol, host, port, networkAccount.name))
+    return from(AccountUtils.getAccountInfo(protocol, host, port, networkAccount.name))
       .pipe(
         flatMap(accountInfo =>
           this.getCurrentCourse()

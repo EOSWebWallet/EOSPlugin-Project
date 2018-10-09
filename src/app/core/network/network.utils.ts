@@ -1,3 +1,5 @@
+import Eos from 'eosjs';
+
 import { INetwork } from './network.interface';
 
 export class NetworkUtils {

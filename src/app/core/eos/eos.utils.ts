@@ -98,7 +98,7 @@ export class EOSUtils {
         type: PromptType.REQUEST_SIGNATURE,
         payload,
         responder: approval => {
-          if (!approval || !approval.hasOwnProperty('accepted')) {
+          if (!approval) {
               resolve(NetworkError.signatureError('signature_rejected', 'User rejected the signature request'));
               return false;
           }
@@ -117,9 +117,13 @@ export class EOSUtils {
     });
   }
 
+  static signer(privateKey: string, payload: any, cb: Function): void {
+    cb(privateKey ? ecc.sign(Buffer.from(payload.buf.data || payload.buf, 'utf8'), privateKey) : null);
+  }
+
   private static createSignatureProvider(network, signer, multiSigKeyProvider): Function {
     return async signargs => {
-      signargs.messages = await EOSUtils.requestParser(signargs, network);
+      signargs.messages = await EOSUtils.mapSignargs(signargs, network);
 
       const result = await signer.requestSignature({
         ...signargs,
@@ -142,7 +146,7 @@ export class EOSUtils {
     };
   }
 
-  private static async requestParser(signargs, network) {
+  private static async mapSignargs(signargs, network) {
     const eos = Eos({ httpEndpoint: NetworkUtils.fullhost(network), chainId: network.chainId });
 
     const contracts = signargs.transaction.actions.map(action => action.account)
@@ -200,17 +204,5 @@ export class EOSUtils {
 
   private static accountFormatter(account: any): string {
     return `${account.name}@${account.authority}`;
-  }
-
-  private static signer(privateKey: string, payload: any, cb: Function, arbitrary = false, isHash = false): void {
-    if (!privateKey) {
-      cb(null);
-    }
-
-    const sig = arbitrary && isHash
-      ? ecc.Signature.signHash(payload.data, privateKey).toString()
-      : ecc.sign(Buffer.from(arbitrary ? payload.data : payload.buf.data, 'utf8'), privateKey);
-
-    cb(sig);
   }
 }

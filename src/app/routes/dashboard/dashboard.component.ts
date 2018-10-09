@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
     )
     .pipe(
       flatMap(([ account, networkAccount ]) => combineLatest(
-        this.accountService.getInfo(account, networkAccount),
+        this.accountService.getAccountInfo(account, networkAccount),
         this.accountService.getActions(account, networkAccount)
       )),
       first()

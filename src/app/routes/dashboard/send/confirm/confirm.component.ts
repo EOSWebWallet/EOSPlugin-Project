@@ -1,4 +1,4 @@
-import { Component, forwardRef, Inject, ViewChild, OnInit } from '@angular/core';
+import { Component, forwardRef, Inject, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -13,12 +13,10 @@ import { PageLayoutComponent } from '../../../../layout/page/page.component';
   templateUrl: './confirm.component.html',
   styleUrls: [ './confirm.component.scss' ],
 })
-export class ConfirmComponent extends AbstractPageComponent implements OnInit {
+export class ConfirmComponent extends AbstractPageComponent {
   static PATH_HOME = '/app/home';
 
   @ViewChild('form') form: FormGroup;
-
-  private signupOptions: ISignupOptions;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -33,13 +31,8 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.signupOptions = this.sendService.signature$.value;
-  }
-
   onConfirm(): void {
-    const { signup, signargs } = this.signupOptions;
-    signup(signargs);
+    this.sendService.signup();
     this.router.navigateByUrl(ConfirmComponent.PATH_HOME);
   }
 }

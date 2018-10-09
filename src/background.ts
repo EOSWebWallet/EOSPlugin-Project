@@ -4,6 +4,7 @@ import { LocalStream } from 'extension-streams/dist';
 import { ExtensionMessageType, IExtensionMessage, NetworkError } from './app/core/message/message.interface';
 
 import { IPlugin } from './app/core/plugin/plugin.interface';
+import { IKeypair } from './app/core/keypair/keypair.interface';
 
 import { PluginUtils } from './app/core/plugin/plugin.utils';
 import { KeypairUtils } from './app/core/keypair/keypair.utils';
@@ -39,6 +40,7 @@ export class Background {
       case ExtensionMessageType.IMPORT_PLUGIN: this.import(message.payload, cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(message.payload, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
+      case ExtensionMessageType.DECRYPT_KEYPAIR: this.decryptKeypair(message.payload, cb); break;
     }
   }
 
@@ -147,6 +149,10 @@ export class Background {
         privateKey: keypair.privateKey
       }).then(result => cb(result));
     });
+  }
+
+  decryptKeypair(keypair: IKeypair, cb: Function): void {
+    cb(KeypairUtils.decrypt(keypair, this.seed));
   }
 }
 

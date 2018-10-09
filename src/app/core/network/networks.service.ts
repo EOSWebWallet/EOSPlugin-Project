@@ -1,11 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, first } from 'rxjs/internal/operators';
+import { from } from 'rxjs/internal/observable/from';
 
 import { IAppState } from '../state/state.interface';
-import { INetwork } from './network.interface';
+import { INetwork, INetworkInfo } from './network.interface';
 
 import { AbstractActionService } from '../state/actions.service';
 import { SettingsService } from '../settings/settings.service';
@@ -13,11 +15,13 @@ import { SettingsService } from '../settings/settings.service';
 import { IPlugin } from '../plugin/plugin.interface';
 
 import { PluginUtils } from '../plugin/plugin.utils';
+import { NetworkUtils } from './network.utils';
 
 @Injectable()
 export class NetworksService extends AbstractActionService {
 
   constructor(
+    private httpClient: HttpClient,
     protected actions: Actions,
     protected store: Store<IAppState>,
     private settingsService: SettingsService
@@ -73,6 +77,15 @@ export class NetworksService extends AbstractActionService {
             ? !network.selected
             : n.selected
         })))
+      );
+  }
+
+  getInfo(network: INetwork): Observable<INetworkInfo> {
+    return this.httpClient.post(`${network.protocol}://${network.host}:${network.port}/v1/chain/get_info`, '')
+      .pipe(
+        map(info => ({
+          chainId: (<any>info).chain_id
+        }))
       );
   }
 

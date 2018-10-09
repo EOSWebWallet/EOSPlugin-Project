@@ -40,7 +40,7 @@ export class AccountUtils {
     });
   }
 
-  static getInfo(protocol: string, host: string, port: number, accountName: string): Promise<any> {
+  static getAccountInfo(protocol: string, host: string, port: number, accountName: string): Promise<any> {
     return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getAccount(accountName);
   }
 

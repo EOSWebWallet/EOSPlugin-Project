@@ -22,6 +22,7 @@ export enum ExtensionMessageType {
   GET_IDENTITY = 'GET_IDENTITY',
   SET_PROMPT = 'SET_PROMPT',
   REQUEST_SIGNATURE = 'REQUEST_SIGNATURE',
+  DECRYPT_KEYPAIR = 'DECRYPT_KEYPAIR'
 }
 
 export enum NetworkMessageType {

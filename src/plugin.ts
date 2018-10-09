@@ -22,7 +22,7 @@ export class EOSPlugin {
   private identity: IAccountIdentity;
 
   readonly eos = EOSUtils.createEOS({
-    requestSignature: async signargs => {
+    requestSignature: signargs => {
       this.throwIfNoIdentity();
       return this.send(NetworkMessageType.REQUEST_SIGNATURE, {
         ...signargs,

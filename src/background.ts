@@ -142,7 +142,7 @@ export class Background {
       const keypair = KeypairUtils.decrypt(account.keypair, this.seed);
       EOSUtils.requestSignature({
         plugin,
-        identity:payload.identity,
+        identity: payload.identity,
         payload,
         privateKey: keypair.privateKey
       }).then(result => cb(result));

@@ -43,6 +43,13 @@ export class AccountService extends AbstractActionService {
       );
   }
 
+  get selectedNetworkAccount$(): Observable<INetworkAccount> {
+    return this.selectedAccount$
+      .pipe(
+        map(a => a.accounts.find(na => na.selected))
+      );
+  }
+
   save(account: IAccount): void {
     this.accounts$
       .pipe(first())

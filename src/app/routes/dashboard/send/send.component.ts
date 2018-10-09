@@ -1,8 +1,9 @@
 import { Component, forwardRef, Inject, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
-import { AbstractPageComponent } from '../../../layout/page/page.interface';
+import { SendService } from './send.service';
 
+import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
 @Component({
@@ -16,6 +17,7 @@ export class SendComponent extends AbstractPageComponent {
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
+    private sendService: SendService,
   ) {
     super(pageLayout, {
       backLink: '/app/home',
@@ -27,6 +29,6 @@ export class SendComponent extends AbstractPageComponent {
   }
 
   onSend(): void {
-
+    this.sendService.send(this.form.value);
   }
 }

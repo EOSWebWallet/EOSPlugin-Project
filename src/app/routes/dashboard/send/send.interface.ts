@@ -7,4 +7,7 @@ export interface ISendParams {
   memo?: string;
 }
 
-export type SignupCallback = (result: ISignatureResult) => void;
+export interface ISignupOptions {
+  signup: (result: ISignatureResult) => void;
+  signargs: any;
+}

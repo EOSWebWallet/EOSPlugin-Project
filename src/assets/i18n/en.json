@@ -24,7 +24,11 @@
         "recipient": "Recipient",
         "quantity": "Quantity",
         "symbol": "Symbol",
-        "memo": "Memo"
+        "memo": "Memo",
+        "confirm": {
+          "title": "Transaction Check",
+          "confirm": "Confirm"
+        }
       }
     },
     "registration": {

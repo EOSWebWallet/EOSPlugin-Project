@@ -3,16 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SharedModule } from '../../../shared/shared.module';
+import { SharedModule } from '../../../../shared/shared.module';
 
-import { SendService } from './send.service';
-
-import { SendComponent } from './send.component';
+import { ConfirmComponent } from './confirm.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: SendComponent
+    component: ConfirmComponent
   },
 ];
 
@@ -24,10 +22,7 @@ const routes: Routes = [
     SharedModule,
   ],
   declarations: [
-    SendComponent,
+    ConfirmComponent,
   ],
-  providers: [
-    SendService,
-  ]
 })
-export class SendModule { }
+export class ConfirmModule { }

@@ -1,14 +1,10 @@
 import * as Eos from 'eosjs';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 import { first } from 'rxjs/operators';
 
-import { ISendParams, SignupCallback } from './send.interface';
-import { IAccount } from '../../../core/account/account.interface';
-import { INetworkAccount } from '../../../core/network/network.interface';
+import { ISendParams, ISignupOptions } from './send.interface';
 import { ISignatureResult } from '../../../core/eos/eos.interface';
 
 import { AccountService } from '../../../core/account/account.service';
@@ -17,16 +13,14 @@ import { EOSUtils } from '../../../core/eos/eos.utils';
 
 @Injectable()
 export class SendService {
-
-  readonly signature$ = new BehaviorSubject<SignupCallback>(null);
+  readonly signature$ = new BehaviorSubject<ISignupOptions>(null);
 
   readonly eosInstance = EOSUtils.createEOS({
     requestSignature: signargs =>
-      new Promise<ISignatureResult>(resolve => this.signature$.next(resolve))
+      new Promise<ISignatureResult>(signup => this.signature$.next({ signup, signargs }))
   });
 
   constructor(
-    private router: Router,
     private accountService: AccountService
   ) { }
 

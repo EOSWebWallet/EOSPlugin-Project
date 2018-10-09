@@ -13,16 +13,4 @@ export class KeychainUtils {
       permissions: (json.permissions || []).map(p => PermissionUtils.fromJson(p))
     };
   }
-
-  static findIdentity(keychain: IKeychain, publicKey: string): IAccount {
-    return keychain.accounts.find(a => a.keypair.publicKey === publicKey);
-  }
-
-  static findIdentityFromDomain(keychain: IKeychain, domain: string): IAccount {
-    const idFromPermissions = keychain.permissions
-      .find(permission => PermissionUtils.isIdentityOnly(permission) && permission.domain === domain);
-    return idFromPermissions
-      ? KeychainUtils.findIdentity(keychain, idFromPermissions.identity)
-      : null;
-  }
 }

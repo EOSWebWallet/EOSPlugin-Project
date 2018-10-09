@@ -10,8 +10,8 @@ import { KeypairUtils } from './app/core/keypair/keypair.utils';
 import { StorageUtils } from './app/core/storage/storage.service';
 import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 import { AccountUtils } from './app/core/account/account.utils';
-import { SignatureService } from './app/core/signature/signature.service';
 import { INetwork } from './app/core/network/network.interface';
+import { EOSUtils } from './app/core/eos/eos.utils';
 
 export class Background {
 
@@ -140,7 +140,12 @@ export class Background {
     this.load(plugin => {
       const account = AccountUtils.getAccount(payload.identity, plugin.keychain.accounts);
       const keypair = KeypairUtils.decrypt(account.keypair, this.seed);
-      SignatureService.requestSignature(plugin, payload.identity, payload, keypair.privateKey, cb);
+      EOSUtils.requestSignature({
+        plugin,
+        identity:payload.identity,
+        payload,
+        privateKey: keypair.privateKey
+      }).then(result => cb(result));
     });
   }
 }

@@ -23,8 +23,4 @@ export class NetworkUtils {
   static fullhost(network: INetwork): string {
     return `${network.protocol}://${network.host}${network.port ? ':' : ''}${network.port}`;
   }
-
-  static unique(network: INetwork): string {
-    return `eos:${network.host}:${network.port}`.toLowerCase();
-  }
 }

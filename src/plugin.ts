@@ -21,7 +21,15 @@ export class EOSPlugin {
   private resolvers: IResolver[] = [];
   private identity: IAccountIdentity;
 
-  readonly eos = EOSUtils.signatureProvider(this.send.bind(this), this.throwIfNoIdentity.bind(this), () => this.identity);
+  readonly eos = EOSUtils.createEOS({
+    requestSignature: async signargs => {
+      this.throwIfNoIdentity();
+      return this.send(NetworkMessageType.REQUEST_SIGNATURE, {
+        ...signargs,
+        identity: this.identity
+      });
+    }
+  });
 
   constructor(stream: EncryptedStream) {
     this.stream = stream;

@@ -1,27 +1,25 @@
 import * as Eos from 'eosjs';
 import * as ricardianParser from 'eos-rc-parser';
 
-import { NetworkUtils } from '../network/network.utils';
+import { PromptType, ISignaturePromtOptions } from '../prompt/prompt.interface';
 import { NetworkError, NetworkMessageType } from '../message/message.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
+import { ISigner, ISignatureOptions, ISignatureResult } from './eos.interface';
+import { IPlugin } from '../plugin/plugin.interface';
+import { IAccountIdentity } from '../account/account.interface';
+
+import { NetworkUtils } from '../network/network.utils';
 import { AccountUtils } from '../account/account.utils';
 import { BrowserAPIUtils } from '../browser/browser.utils';
+import { PromptUtils } from '../prompt/prompt.utils';
 
 const { ecc } = Eos.modules;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
 
 export class EOSUtils {
 
-  private static DEFAULT_PROTOCOL = 'http';
-
-  private static messageSender: Function;
-  private static throwIfNoIdentity: Function;
-
-  static signatureProvider(messageSender: Function, throwIfNoIdentity: Function, getIdentity: Function): Function {
-    EOSUtils.messageSender = messageSender;
-    EOSUtils.throwIfNoIdentity = throwIfNoIdentity;
-    const requestParser = this.requestParser;
-    return (network, _eos, _options: any = {}, protocol = EOSUtils.DEFAULT_PROTOCOL) => {
+  static createEOS(signer: ISigner): Function {
+    return (network, _eos, _options: any = {}, protocol = 'http') => {
       if (!network.hasOwnProperty('protocol') || !network.protocol.length) {
         network.protocol = protocol;
       }
@@ -37,54 +35,22 @@ export class EOSUtils {
 
       return proxy(_eos({ httpEndpoint }), {
         get(eosInstance, method) {
-          let returnedFields = null;
           return (...args) => {
             if (args.find(arg => arg.hasOwnProperty('keyProvider'))) {
               throw NetworkError.usedKeyProvider();
             }
 
-            const signProvider = async signargs => {
-              throwIfNoIdentity();
-
-              // Friendly formatting
-              signargs.messages = await requestParser(signargs, network);
-
-              const payload = Object.assign(signargs, {
-                domain: BrowserAPIUtils.host,
-                network,
-                identity: getIdentity()
-              });
-
-              const result = await messageSender(NetworkMessageType.REQUEST_SIGNATURE, payload);
-
-              // No signature
-              if (!result) {
-                return null;
-              }
-
-              if (result.hasOwnProperty('signatures')) {
-                // Holding onto the returned fields for the final result
-                returnedFields = result.returnedFields;
-
-                // Grabbing buf signatures from local multi sig sign provider
-                const multiSigKeyProvider = args.find(arg => arg.hasOwnProperty('signProvider'));
-                if (multiSigKeyProvider) {
-                  result.signatures.push(multiSigKeyProvider.signProvider(signargs.buf, signargs.sign));
-                }
-
-                // Returning only the signatures to eosjs
-                return result.signatures;
-              }
-
-              return result;
-            };
+            const signProvider = EOSUtils.createSignatureProvider(
+              network,
+              signer,
+              args.find(arg => arg.hasOwnProperty('signProvider'))
+            );
 
             return new Promise((resolve, reject) => {
               _eos(Object.assign(_options, { httpEndpoint, signProvider, chainId }))[method](...args)
                 .then(result => {
                   // Standard method ( ie. not contract )
                   if (!result.hasOwnProperty('fc')) {
-                    result = Object.assign(result, {returnedFields});
                     resolve(result);
                     return;
                   }
@@ -97,9 +63,9 @@ export class EOSUtils {
                       }
                       return (..._args) => {
                         return new Promise(async (res, rej) => {
-                            instance[_method](..._args).then(actionResult => {
-                                res(Object.assign(actionResult, {returnedFields}));
-                            }).catch(rej);
+                          instance[_method](..._args).then(actionResult => {
+                            res(actionResult);
+                          }).catch(rej);
                         });
                       };
                     }
@@ -110,11 +76,73 @@ export class EOSUtils {
             });
           };
         }
-      }); // Proxy
+      });
     };
   }
 
-  static async requestParser(signargs, network) {
+  static requestSignature(options: ISignatureOptions): Promise<ISignatureResult | NetworkError> {
+    return new Promise(resolve => {
+      const { identity, plugin, privateKey, payload } = options;
+      const account = AccountUtils.getAccount(identity, plugin.keychain.accounts);
+      if (!account) {
+        resolve(NetworkError.signatureAccountMissing());
+      }
+
+      const requiredAccounts = EOSUtils.actionParticipants(payload);
+      const formattedName = EOSUtils.accountFormatter(AccountUtils.getNetworkAccount(identity.accounts[0], account));
+      if (!requiredAccounts.includes(formattedName) && !requiredAccounts.includes(account.keypair.publicKey)) {
+        resolve(NetworkError.signatureAccountMissing());
+      }
+
+      PromptUtils.open({
+        type: PromptType.REQUEST_SIGNATURE,
+        payload,
+        responder: approval => {
+          if (!approval || !approval.hasOwnProperty('accepted')) {
+              resolve(NetworkError.signatureError('signature_rejected', 'User rejected the signature request'));
+              return false;
+          }
+
+          EOSUtils.signer(privateKey, payload, signature => {
+            if (!signature) {
+              resolve(NetworkError.maliciousEvent());
+              return false;
+            }
+            resolve({
+              signatures: [ signature ]
+            });
+          });
+        }
+      } as ISignaturePromtOptions);
+    });
+  }
+
+  private static createSignatureProvider(network, signer, multiSigKeyProvider): Function {
+    return async signargs => {
+      signargs.messages = await EOSUtils.requestParser(signargs, network);
+
+      const result = await signer.requestSignature({
+        ...signargs,
+        domain: BrowserAPIUtils.host,
+        network
+      });
+
+      if (!result) {
+        return null;
+      }
+
+      if (result.hasOwnProperty('signatures')) {
+        if (multiSigKeyProvider) {
+          result.signatures.push(multiSigKeyProvider.signProvider(signargs.buf, signargs.sign));
+        }
+        return result.signatures;
+      }
+
+      return result;
+    };
+  }
+
+  private static async requestParser(signargs, network) {
     const eos = Eos({ httpEndpoint: NetworkUtils.fullhost(network), chainId: network.chainId });
 
     const contracts = signargs.transaction.actions.map(action => action.account)
@@ -157,7 +185,7 @@ export class EOSUtils {
     }));
   }
 
-  static actionParticipants(payload): string[] {
+  private static actionParticipants(payload): string[] {
     const flatten = (array) => {
       return array.reduce(
           (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
@@ -170,11 +198,11 @@ export class EOSUtils {
     );
   }
 
-  static accountFormatter(account: any): string {
+  private static accountFormatter(account: any): string {
     return `${account.name}@${account.authority}`;
   }
 
-  static signer(privateKey: string, payload: any, cb: Function, arbitrary = false, isHash = false): void {
+  private static signer(privateKey: string, payload: any, cb: Function, arbitrary = false, isHash = false): void {
     if (!privateKey) {
       cb(null);
     }

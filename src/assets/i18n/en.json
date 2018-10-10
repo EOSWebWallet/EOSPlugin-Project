@@ -7,6 +7,11 @@
       "publicKey": "Public Key",
       "deny": "Deny",
       "accept": "Accept"
+    },
+    "signature": {
+      "requestAdditionalInfo": "is requesting additional information",
+      "deny": "Deny",
+      "accept": "Accept"
     }
   },
   "routes": {

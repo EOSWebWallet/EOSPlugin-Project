@@ -1,0 +1,46 @@
+.content {
+  position: absolute;
+  top: 0;
+  bottom: 80px;
+  width: 100%;
+  background: #f5f8fc;
+}
+
+.header {
+  text-align: center;
+
+  h1 {
+    margin: 0;
+    padding: 25px 0 0 0;
+  }
+  p {
+    margin: 10px 0;
+  }
+  a {
+    margin: 0 5px;
+  }
+}
+
+.network {
+  text-align: center;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: white;
+
+  div {
+    display: flex;
+    height: 80px;
+  }
+
+  app-button {
+    flex-grow: 1;
+    align-self: center;
+    padding: 15px;
+    line-height: 40px;
+    text-transform: uppercase;
+  }
+}

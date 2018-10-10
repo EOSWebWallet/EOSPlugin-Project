@@ -12,7 +12,8 @@ export interface IIdentityPromtOptions extends IPromptOptions {
 
 export interface ISignaturePromtOptions extends IPromptOptions {
   type: PromptType.REQUEST_SIGNATURE;
-  payload: any;
+  account: IAccount;
+  signargs: any;
 }
 
 export enum PromptType {

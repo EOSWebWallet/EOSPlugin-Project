@@ -1,1 +1,16 @@
-<button (click)="onAccept()">Accept</button>>
+<div class="content">
+  <div class="header">
+    <h1>{{ selectedNetworkAccountName$ | async }}</h1>
+    <p><a href="">eostoolkit.io</a>{{ 'prompt.signature.requestAdditionalInfo' | translate }}</p>
+  </div>
+  <div class="network">
+    {{ network.name }}
+  </div>
+</div>
+<div class="footer">
+  <mat-divider></mat-divider>
+  <div>
+    <app-button type="reject" [label]="'prompt.signature.deny' | translate" (click)="onDeny()"></app-button>
+    <app-button [label]="'prompt.signature.accept' | translate" (click)="onAccept()"></app-button>
+  </div>
+</div>

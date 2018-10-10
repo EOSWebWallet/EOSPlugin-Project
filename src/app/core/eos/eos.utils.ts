@@ -96,7 +96,8 @@ export class EOSUtils {
 
       PromptUtils.open({
         type: PromptType.REQUEST_SIGNATURE,
-        payload,
+        account,
+        signargs: payload,
         responder: approval => {
           if (!approval) {
               resolve(NetworkError.signatureError('signature_rejected', 'User rejected the signature request'));

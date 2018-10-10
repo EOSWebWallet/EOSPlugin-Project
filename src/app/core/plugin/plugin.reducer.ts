@@ -1,4 +1,4 @@
-import { SafeAction, UnsafeAction } from '../../core/state/state.interface';
+import { UnsafeAction } from '../../core/state/state.interface';
 
 import { IPluginState, IPlugin } from './plugin.interface';
 

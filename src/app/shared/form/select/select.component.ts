@@ -26,10 +26,14 @@ export class SelectComponent implements ControlValueAccessor {
 
   @Output() select = new EventEmitter<ISelectOption | ISelectOption[]>();
 
-  value: string;
+  value: string | string[];
 
-  writeValue(value: string): void {
-    this.value = value;
+  writeValue(value: ISelectOption | ISelectOption[]): void {
+    if (value) {
+      this.value = Array.isArray(value)
+        ? value.map(o => o.value)
+        : value.value;
+    }
   }
 
   registerOnChange(fn: Function): void {

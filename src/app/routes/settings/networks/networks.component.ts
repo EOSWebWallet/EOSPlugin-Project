@@ -18,6 +18,8 @@ import { NetworkUtils } from '../../../core/network/network.utils';
 })
 export class NetworksComponent extends AbstractPageComponent implements AfterViewInit {
 
+  editableNetwork: INetwork;
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private networskService: NetworksService,
@@ -41,15 +43,16 @@ export class NetworksComponent extends AbstractPageComponent implements AfterVie
   }
 
   onUpdate(network: INetwork): void {
-    this.networskService.update(network);
+    this.networskService.update(network.id, network);
+    this.editableNetwork = null;
   }
 
   onDelete(network: INetwork): void {
-    this.networskService.delete(network);
+    this.networskService.delete(network.id);
   }
 
   onSelect(network: INetwork): void {
-    this.networskService.select(network);
+    this.networskService.select(network.id);
   }
 
   private createNew(networks: INetwork[]): INetwork {

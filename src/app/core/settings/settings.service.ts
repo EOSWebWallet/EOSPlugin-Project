@@ -7,10 +7,10 @@ import { map } from 'rxjs/internal/operators/map';
 import { IAppState } from '../state/state.interface';
 import { ISettings } from './settings.interface';
 
-import { AbstractActionService } from '../state/actions.service';
+import { AbstractStateService } from '../state/state.service';
 
 @Injectable()
-export class SettingsService extends AbstractActionService {
+export class SettingsService extends AbstractStateService {
 
   constructor(
     protected actions: Actions,

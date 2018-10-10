@@ -26,7 +26,7 @@
 
     <app-select
       name="network"
-      [ngModel]="account.network?.name"
+      [ngModel]="account.network"
       [label]="'routes.keys.accounts.account.network' | translate"
       [options]="networkOptions"
       (select)="onNetworkSelect($event)"
@@ -36,7 +36,7 @@
     <app-select
       name="account"
       [multiple]="true"
-      ngModel
+      [ngModel]="account.accounts"
       [label]="'routes.keys.accounts.account.networkAccounts' | translate"
       [options]="accountOptions"
       required

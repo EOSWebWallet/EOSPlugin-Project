@@ -2,6 +2,7 @@ import { IKeypair } from '../keypair/keypair.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
 
 export interface IAccount {
+  id?: string;
   name: string;
   keypair: IKeypair;
   network: INetwork;

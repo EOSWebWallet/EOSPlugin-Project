@@ -57,6 +57,7 @@ const routes: Routes = [
       { path: 'keys/accounts', component: AccountsComponent },
       { path: 'keys/generate', component: GenerateComponent },
       { path: 'keys/accounts/account', component: AccountComponent },
+      { path: 'keys/accounts/account/:id', component: AccountComponent },
       { path: 'settings', component: SettingsComponent },
       { path: 'settings/networks', component: NetworksComponent },
       { path: 'settings/destroy', component: DestroyComponent },

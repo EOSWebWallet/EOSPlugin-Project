@@ -12,13 +12,13 @@ import { IPlugin } from '../plugin/plugin.interface';
 import { IAppState } from '../state/state.interface';
 import { ExtensionMessageType } from '../message/message.interface';
 
-import { AbstractActionService } from '../state/actions.service';
+import { AbstractStateService } from '../state/state.service';
 import { ExtensionMessageService } from '../message/message.service';
 
 import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
-export class AuthService extends AbstractActionService implements CanActivate {
+export class AuthService extends AbstractStateService implements CanActivate {
 
   static PATH_HOME = '/app/home';
   static PATH_PROMPT = '/prompt';

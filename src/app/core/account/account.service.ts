@@ -2,7 +2,7 @@ import { Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, first } from 'rxjs/internal/operators';
+import { map, first, filter } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
 
 import { IAppState } from '../state/state.interface';
@@ -10,12 +10,12 @@ import { IAccount } from './account.interface';
 import { IPlugin } from '../plugin/plugin.interface';
 import { INetworkAccount, INetwork } from '../network/network.interface';
 
-import { AbstractActionService } from '../state/actions.service';
+import { AbstractEntityService } from '../state/state.service';
 
 import { PluginUtils } from '../plugin/plugin.utils';
 
 @Injectable()
-export class AccountService extends AbstractActionService {
+export class AccountService extends AbstractEntityService {
 
   constructor(
     protected actions: Actions,
@@ -49,15 +49,37 @@ export class AccountService extends AbstractActionService {
 
   save(account: IAccount): void {
     this.accounts$
-      .pipe(first())
-      .subscribe(accounts => this.set([ ...accounts, account ]));
+      .pipe(
+        first()
+      )
+      .subscribe(accounts =>
+        this.set([
+          ...accounts,
+          {
+            ...account,
+            id: this.createId(accounts)
+          }
+        ])
+      );
   }
 
-  delete(account: IAccount): void {
+  update(id: string, account: IAccount): void {
     this.accounts$
-      .pipe(first())
+      .pipe(
+        first()
+      )
       .subscribe(accounts =>
-        this.set(accounts.filter(a => a !== account))
+        this.set(accounts.map(a => a.id === account.id ? account : a))
+      );
+  }
+
+  delete(id: string): void {
+    this.accounts$
+      .pipe(
+        first()
+      )
+      .subscribe(accounts =>
+        this.set(accounts.filter(a => a.id !== id))
       );
   }
 
@@ -71,7 +93,7 @@ export class AccountService extends AbstractActionService {
             ...networkAcc,
             selected: networkAcc === networkAccount
               ? !networkAccount.selected
-              : networkAcc.selected
+              : false
           }))
         })))
       );

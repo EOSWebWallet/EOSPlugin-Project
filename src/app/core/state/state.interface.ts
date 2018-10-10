@@ -10,6 +10,6 @@ export interface UnsafeAction extends Action {
   payload?: any;
 }
 
-export interface SafeAction<T> extends Action {
-  payload: T;
+export interface IStateEntity {
+  id?: string;
 }

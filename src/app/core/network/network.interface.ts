@@ -1,4 +1,5 @@
 export interface INetwork {
+  id?: string;
   protocol?: string;
   name: string;
   host: string;

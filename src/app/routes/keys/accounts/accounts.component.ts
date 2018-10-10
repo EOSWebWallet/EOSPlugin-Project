@@ -1,12 +1,15 @@
-import { Component, ViewChildren, ViewChild, OnInit, OnDestroy, forwardRef, Inject } from '@angular/core';
+import { Component, ViewChildren, ViewChild, OnInit, forwardRef, Inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscribable, Subscription } from 'rxjs';
+import { first } from 'rxjs/internal/operators';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { IAccount } from '../../../core/account/account.interface';
-import { INetworkAccount } from '../../../core/network/network.interface';
+import { INetworkAccount, INetwork } from '../../../core/network/network.interface';
 
 import { AccountService } from '../../../core/account/account.service';
+import { NetworksService } from '../../../core/network/networks.service';
 
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
@@ -23,12 +26,15 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
 
   accounts: IAccount[];
 
-  private accountsSub: Subscription;
+  selectedNetwork: INetwork;
+
+  accountSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private router: Router,
     private accountService: AccountService,
+    private networkService: NetworksService
   ) {
     super(pageLayout, {
       backLink: '/app/keys',
@@ -37,24 +43,34 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
   }
 
   ngOnInit(): void {
-    this.accountsSub = this.accounts$
-      .subscribe(accounts => this.accounts = accounts);
+    this.accountSub = combineLatest(
+      this.accountService.accounts$,
+      this.networkService.selectedNetwork$
+    )
+    .subscribe(([ accounts, network ]) => {
+      this.accounts = accounts;
+      this.selectedNetwork = network;
+    });
   }
 
   ngOnDestroy(): void {
-    this.accountsSub.unsubscribe();
+    this.accountSub.unsubscribe();
   }
 
-  get accounts$(): Observable<IAccount[]> {
-    return this.accountService.accounts$;
+  isDisabled(account: IAccount): boolean {
+    return !this.selectedNetwork || account.network.name !== this.selectedNetwork.name;
   }
 
   onAdd(): void {
     this.router.navigateByUrl(AccountsComponent.PATH_ACCOUNT);
   }
 
+  onEdit(account: IAccount): void {
+    this.router.navigateByUrl(`${AccountsComponent.PATH_ACCOUNT}/${account.id}`);
+  }
+
   onDelete(account: IAccount): void {
-    this.accountService.delete(account);
+    this.accountService.delete(account.id);
   }
 
   onSelectAccount(networkAccount: INetworkAccount): void {

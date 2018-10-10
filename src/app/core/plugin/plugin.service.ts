@@ -8,7 +8,7 @@ import { flatMap } from 'rxjs/internal/operators';
 import { IAppState } from '../state/state.interface';
 import { IFile } from '../../shared/form/file/file.interface';
 
-import { AbstractActionService } from '../state/actions.service';
+import { AbstractStateService } from '../state/state.service';
 import { ExtensionMessageService } from '../message/message.service';
 
 import { ExtensionMessageType } from '../message/message.interface';
@@ -17,7 +17,7 @@ import { PluginUtils } from './plugin.utils';
 import { EncryptUtils } from '../encrypt/encrypt.utils';
 
 @Injectable()
-export class PluginService extends AbstractActionService {
+export class PluginService extends AbstractStateService {
 
   constructor(
     protected actions: Actions,

@@ -5,6 +5,7 @@ import { SettingsService } from './settings/settings.service';
 import { NetworksService } from './network/networks.service';
 import { AccountService } from './account/account.service';
 import { PluginService } from './plugin/plugin.service';
+import { EOSService } from './eos/eos.service';
 
 @NgModule({
   providers: [
@@ -12,7 +13,8 @@ import { PluginService } from './plugin/plugin.service';
     SettingsService,
     NetworksService,
     AccountService,
-    PluginService
+    PluginService,
+    EOSService
   ],
 })
 export class CoreModule { }

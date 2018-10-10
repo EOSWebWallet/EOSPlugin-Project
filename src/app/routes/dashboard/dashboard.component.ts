@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, forwardRef, Inject } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { map, flatMap, first } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
-import { INetworkAccountInfo, INetworkAccountAction } from '../../core/account/account.interface';
+import { INetworkAccountInfo, INetworkAccountAction } from '../../core/eos/eos.interface';
 
 import { AccountService } from '../../core/account/account.service';
+import { EOSService } from '../../core/eos/eos.service';
 
-import { ConfirmDialogComponent } from '../../shared/dialog/confirm/confirm-dialog.component';
+import { AbstractPageComponent } from '../../layout/page/page.interface';
+import { PageLayoutComponent } from '../../layout/page/page.component';
 
 import { AccountUtils } from '../../core/account/account.utils';
 
@@ -17,44 +18,35 @@ import { AccountUtils } from '../../core/account/account.utils';
   templateUrl: './dashboard.component.html',
   styleUrls: [ './dashboard.component.scss' ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends AbstractPageComponent implements OnInit {
 
   accountInfo: INetworkAccountInfo = {};
   accountActions: INetworkAccountAction[] = [];
 
-  private accountSub: Subscription;
-
   constructor(
-    public dialog: MatDialog,
-    private accountService: AccountService
-  ) { }
+    @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
+    private accountService: AccountService,
+    private eosService: EOSService
+  ) {
+    super(pageLayout, {});
+  }
 
-  readonly selectedAccount$ = this.accountService.selectedAccount$;
-
-  readonly selectedNetworkAccount$ = this.selectedAccount$
+  readonly selectedNetworkAccountName$ = this.accountService.selectedAccount$
     .pipe(
-      map(a => a.accounts.find(na => na.selected))
-    );
-
-  readonly selectedNetworkAccountName$ = this.selectedNetworkAccount$
-    .pipe(
-      map(na => na.name)
+      map(a => a.accounts.find(na => na.selected)),
+      map(na => na && na.name)
     );
 
   ngOnInit(): void {
     combineLatest(
-      this.selectedAccount$,
-      this.selectedNetworkAccount$
+      this.eosService.accountInfo$,
+      this.eosService.accountActions$
     )
     .pipe(
-      flatMap(([ account, networkAccount ]) => combineLatest(
-        this.accountService.getAccountInfo(account, networkAccount),
-        this.accountService.getActions(account, networkAccount)
-      )),
       first()
     )
-    .subscribe(([ accountInfo, actions ]) => {
-      this.accountInfo = accountInfo;
+    .subscribe(([ info, actions ]) => {
+      this.accountInfo = info;
       this.accountActions = actions;
     });
   }

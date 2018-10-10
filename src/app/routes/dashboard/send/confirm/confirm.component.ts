@@ -1,9 +1,15 @@
-import { Component, forwardRef, Inject, ViewChild } from '@angular/core';
+import { Component, forwardRef, Inject, ViewChild, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { first, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
+
+import { ISignupOptions } from '../send.interface';
+import { ITransactionInfo } from './confirm.interface';
+import { INetworkAccountInfo } from '../../../../core/eos/eos.interface';
 
 import { SendService } from '../send.service';
-import { ISignupOptions } from '../send.interface';
+import { EOSService } from '../../../../core/eos/eos.service';
 
 import { AbstractPageComponent } from '../../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../../layout/page/page.component';
@@ -13,14 +19,19 @@ import { PageLayoutComponent } from '../../../../layout/page/page.component';
   templateUrl: './confirm.component.html',
   styleUrls: [ './confirm.component.scss' ],
 })
-export class ConfirmComponent extends AbstractPageComponent {
+export class ConfirmComponent extends AbstractPageComponent implements OnInit {
   static PATH_HOME = '/app/home';
 
   @ViewChild('form') form: FormGroup;
 
+  courseUSD: number;
+
+  accountInfo: INetworkAccountInfo = {};
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private sendService: SendService,
+    private eosService: EOSService,
     private router: Router
   ) {
     super(pageLayout, {
@@ -29,6 +40,36 @@ export class ConfirmComponent extends AbstractPageComponent {
       footer: 'routes.dashboard.send.confirm.confirm',
       action: () => this.onConfirm(),
     });
+  }
+
+  ngOnInit(): void {
+    combineLatest(
+      this.eosService.courses$,
+      this.eosService.accountInfo$
+    )
+    .pipe(
+      first()
+    )
+    .subscribe(([ courses, info ]) => {
+      this.courseUSD = Number(courses.market_data.current_price.usd);
+      this.accountInfo = info;
+    });
+  }
+
+  get transaction(): ITransactionInfo {
+    return this.sendService.signupOptions.signargs.messages[0].data;
+  }
+
+  get quantity(): number {
+    return parseFloat(this.transaction.quantity);
+  }
+
+  get quantityUSD(): number {
+    return Number((this.quantity * this.courseUSD).toFixed(3));
+  }
+
+  get symbol(): string {
+    return this.transaction.quantity.split(' ')[1];
   }
 
   onConfirm(): void {

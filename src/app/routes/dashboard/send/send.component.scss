@@ -19,6 +19,9 @@
       color: $color-primary;
       font-weight: 600;
     }
+    &:last-child {
+      text-align: right;
+    }
   }
 }
 

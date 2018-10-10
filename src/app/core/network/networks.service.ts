@@ -7,7 +7,7 @@ import { map, first } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
 
 import { IAppState } from '../state/state.interface';
-import { INetwork, INetworkInfo } from './network.interface';
+import { INetwork } from './network.interface';
 
 import { AbstractActionService } from '../state/actions.service';
 import { SettingsService } from '../settings/settings.service';
@@ -77,15 +77,6 @@ export class NetworksService extends AbstractActionService {
             ? !network.selected
             : n.selected
         })))
-      );
-  }
-
-  getInfo(network: INetwork): Observable<INetworkInfo> {
-    return this.httpClient.post(`${network.protocol}://${network.host}:${network.port}/v1/chain/get_info`, '')
-      .pipe(
-        map(info => ({
-          chainId: (<any>info).chain_id
-        }))
       );
   }
 

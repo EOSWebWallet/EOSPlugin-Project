@@ -1,23 +1,19 @@
 import { Component, OnInit, OnDestroy, forwardRef, Inject, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { map, first } from 'rxjs/internal/operators';
+import { FormGroup } from '@angular/forms';
+import { first } from 'rxjs/internal/operators';
 
 import { IAccount } from '../../../../core/account/account.interface';
 import { INetwork, INetworkAccount } from '../../../../core/network/network.interface';
 import { ISelectOption } from '../../../../shared/form/select/select.interface';
-import { IPageConfig, AbstractPageComponent } from '../../../../layout/page/page.interface';
+import { AbstractPageComponent } from '../../../../layout/page/page.interface';
 
 import { AccountService } from '../../../../core/account/account.service';
 import { NetworksService } from '../../../../core/network/networks.service';
+import { EOSService } from '../../../../core/eos/eos.service';
 
 import { PageLayoutComponent } from '../../../../layout/page/page.component';
 
-import { NetworkUtils } from '../../../../core/network/network.utils';
 import { KeypairUtils } from '../../../../core/keypair/keypair.utils';
-import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-account',
@@ -43,9 +39,9 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
-    private router: Router,
     private accountService: AccountService,
     private networksService: NetworksService,
+    private eosService: EOSService
   ) {
     super(pageLayout, {
       backLink: '/app/keys',
@@ -73,7 +69,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
 
   onNetworkSelect(networkOption: ISelectOption): void {
     const network = this.networks.find(n => n.name === networkOption.value);
-    this.accountService.getKeyAccounts(network, this.account.keypair.publicKey)
+    this.eosService.getKeyAccounts(network, this.account.keypair.publicKey)
       .pipe(first())
       .subscribe(accounts => {
         this.accounts = accounts;

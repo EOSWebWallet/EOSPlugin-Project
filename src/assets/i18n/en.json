@@ -27,7 +27,10 @@
         "memo": "Memo",
         "confirm": {
           "title": "Transaction Check",
-          "confirm": "Confirm"
+          "confirm": "Confirm",
+          "totalBalance": "Total Balance",
+          "unstaked": "Unstaked",
+          "staked": "Staked"
         }
       }
     },

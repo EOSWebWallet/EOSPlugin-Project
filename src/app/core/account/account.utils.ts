@@ -15,39 +15,6 @@ export class AccountUtils {
     };
   }
 
-  static getKeyAccounts(protocol: string, host: string, port: number, publicKey: string): Promise<any> {
-      return new Promise((resolve, reject) => {
-        const eos = Eos({ httpEndpoint: `${protocol}://${host}:${port}` });
-        eos.getKeyAccounts(publicKey).then(res => {
-          if (!res || !res.hasOwnProperty('account_names')) {
-            resolve([]);
-            return false;
-          }
-
-          Promise.all(
-            res.account_names
-              .map(name => eos.getAccount(name).catch(e => resolve([])))
-          ).then(multires => {
-            const accounts = [];
-            multires.map(account => {
-              (<any>account).permissions.map(permission => {
-                accounts.push({ name: (<any>account).account_name, authority: permission.perm_name });
-              });
-            });
-            resolve(accounts);
-          }).catch(e => resolve([]));
-        }).catch(e => resolve([]));
-    });
-  }
-
-  static getAccountInfo(protocol: string, host: string, port: number, accountName: string): Promise<any> {
-    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getAccount(accountName);
-  }
-
-  static getActions(protocol: string, host: string, port: number, accountName: string): Promise<any> {
-    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getActions(accountName, undefined, -150000);
-  }
-
   static getIdentity(accounts: IAccount[], callback: Function): Promise<void> {
     return PromptUtils.open({
       type: PromptType.REQUEST_IDENTITY,

@@ -3,16 +3,16 @@
     <table>
       <tr>
         <td>{{ 'routes.dashboard.send.unstaked' | translate }}:</td>
-        <td>4303.5373 EOS</td>
+        <td>{{ accountInfo.unstaked }} EOS</td>
       </tr>
       <tr>
         <td>{{ 'routes.dashboard.send.staked' | translate }}:</td>
-        <td>5798.5588 EOS</td>
+        <td>{{ accountInfo.staked }} EOS</td>
       </tr>
     </table>
   </div>
   <div class="sender">
-    {{ 'routes.dashboard.send.sender' | translate }}: <span>testaccount1</span>
+    {{ 'routes.dashboard.send.sender' | translate }}: <span>{{ selectedNetworkAccountName$ | async }}</span>
   </div>
   <div class="fields">
     <form #form="ngForm">

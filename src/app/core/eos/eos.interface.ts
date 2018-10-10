@@ -15,3 +15,31 @@ export interface ISignatureOptions {
 export interface ISignatureResult {
   signatures: any[];
 }
+
+export interface IChainInfo {
+  chainId: string;
+}
+
+export interface INetworkAccountInfo {
+  netPercent?: number;
+  cpuPercent?: number;
+  ramPercent?: number;
+  netData?: string;
+  cpuData?: string;
+  unstaked?: number;
+  usdUnstaked?: number;
+  staked?: number;
+  usdStaked?: number;
+  totalBalance?: number;
+  usdTotal?: number;
+  cpuUsedSec?: number;
+  cpuMaxSec?: number;
+  netUsedKb?: number;
+  netMaxKb?: number;
+  ramUsedKb?: number;
+  ramMaxKb?: number;
+}
+
+export interface INetworkAccountAction {
+  [key: string]: string;
+}

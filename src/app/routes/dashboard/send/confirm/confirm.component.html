@@ -1,0 +1,26 @@
+<div class="quantity">
+  <div><span>{{ quantity.toFixed(4) }}</span> {{ symbol }}</div>
+  <div>{{ quantityUSD }} $</div>
+</div>
+<mat-divider></mat-divider>
+<div class="accounts">
+  <div>{{ transaction.from }}</div>
+  <div>{{ transaction.to }}</div>
+</div>
+<mat-divider></mat-divider>
+<div class="balance">
+  <table>
+    <tr>
+      <td>{{ 'routes.dashboard.send.confirm.totalBalance' | translate }}:</td>
+      <td>{{ accountInfo.totalBalance }} EOS / {{ accountInfo.usdTotal }} USD</td>
+    </tr>
+    <tr>
+      <td>{{ 'routes.dashboard.send.confirm.unstaked' | translate }}:</td>
+      <td>{{ accountInfo.unstaked }} EOS / {{ accountInfo.usdUnstaked }} USD</td>
+    </tr>
+    <tr>
+      <td>{{ 'routes.dashboard.send.confirm.staked' | translate }}:</td>
+      <td>{{ accountInfo.staked }} EOS / {{ accountInfo.usdStaked }} USD</td>
+    </tr>
+  </table>
+</div>

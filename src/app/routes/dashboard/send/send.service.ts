@@ -10,7 +10,7 @@ import { ExtensionMessageType } from '../../../core/message/message.interface';
 
 import { AccountService } from '../../../core/account/account.service';
 import { ExtensionMessageService } from '../../../core/message/message.service';
-import { NetworksService } from '../../../core/network/networks.service';
+import { EOSService } from '../../../core/eos/eos.service';
 
 import { EOSUtils } from '../../../core/eos/eos.utils';
 import { KeypairUtils } from '../../../core/keypair/keypair.utils';
@@ -30,9 +30,13 @@ export class SendService {
   });
 
   constructor(
-    private networkService: NetworksService,
+    private eosService: EOSService,
     private accountService: AccountService
   ) { }
+
+  get signupOptions(): ISignupOptions {
+    return this.signature$.value;
+  }
 
   send(params: ISendParams): void {
     combineLatest(
@@ -42,7 +46,7 @@ export class SendService {
     .pipe(
       first(),
       flatMap(([ account, networkAccount ]) =>
-        this.networkService.getInfo(account.network)
+        this.eosService.getInfo(account.network)
           .pipe(
             map(networkInfo => ({ account, networkAccount, networkInfo }))
           )

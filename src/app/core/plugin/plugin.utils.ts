@@ -13,7 +13,6 @@ export class PluginUtils {
   static PLUGIN_IMPORT = 'PLUGIN_IMPORT';
   static PLUGIN_IMPORT_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
   static PLUGIN_DESTROY = 'PLUGIN_DESTROY';
-  static PLUGIN_DESTROY_SUCCESS = 'PLUGIN_DESTROY_SUCCESS';
 
   static fromJson(json: any): IPlugin {
     return {
@@ -62,8 +61,8 @@ export class PluginUtils {
     };
   }
 
-  static createBlob(plugin: IPlugin, salt: string): Blob {
-    return new Blob([ JSON.stringify({ plugin, salt }) ], { type: 'text/json' });
+  static createBlob(data: any): Blob {
+    return new Blob([ JSON.stringify(data) ], { type: 'text/json' });
   }
 
   static createPluginData(pluginText: string): any {

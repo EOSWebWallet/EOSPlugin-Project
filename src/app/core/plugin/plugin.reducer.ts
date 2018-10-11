@@ -19,10 +19,6 @@ export function reducer(
       return {
         plugin: action.payload
       };
-    case PluginUtils.PLUGIN_DESTROY_SUCCESS:
-      return {
-        plugin: null
-      };
     default:
       return state;
   }

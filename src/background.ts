@@ -95,21 +95,23 @@ export class Background {
   }
 
   export(payload: any, cb: Function): void {
-    if (payload.seed === this.seed) {
-      Promise.all([
-        StorageUtils.get(),
-        StorageUtils.getSalt()
-      ]).then(([ pluginData, salt ]) => cb(PluginUtils.createBlob(pluginData, salt)));
-    } else {
-      cb(false);
-    }
+    this.load(plugin => {
+      plugin.keychain.accounts = plugin.keychain.accounts.map(account => ({
+        ...account,
+        keypair: KeypairUtils.encrypt(KeypairUtils.decrypt(account.keypair, this.seed), payload.seed)
+      }));
+      const pluginData = PluginUtils.encrypt(plugin, payload.seed);
+      StorageUtils.getSalt().then(salt => cb({ pluginData, salt }));
+    });
   }
 
-  import(payload: any, cb: Function): void {
-    if (payload.seed === this.seed) {
-      const { plugin, salt } = PluginUtils.createPluginData(<string> payload.file.value);
-      StorageUtils.setSalt(salt);
-      StorageUtils.save(plugin).then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
+  async import(payload: any, cb: Function) {
+    const { pluginData, salt } = PluginUtils.createPluginData(<string> payload.file.value);
+    await StorageUtils.setSalt(salt);
+    const decryptedPlugin = PluginUtils.decrypt(pluginData, payload.seed);
+    if (!PluginUtils.isEncrypted(decryptedPlugin)) {
+      this.seed = payload.seed;
+      StorageUtils.save(pluginData).then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
     } else {
       cb(false);
     }

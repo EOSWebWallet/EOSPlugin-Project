@@ -79,9 +79,9 @@ export class AppModule {
 
     StorageUtils.getLang().then(lang => translate.use(lang || AppModule.DEFAULT_LANGUAGE));
 
-    this.background = background;
-    this.content = content;
-    this.inject = inject;
+    // this.background = background;
+    // this.content = content;
+    // this.inject = inject;
   }
 
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/internal/Observable';
 import { from } from 'rxjs/internal/observable/from';
-import { flatMap } from 'rxjs/internal/operators';
+import { flatMap, map } from 'rxjs/internal/operators';
 
 import { IAppState } from '../state/state.interface';
 import { IFile } from '../../shared/form/file/file.interface';
@@ -29,12 +29,25 @@ export class PluginService extends AbstractStateService {
   export(password: string): Observable<Blob> {
     return from(EncryptUtils.generateMnemonic(password))
       .pipe(
-        flatMap(([ mnemonic, seed ]) => ExtensionMessageService.send({ type: ExtensionMessageType.EXPORT_PLUGIN, payload: { seed } }))
+        flatMap(([ mnemonic, seed ]) => ExtensionMessageService.send({ type: ExtensionMessageType.EXPORT_PLUGIN, payload: { seed } })),
+        map(exportData => PluginUtils.createBlob(exportData))
       );
   }
 
-  import(password: string, file: IFile): void {
-    EncryptUtils.generateMnemonic(password)
-      .then(([ mnemonic, seed ]) => this.dispatchAction(PluginUtils.PLUGIN_IMPORT, { seed, file }));
+  import(password: string, file: IFile): Observable<boolean> {
+    return from(EncryptUtils.generateMnemonic(password))
+      .pipe(
+        flatMap(([ mnemonic, seed ]) =>
+          from(ExtensionMessageService.send({ type: ExtensionMessageType.IMPORT_PLUGIN, payload: { seed, file } }))
+        ),
+        map(plugin => {
+          if (plugin) {
+            this.dispatchAction(PluginUtils.PLUGIN_STORE, plugin);
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
   }
 }

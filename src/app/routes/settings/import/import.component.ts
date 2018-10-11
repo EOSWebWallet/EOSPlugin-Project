@@ -1,6 +1,6 @@
 import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, delay } from 'rxjs/internal/operators';
+import { map, delay, first, filter } from 'rxjs/internal/operators';
 
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 
@@ -18,7 +18,6 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
   styleUrls: [ './import.component.scss' ],
 })
 export class ImportComponent extends AbstractPageComponent {
-
   password: string;
 
   file: IFile;
@@ -26,7 +25,8 @@ export class ImportComponent extends AbstractPageComponent {
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
-    private pluginService: PluginService
+    private pluginService: PluginService,
+    private router: Router
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -42,6 +42,10 @@ export class ImportComponent extends AbstractPageComponent {
   }
 
   onImport(): void {
-    this.pluginService.import(this.password, this.file);
+    this.pluginService.import(this.password, this.file)
+      .pipe(
+        filter(Boolean)
+      )
+      .subscribe(result => this.router.navigateByUrl(this.pageConfig.backLink));
   }
 }

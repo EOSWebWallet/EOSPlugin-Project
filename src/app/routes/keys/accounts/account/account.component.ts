@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, forwardRef, Inject, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { first, map } from 'rxjs/internal/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
@@ -25,7 +25,6 @@ import { KeypairUtils } from '../../../../core/keypair/keypair.utils';
   styleUrls: [ './account.component.scss' ]
 })
 export class AccountComponent extends AbstractPageComponent implements OnInit {
-
   @ViewChild('form') form: FormGroup;
 
   account: Partial<IAccountForm> = {
@@ -46,10 +45,11 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
     private accountService: AccountService,
     private networksService: NetworksService,
     private eosService: EOSService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     super(pageLayout, {
-      backLink: '/app/keys',
+      backLink: '/app/keys/accounts',
       header: 'routes.keys.accounts.account.title',
       footer: 'routes.keys.accounts.account.save',
       action: () => this.onSave()
@@ -109,6 +109,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
     } else {
       this.accountService.save(updatedAccount);
     }
+
+    this.router.navigateByUrl(this.pageConfig.backLink);
   }
 
   private getAccountName(account: INetworkAccount): string {

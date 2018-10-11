@@ -17,7 +17,7 @@ export class BrowserAPIUtils {
   }
 
   static get storage(): any {
-    return BrowserAPI.storage || {
+    return /*BrowserAPI.storage ||*/ {
       local: {
         set: (value, cb) => Object.keys(value).map(key => {
           localStorage.setItem(key, JSON.stringify(value[key]));

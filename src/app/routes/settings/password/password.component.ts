@@ -21,6 +21,7 @@ export class PasswordComponent extends AbstractPageComponent {
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
+    private router: Router
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -35,6 +36,7 @@ export class PasswordComponent extends AbstractPageComponent {
     const passwod = this.passwordForm.controls['password'].value;
     const newPassword = this.passwordForm.controls['newPassword'].value;
     this.authService.changePassword(passwod, newPassword);
+    this.router.navigateByUrl(this.pageConfig.backLink);
   }
 
   private get isValid(): boolean {

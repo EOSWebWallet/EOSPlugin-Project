@@ -23,7 +23,8 @@ export class ExportComponent extends AbstractPageComponent {
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
-    private pluginService: PluginService
+    private pluginService: PluginService,
+    private router: Router
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -42,6 +43,7 @@ export class ExportComponent extends AbstractPageComponent {
       .subscribe(url => {
         this.downloadRef.nativeElement.href = url;
         this.downloadRef.nativeElement.click();
+        this.router.navigateByUrl(this.pageConfig.backLink);
       });
   }
 }

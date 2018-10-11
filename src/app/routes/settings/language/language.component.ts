@@ -16,10 +16,10 @@ export class LanguageComponent extends AbstractPageComponent {
 
   items: IListItem[] = [
     { label: 'routes.settings.language.en', value: 'en', icon: 'icon-en' },
-    { label: 'routes.settings.language.de', value: 'de', icon: 'icon-de' },
-    { label: 'routes.settings.language.fr', value: 'fr', icon: 'icon-fr' },
-    { label: 'routes.settings.language.it', value: 'it', icon: 'icon-it' },
-    { label: 'routes.settings.language.sp', value: 'sp', icon: 'icon-sp' },
+    // { label: 'routes.settings.language.de', value: 'de', icon: 'icon-de' },
+    // { label: 'routes.settings.language.fr', value: 'fr', icon: 'icon-fr' },
+    // { label: 'routes.settings.language.it', value: 'it', icon: 'icon-it' },
+    // { label: 'routes.settings.language.sp', value: 'sp', icon: 'icon-sp' },
     { label: 'routes.settings.language.ru', value: 'ru', icon: 'icon-ru' },
   ].map(item => ({ ...item, selected: () => this.isSelected(item.value) }));
 

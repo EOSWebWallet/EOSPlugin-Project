@@ -15,7 +15,7 @@ export class KeysComponent extends AbstractPageComponent {
   items: IListItem[] = [
     { link: '/app/keys/accounts', label: 'routes.keys.accounts.menu', icon: 'icon-edit' },
     { link: '/app/keys/generate', label: 'routes.keys.generate.menu', icon: 'icon-generate-key' },
-    { link: '', label: 'routes.keys.import', icon: 'icon-import' }
+    // { link: '', label: 'routes.keys.import', icon: 'icon-import' }
   ];
 
   constructor(

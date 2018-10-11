@@ -20,6 +20,7 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
 })
 export class SendComponent extends AbstractPageComponent implements OnInit, OnDestroy {
   static PATH_CONFIRM = '/app/home/send/confirm';
+  static PATH_HOME = '/app/home';
 
   @ViewChild('form') form: FormGroup;
 
@@ -68,6 +69,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
   }
 
   onSend(): void {
-    this.sendService.send(this.form.value);
+    this.sendService.send(this.form.value)
+      .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
   }
 }

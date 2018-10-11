@@ -7,11 +7,9 @@ import { SettingsUtils } from '../settings/settings.utils';
 
 export class PluginUtils {
   static PLUGIN_STORE = 'PLUGIN_STORE';
-  static PLUGIN_STORE_SUCCESS = 'PLUGIN_STORE_SUCCESS';
   static PLUGIN_LOAD = 'PLUGIN_LOAD';
   static PLUGIN_LOAD_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
   static PLUGIN_IMPORT = 'PLUGIN_IMPORT';
-  static PLUGIN_IMPORT_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
   static PLUGIN_DESTROY = 'PLUGIN_DESTROY';
 
   static fromJson(json: any): IPlugin {

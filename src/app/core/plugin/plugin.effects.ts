@@ -42,8 +42,7 @@ export class PluginEffects {
       return from(ExtensionMessageService.send({ type: ExtensionMessageType.STORE_PLUGIN, payload: action.payload }))
         .pipe(
           map(() => ({
-            type: PluginUtils.PLUGIN_STORE_SUCCESS,
-            payload: action.payload
+            type: PluginUtils.PLUGIN_LOAD,
           }))
         );
     })
@@ -70,8 +69,7 @@ export class PluginEffects {
       return from(ExtensionMessageService.send({ type: ExtensionMessageType.IMPORT_PLUGIN, payload: action.payload }))
         .pipe(
           map(plugin => ({
-            type: PluginUtils.PLUGIN_IMPORT_SUCCESS,
-            payload: PluginUtils.fromJson(plugin)
+            type: PluginUtils.PLUGIN_LOAD,
           }))
         );
     })

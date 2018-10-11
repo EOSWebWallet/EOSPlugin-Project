@@ -20,7 +20,6 @@ import { PageLayoutComponent } from '../../../../layout/page/page.component';
   styleUrls: [ './confirm.component.scss' ],
 })
 export class ConfirmComponent extends AbstractPageComponent implements OnInit {
-  static PATH_HOME = '/app/home';
 
   @ViewChild('form') form: FormGroup;
 
@@ -74,6 +73,5 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
 
   onConfirm(): void {
     this.sendService.signup();
-    this.router.navigateByUrl(ConfirmComponent.PATH_HOME);
   }
 }

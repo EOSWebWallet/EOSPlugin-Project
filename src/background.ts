@@ -1,4 +1,5 @@
 
+import AES from 'aes-oop';
 import { LocalStream } from 'extension-streams/dist';
 
 import { ExtensionMessageType, IExtensionMessage, NetworkError } from './app/core/message/message.interface';
@@ -13,6 +14,7 @@ import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 import { AccountUtils } from './app/core/account/account.utils';
 import { INetwork } from './app/core/network/network.interface';
 import { EOSUtils } from './app/core/eos/eos.utils';
+import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
 
 export class Background {
 
@@ -96,10 +98,13 @@ export class Background {
 
   export(payload: any, cb: Function): void {
     this.load(plugin => {
-      plugin.keychain.accounts = plugin.keychain.accounts.map(account => ({
-        ...account,
-        keypair: KeypairUtils.encrypt(KeypairUtils.decrypt(account.keypair, this.seed), payload.seed)
-      }));
+      plugin.keychain.accounts = plugin.keychain.accounts.map(account => {
+        const decrypted = KeypairUtils.decrypt(account.keypair, this.seed);
+        return ({
+          ...account,
+          keypair: KeypairUtils.encrypt(decrypted, payload.seed)
+        });
+      });
       const pluginData = PluginUtils.encrypt(plugin, payload.seed);
       StorageUtils.getSalt().then(salt => cb({ pluginData, salt }));
     });
@@ -108,9 +113,10 @@ export class Background {
   async import(payload: any, cb: Function) {
     const { pluginData, salt } = PluginUtils.createPluginData(<string> payload.file.value);
     await StorageUtils.setSalt(salt);
-    const decryptedPlugin = PluginUtils.decrypt(pluginData, payload.seed);
+    const [m, s] = await EncryptUtils.generateMnemonic(payload.password);
+    const decryptedPlugin = PluginUtils.decrypt(pluginData, s);
     if (!PluginUtils.isEncrypted(decryptedPlugin)) {
-      this.seed = payload.seed;
+      this.seed = s;
       StorageUtils.save(pluginData).then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
     } else {
       cb(false);
@@ -154,7 +160,11 @@ export class Background {
   }
 
   decryptKeypair(keypair: IKeypair, cb: Function): void {
-    cb(KeypairUtils.decrypt(keypair, this.seed));
+    const privateKey = AES.decrypt(keypair.privateKey, this.seed);
+    cb({
+      privateKey,
+      publicKey: keypair.publicKey
+    });
   }
 }
 

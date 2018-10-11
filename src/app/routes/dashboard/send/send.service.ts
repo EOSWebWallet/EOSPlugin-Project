@@ -1,5 +1,6 @@
 import * as Eos from 'eosjs';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 import { first, flatMap, map } from 'rxjs/operators';
@@ -38,8 +39,8 @@ export class SendService {
     return this.signature$.value;
   }
 
-  send(params: ISendParams): void {
-    combineLatest(
+  send(params: ISendParams): Observable<void> {
+    return combineLatest(
       this.accountService.selectedAccount$,
       this.accountService.selectedNetworkAccount$
     )
@@ -50,16 +51,15 @@ export class SendService {
           .pipe(
             map(networkInfo => ({ account, networkAccount, networkInfo }))
           )
-      )
-    ).subscribe(({ account, networkAccount, networkInfo }) =>
-      this.eosInstance({ ...account.network, chainId: networkInfo.chainId }, Eos, {}, 'https').transaction(tr => {
+      ),
+      flatMap(({ account, networkAccount, networkInfo }) => this.eosInstance({ ...account.network, chainId: networkInfo.chainId }, Eos, {}, 'https').transaction(tr => {
         tr.transfer(networkAccount.name, params.recipient, `${Number(params.quantity).toFixed(4)} ${params.symbol}`, params.memo, {
           broadcast: true,
           sign: true,
           authorization: [{ actor: networkAccount.name, permission: networkAccount.authority }],
           verbose: true,
         });
-      })
+      }))
     );
   }
 

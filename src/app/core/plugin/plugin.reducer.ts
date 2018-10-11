@@ -13,9 +13,7 @@ export function reducer(
   action: UnsafeAction
 ): IPluginState {
   switch (action.type) {
-    case PluginUtils.PLUGIN_STORE_SUCCESS:
     case PluginUtils.PLUGIN_LOAD_SUCCESS:
-    case PluginUtils.PLUGIN_IMPORT_SUCCESS:
       return {
         plugin: action.payload
       };

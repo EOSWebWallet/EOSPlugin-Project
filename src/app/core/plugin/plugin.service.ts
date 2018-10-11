@@ -35,11 +35,8 @@ export class PluginService extends AbstractStateService {
   }
 
   import(password: string, file: IFile): Observable<boolean> {
-    return from(EncryptUtils.generateMnemonic(password))
+    return from(ExtensionMessageService.send({ type: ExtensionMessageType.IMPORT_PLUGIN, payload: { password, file } }))
       .pipe(
-        flatMap(([ mnemonic, seed ]) =>
-          from(ExtensionMessageService.send({ type: ExtensionMessageType.IMPORT_PLUGIN, payload: { seed, file } }))
-        ),
         map(plugin => {
           if (plugin) {
             this.dispatchAction(PluginUtils.PLUGIN_STORE, plugin);

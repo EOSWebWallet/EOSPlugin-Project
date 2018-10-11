@@ -75,4 +75,8 @@ export class SendService {
       })
     );
   }
+
+  deny(): void {
+    this.signature$.next(null);
+  }
 }

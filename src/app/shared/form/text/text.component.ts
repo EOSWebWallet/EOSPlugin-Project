@@ -19,9 +19,11 @@ export class TextComponent implements ControlValueAccessor {
 
   @ViewChild('inputField', { read: ElementRef }) inputField: ElementRef;
 
+  @Input() type: string;
   @Input() label: string;
   @Input() errors: IControlErrors;
   @Input() required: boolean;
+  @Input() step: number;
 
   value: string;
   disabled = false;

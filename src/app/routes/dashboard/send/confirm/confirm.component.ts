@@ -38,6 +38,7 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
       header: 'routes.dashboard.send.confirm.title',
       footer: 'routes.dashboard.send.confirm.confirm',
       action: () => this.onConfirm(),
+      back: () => this.sendService.deny()
     });
   }
 

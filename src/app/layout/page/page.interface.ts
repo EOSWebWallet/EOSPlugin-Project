@@ -7,6 +7,7 @@ export interface IPageConfig {
   footer?: string;
   action?: () => void;
   disabled?: () => void;
+  back?: () => void;
 }
 
 

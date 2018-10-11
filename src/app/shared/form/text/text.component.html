@@ -1,9 +1,11 @@
 <mat-form-field>
   <input
     matInput
+    [type]="type"
     #inputField="ngModel"
     [placeholder]="label"
     [ngModel]="value"
+    [step]="step"
     [required]="required"
     (ngModelChange)="onChange($event)"
     (focusout)="onFocusOut()"

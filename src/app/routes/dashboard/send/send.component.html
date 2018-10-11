@@ -18,7 +18,7 @@
     <form #form="ngForm">
       <app-text name="recipient" ngModel [label]="'routes.dashboard.send.recipient' | translate" required></app-text>
       <div>
-        <app-text name="quantity" ngModel [label]="'routes.dashboard.send.quantity' | translate" required></app-text>
+        <app-text name="quantity" type="number" step="0.001" ngModel [label]="'routes.dashboard.send.quantity' | translate" required></app-text>
         <app-text name="symbol" ngModel [label]="'routes.dashboard.send.symbol' | translate" required></app-text>
       </div>
       <app-text name="memo" ngModel [label]="'routes.dashboard.send.memo' | translate"></app-text>

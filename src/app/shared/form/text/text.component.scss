@@ -4,15 +4,30 @@ mat-form-field {
   width: 100%;
 }
 
-::ng-deep .mat-form-field-label {
-  padding: 0 10px;
-  color: $color-primary !important;
-}
-
 ::ng-deep .mat-input-element {
   padding: 0 10px;
 }
 
 ::ng-deep .mat-form-field-underline {
   background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+::ng-deep mat-form-field label.mat-form-field-label {
+  padding: 0 10px;
+  color: $color-primary;
+  font-size: 14px;
+  font-family: $font-family-primary;
+
+  &.mat-form-field-invalid {
+    color: $color-danger !important;
+  }
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  color: $color-primary;
+}
+
+::ng-deep mat-hint p {
+  color: $color-danger;
+  font-size: 12px;
 }

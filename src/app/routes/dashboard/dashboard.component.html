@@ -5,7 +5,7 @@
     <table>
       <tr>
         <td>{{ 'routes.dashboard.totalBalance' | translate }}:</td>
-        <td>{{ accountInfo.totalBalance }} EOS / {{ accountInfo.usdTotal }} USD</td>
+        <td>{{ accountInfo.totalBalance }} EOS / <span>{{ accountInfo.usdTotal }} USD</span></td>
       </tr>
       <tr>
         <td>{{ 'routes.dashboard.unstaked' | translate }}:</td>
@@ -33,7 +33,7 @@
           [value]="accountInfo.cpuPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          {{ accountInfo.cpuUsedSec }} <br/> {{ accountInfo.cpuMaxSec }} sec
+          <span>{{ accountInfo.cpuUsedSec }}</span> <br/> {{ accountInfo.cpuMaxSec }} <span>sec</span>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
           [value]="accountInfo.netPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          {{ accountInfo.netUsedKb }} <br/> {{ accountInfo.netMaxKb }} kb
+          <span>{{ accountInfo.netUsedKb }}</span> <br/> {{ accountInfo.netMaxKb }} <span>kb</span>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
           [value]="accountInfo.ramPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          {{ accountInfo.ramUsedKb }} <br/> {{ accountInfo.ramMaxKb }} kb
+          <span>{{ accountInfo.ramUsedKb }}</span> <br/> {{ accountInfo.ramMaxKb }} <span>kb</span>
         </div>
       </div>
     </div>

@@ -108,12 +108,12 @@ export class EOSService {
       resultInfo.totalBalance = Number(accountInfo.voter_info.staked);
     }
     resultInfo.usdTotal = Number((Number(resultInfo.totalBalance) * usdCourse).toFixed(3));
-    resultInfo.cpuUsedSec = Number(accountInfo.cpu_limit.used) / 1000000;
-    resultInfo.cpuMaxSec = Number(accountInfo.cpu_limit.max) / 1000000;
-    resultInfo.netUsedKb = Number(accountInfo.net_limit.used) / 1000;
-    resultInfo.netMaxKb = Number(accountInfo.net_limit.max) / 1000;
-    resultInfo.ramUsedKb = Number(accountInfo.ram_usage) / 1000;
-    resultInfo.ramMaxKb = Number(accountInfo.ram_quota) / 1000;
+    resultInfo.cpuUsedSec = Number((Number(accountInfo.cpu_limit.used) / 1000000).toFixed(2));
+    resultInfo.cpuMaxSec = Number((Number(accountInfo.cpu_limit.max) / 1000000).toFixed(2));
+    resultInfo.netUsedKb = Number((Number(accountInfo.net_limit.used) / 1000).toFixed(2));
+    resultInfo.netMaxKb = Number((Number(accountInfo.net_limit.max) / 1000).toFixed(2));
+    resultInfo.ramUsedKb = Number((Number(accountInfo.ram_usage) / 1000).toFixed(2));
+    resultInfo.ramMaxKb = Number((Number(accountInfo.ram_quota) / 1000).toFixed(2));
     if (accountInfo.core_liquid_balance) {
       resultInfo.unstaked = Number(accountInfo.core_liquid_balance.split(' ', 1)[0]);
       resultInfo.usdUnstaked = Number((resultInfo.unstaked * usdCourse).toFixed(3));

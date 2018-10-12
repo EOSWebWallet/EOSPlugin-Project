@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 
+import { FormModule } from '../form/form.module';
+
 import { InfoDialogComponent } from './info/info-dialog.component';
 import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
 
@@ -13,6 +15,7 @@ import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
     MatIconModule,
     MatButtonModule,
     TranslateModule,
+    FormModule
   ],
   declarations: [
     ConfirmDialogComponent,

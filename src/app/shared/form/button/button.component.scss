@@ -50,7 +50,7 @@ button {
   }
 }
 
-::ng-deep .mat-button {
+::ng-deep app-button .mat-button {
   min-width: 0 !important;
   padding: 0 !important;
   line-height: inherit !important;

@@ -68,14 +68,6 @@ body {
   height: 100%;
 }
 
-.flex-container {
-  height: 100%;
-  align-items: center;
-  flex-direction: column;
-  display: flex;
-}
-
-
 .ng-scrollbar {
   background: $color-inactive-light;
   top: 0 !important;
@@ -87,4 +79,8 @@ body {
 .ng-scrollbar-thumb {
   border-radius: 0 !important;
   background: $color-primary !important;
+}
+
+mat-dialog-container.mat-dialog-container {
+  border-radius: 0;
 }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ScrollbarModule } from 'ngx-scrollbar';
-import { MatDialogModule } from '@angular/material/dialog';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -19,7 +18,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     TranslateModule,
-    MatDialogModule,
     SharedModule,
   ],
   declarations: [

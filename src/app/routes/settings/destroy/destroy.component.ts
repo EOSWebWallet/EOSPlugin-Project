@@ -6,6 +6,7 @@ import { filter } from 'rxjs/internal/operators';
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { DialogService } from '../../../shared/dialog/dialog.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 import { ConfirmDialogComponent } from '../../../shared/dialog/confirm/confirm-dialog.component';
@@ -20,7 +21,8 @@ export class DestroyComponent extends AbstractPageComponent {
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
-    private dialog: MatDialog
+    private dialogService: DialogService,
+    private router: Router
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -31,14 +33,14 @@ export class DestroyComponent extends AbstractPageComponent {
   }
 
   onDestroy(): void {
-    this.dialog.open(ConfirmDialogComponent, {
-      width: '240px',
-      data: { message: 'routes.settings.destroy.confirmMessage' }
-    })
-    .afterClosed()
-    .pipe(
-      filter(Boolean)
-    )
-    .subscribe(() => this.authService.destroy());
+    this.dialogService.confirm('routes.settings.destroy.confirmMessage')
+      .pipe(
+        filter(Boolean)
+      )
+      .subscribe(() => {
+        this.authService.destroy();
+        this.dialogService.info('routes.settings.destroy.successMessage')
+          .subscribe(() => this.router.navigateByUrl(AuthService.PATH_REGISTER));
+      });
   }
 }

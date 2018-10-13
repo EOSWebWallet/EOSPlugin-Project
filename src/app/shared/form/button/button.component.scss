@@ -15,8 +15,8 @@ button {
 }
 
 .accept {
-  border-color: $color-accept;
-  color: $color-accept;
+  border-color: $color-success;
+  color: $color-success;
 }
 
 .reject {
@@ -25,8 +25,8 @@ button {
 }
 
 .select {
-  border-color: $color-accept;
-  color: $color-accept;
+  border-color: $color-success;
+  color: $color-success;
   font-weight: 400 !important;
 
   mat-icon {
@@ -34,14 +34,14 @@ button {
   }
 
   &.selected {
-    background: $color-accept;
+    background: $color-success;
     color: white;
   }
 }
 
 .selected {
-  border-color: $color-accept;
-  background: $color-accept;
+  border-color: $color-success;
+  background: $color-success;
   color: white;
   font-weight: 400 !important;
 

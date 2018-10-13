@@ -78,7 +78,6 @@ export class AuthService extends AbstractStateService implements CanActivate {
 
   destroy(): void {
     this.dispatchAction(PluginUtils.PLUGIN_DESTROY);
-    this.router.navigateByUrl(AuthService.PATH_REGISTER);
   }
 
   changePassword(password: string, newPassword: string): void {

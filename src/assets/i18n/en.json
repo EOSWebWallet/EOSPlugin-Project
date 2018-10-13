@@ -124,7 +124,8 @@
         "menu": "Destroy",
         "message": "Reseting your account will clear all your data.",
         "destroy": "Destroy",
-        "confirmMessage": "All history will be destroyed!"
+        "confirmMessage": "All data will be destroyed!",
+        "successMessage": "All data was destroyed!"
       },
       "about": {
         "title": "About",

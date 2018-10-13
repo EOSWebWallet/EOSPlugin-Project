@@ -11,13 +11,13 @@ mat-icon {
 }
 
 .select {
-  border: 1px solid $color-accept;
+  border: 1px solid $color-success;
 }
 
 .selected {
-  border: 1px solid $color-accept;
+  border: 1px solid $color-success;
   color: white;
-  background: $color-accept;
+  background: $color-success;
 }
 
 .edit {

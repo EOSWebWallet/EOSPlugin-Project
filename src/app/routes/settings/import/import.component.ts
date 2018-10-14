@@ -1,6 +1,6 @@
 import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, delay, first, filter } from 'rxjs/internal/operators';
+import { filter, flatMap } from 'rxjs/internal/operators';
 
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 
@@ -9,6 +9,7 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { IFile } from '../../../shared/form/file/file.interface';
 
 import { PluginService } from '../../../core/plugin/plugin.service';
+import { DialogService } from '../../../shared/dialog/dialog.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
@@ -26,7 +27,8 @@ export class ImportComponent extends AbstractPageComponent {
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
     private pluginService: PluginService,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -42,8 +44,10 @@ export class ImportComponent extends AbstractPageComponent {
   }
 
   onImport(): void {
-    this.pluginService.import(this.password, this.file)
+    this.dialogService.confirm('routes.settings.import.confirmMessage')
       .pipe(
+        filter(Boolean),
+        flatMap(() => this.pluginService.import(this.password, this.file)),
         filter(Boolean)
       )
       .subscribe(result => this.router.navigateByUrl(this.pageConfig.backLink));

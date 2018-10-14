@@ -9,7 +9,6 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
-import { ConfirmDialogComponent } from '../../../shared/dialog/confirm/confirm-dialog.component';
 
 @Component({
   selector: 'app-destroy',

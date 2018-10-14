@@ -2,13 +2,14 @@ import { Component, forwardRef, Inject, ViewChild, OnDestroy, OnInit } from '@an
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
-import { filter, first, map } from 'rxjs/internal/operators';
+import { filter, first, map, flatMap } from 'rxjs/internal/operators';
 
 import { INetworkAccountInfo } from '../../../core/eos/eos.interface';
 
 import { AccountService } from '../../../core/account/account.service';
 import { SendService } from './send.service';
 import { EOSService } from '../../../core/eos/eos.service';
+import { DialogService } from '../../../shared/dialog/dialog.service';
 
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
@@ -33,7 +34,8 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
     private sendService: SendService,
     private router: Router,
     private accountService: AccountService,
-    private eosService: EOSService
+    private eosService: EOSService,
+    private dialogService: DialogService
   ) {
     super(pageLayout, {
       backLink: '/app/home',
@@ -70,6 +72,9 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
 
   onSend(): void {
     this.sendService.send(this.form.value)
+      .pipe(
+        flatMap(() => this.dialogService.info('routes.dashboard.send.successMessage'))
+      )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
   }
 }

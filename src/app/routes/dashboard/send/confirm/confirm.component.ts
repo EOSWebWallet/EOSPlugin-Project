@@ -27,6 +27,8 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
 
   accountInfo: INetworkAccountInfo = {};
 
+  transaction: ITransactionInfo;
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private sendService: SendService,
@@ -54,10 +56,8 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
       this.courseUSD = Number(courses.market_data.current_price.usd);
       this.accountInfo = info;
     });
-  }
 
-  get transaction(): ITransactionInfo {
-    return this.sendService.signupOptions.signargs.messages[0].data;
+    this.transaction = this.sendService.signupOptions.signargs.messages[0].data;
   }
 
   get quantity(): number {

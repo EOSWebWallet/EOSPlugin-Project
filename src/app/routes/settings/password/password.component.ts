@@ -6,6 +6,7 @@ import { map, delay } from 'rxjs/internal/operators';
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 
 import { AuthService } from '../../../core/auth/auth.service';
+import { DialogService } from '../../../shared/dialog/dialog.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
@@ -21,7 +22,8 @@ export class PasswordComponent extends AbstractPageComponent {
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -36,7 +38,8 @@ export class PasswordComponent extends AbstractPageComponent {
     const passwod = this.passwordForm.controls['password'].value;
     const newPassword = this.passwordForm.controls['newPassword'].value;
     this.authService.changePassword(passwod, newPassword);
-    this.router.navigateByUrl(this.pageConfig.backLink);
+    this.dialogService.info('routes.settings.password.successMessage')
+      .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
   }
 
   private get isValid(): boolean {

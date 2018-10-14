@@ -30,6 +30,7 @@
         "quantity": "Quantity",
         "symbol": "Symbol",
         "memo": "Memo",
+        "successMessage": "Password was changed!",
         "confirm": {
           "title": "Transaction Check",
           "confirm": "Confirm",
@@ -102,7 +103,8 @@
         "change": "Change",
         "password": "Old password",
         "newPassword": "New password",
-        "newPasswordConfirm": "Confirm password"
+        "newPasswordConfirm": "Confirm password",
+        "successMessage": "Password was changed!"
       },
       "import": {
         "title": "Import Data",
@@ -110,7 +112,8 @@
         "password": "Enter password to continue",
         "message": "If you ever change browsers or move computers, you will need this seed file to access your accounts. Save them somewhere safe and secret.",
         "import": "Import",
-        "file": "Select file on your computer"
+        "file": "Select file on your computer",
+        "confirmMessage": "All data will be changed!"
       },
       "export": {
         "title": "Export Data",

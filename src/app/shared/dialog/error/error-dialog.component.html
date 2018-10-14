@@ -1,0 +1,17 @@
+<div mat-dialog-content>
+  <div class="icon">
+    <app-icon type="icon-danger"></app-icon>
+  </div>
+  <div class="content">
+    <div class="message">
+      <p>{{ data.message | translate }}</p>
+      <app-icon type="play_circle_filled" (click)="showDescription = !showDescription"></app-icon>
+    </div>
+    <div class="description" [hidden]="!showDescription">
+      {{ data.description | translate }}
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>{{ 'shared.dialog.success.close' | translate }}</button>
+</div>

@@ -1,0 +1,53 @@
+@import "~src/variables";
+
+div[mat-dialog-content] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div[mat-dialog-actions] {
+  display: flex;
+  justify-content: center;
+}
+
+button[mat-button] {
+  padding: 6px 18px;
+  line-height: inherit;
+  min-width: inherit;
+  margin: 0 20px 15px 20px;
+  border-radius: 0;
+  font-family: $font-family-secondary !important;
+  text-transform: uppercase;
+  color: white;
+  background: $color-danger;
+  box-shadow: 0 5px 20px 2px rgba(142, 179, 176, .3);
+}
+
+.icon {
+  margin-bottom: 20px;
+}
+
+.content {
+  margin-bottom: 25px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+
+  .message {
+    display: flex;
+    justify-content: center;
+
+    app-icon {
+      margin: 0 5px;
+      color: $color-danger;
+      cursor: pointer;
+      transform: rotate(90deg);
+    }
+  }
+
+  .description {
+    margin-top: 20px;
+    word-break: break-all;
+  }
+}

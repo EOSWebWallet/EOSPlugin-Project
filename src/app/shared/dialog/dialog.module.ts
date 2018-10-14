@@ -9,6 +9,7 @@ import { DialogService } from './dialog.service';
 
 import { InfoDialogComponent } from './info/info-dialog.component';
 import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
+import { ErrorDialogComponent } from './error/error-dialog.component';
 
 @NgModule({
   imports: [
@@ -20,14 +21,17 @@ import { ConfirmDialogComponent } from './confirm/confirm-dialog.component';
   declarations: [
     ConfirmDialogComponent,
     InfoDialogComponent,
+    ErrorDialogComponent
   ],
   exports: [
     ConfirmDialogComponent,
     InfoDialogComponent,
+    ErrorDialogComponent
   ],
   entryComponents: [
     ConfirmDialogComponent,
     InfoDialogComponent,
+    ErrorDialogComponent
   ],
   providers: [
     DialogService

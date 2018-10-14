@@ -30,7 +30,8 @@
         "quantity": "Quantity",
         "symbol": "Symbol",
         "memo": "Memo",
-        "successMessage": "Password was changed!",
+        "successMessage": "Transaction confirmed!",
+        "errorMessage": "Transaction was failed!",
         "confirm": {
           "title": "Transaction Check",
           "confirm": "Confirm",

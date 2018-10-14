@@ -2,7 +2,7 @@ import { Component, forwardRef, Inject, ViewChild, OnDestroy, OnInit } from '@an
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
-import { filter, first, map, flatMap } from 'rxjs/internal/operators';
+import { filter, first, map, flatMap, catchError } from 'rxjs/internal/operators';
 
 import { INetworkAccountInfo } from '../../../core/eos/eos.interface';
 
@@ -73,7 +73,13 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
   onSend(): void {
     this.sendService.send(this.form.value)
       .pipe(
-        flatMap(() => this.dialogService.info('routes.dashboard.send.successMessage'))
+        flatMap(() => this.dialogService.info('routes.dashboard.send.successMessage')),
+        catchError(err => this.dialogService.error(
+          'routes.dashboard.send.errorMessage',
+          typeof err === 'string'
+            ? err
+            : JSON.stringify(err)
+        ))
       )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
   }

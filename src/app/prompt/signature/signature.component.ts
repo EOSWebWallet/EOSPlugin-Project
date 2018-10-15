@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { ScrollbarComponent } from 'ngx-scrollbar';
 import { map, first } from 'rxjs/internal/operators';
 
 import { IAccount } from '../../core/account/account.interface';
@@ -19,6 +20,11 @@ import { PromptUtils } from '../../core/prompt/prompt.utils';
   styleUrls: [ './signature.component.scss' ]
 })
 export class SignatureComponent {
+  @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
+
+  keys = Object.keys;
+
+  activeTab = 0;
 
   constructor(
     private accountService: AccountService,
@@ -35,12 +41,12 @@ export class SignatureComponent {
     return (<ISignaturePromtOptions> this.promptService.prompt).signargs;
   }
 
-  get account(): IAccount {
-    return (<ISignaturePromtOptions> this.promptService.prompt).account;
+  get networkAccount(): INetworkAccount {
+    return (<ISignaturePromtOptions> this.promptService.prompt).networkAccount;
   }
 
   get network(): INetwork {
-    return this.account.network;
+    return (<ISignaturePromtOptions> this.promptService.prompt).network;
   }
 
   onAccept(): void {
@@ -51,5 +57,10 @@ export class SignatureComponent {
   onDeny(): void {
     this.promptService.prompt.responder(null);
     PromptUtils.close();
+  }
+
+  changeTab(activeTab: number): void {
+    this.activeTab = activeTab;
+    setTimeout(() => this.scrollRef.update());
   }
 }

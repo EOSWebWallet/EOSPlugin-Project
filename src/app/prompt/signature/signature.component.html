@@ -1,10 +1,50 @@
 <div class="content">
   <div class="header">
-    <h1>{{ selectedNetworkAccountName$ | async }}</h1>
+    <h1>{{ networkAccount.name }}@{{ networkAccount.authority }} </h1>
     <p><a href="">eostoolkit.io</a>{{ 'prompt.signature.requestAdditionalInfo' | translate }}</p>
   </div>
   <div class="network">
+    <app-icon type="icon-network"></app-icon>
     {{ network.name }}
+  </div>
+  <div class="transaction">
+    <div class="tabs">
+      <div class="tab" [class.active]="activeTab === 0" (click)="changeTab(0)">{{ 'prompt.signature.properties' | translate }}</div>
+      <div class="tab" [class.active]="activeTab === 1" (click)="changeTab(1)">{{ 'prompt.signature.json' | translate }}</div>
+    </div>
+    <div class="tab-content">
+      <ng-scrollbar>
+        <div *ngIf="activeTab === 0">
+          <div class="properties">
+            <div class="actions">
+              <div class="name">{{ 'prompt.signature.actions' | translate }}:</div>
+              <div class="description">
+                <div *ngFor="let action of signargs.messages">
+                  {{ action.code }} -> {{ action.type }}
+                </div>
+              </div>
+            </div>
+            <div class="action" *ngFor="let action of signargs.messages">
+              <mat-divider></mat-divider>
+              <div class="description">{{ action.code }} -> {{ action.type }}</div>
+              <div class="params">
+                <table>
+                  <tr *ngFor="let propKey of keys(action.data)">
+                    <td>{{ propKey }}:</td>
+                    <td>{{ action.data[propKey] }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="activeTab === 1">
+          <div class="json">
+            {{ signargs.messages | json }}
+          </div>
+        </div>
+      </ng-scrollbar>
+    </div>
   </div>
 </div>
 <div class="footer">

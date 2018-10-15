@@ -11,7 +11,10 @@
     "signature": {
       "requestAdditionalInfo": "запрашивает доп. информацию",
       "deny": "Отменить",
-      "accept": "Принять"
+      "accept": "Принять",
+      "properties": "свойства",
+      "json": "json",
+      "actions": "Контракт"
     }
   },
   "routes": {

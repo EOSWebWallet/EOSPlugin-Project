@@ -88,15 +88,17 @@ export class EOSUtils {
         resolve(NetworkError.signatureAccountMissing());
       }
 
+      const networkAccount = AccountUtils.getNetworkAccount(identity.accounts[0], account);
       const requiredAccounts = EOSUtils.actionParticipants(payload);
-      const formattedName = EOSUtils.accountFormatter(AccountUtils.getNetworkAccount(identity.accounts[0], account));
+      const formattedName = EOSUtils.accountFormatter(networkAccount);
       if (!requiredAccounts.includes(formattedName) && !requiredAccounts.includes(account.keypair.publicKey)) {
         resolve(NetworkError.signatureAccountMissing());
       }
 
       PromptUtils.open({
         type: PromptType.REQUEST_SIGNATURE,
-        account,
+        network: account.network,
+        networkAccount,
         signargs: payload,
         responder: approval => {
           if (!approval) {

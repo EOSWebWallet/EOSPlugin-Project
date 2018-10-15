@@ -11,7 +11,10 @@
     "signature": {
       "requestAdditionalInfo": "is requesting additional information",
       "deny": "Deny",
-      "accept": "Accept"
+      "accept": "Accept",
+      "properties": "properties",
+      "json": "json",
+      "actions": "Contact & Action"
     }
   },
   "routes": {

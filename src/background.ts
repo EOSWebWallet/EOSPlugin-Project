@@ -43,7 +43,7 @@ export class Background {
       case ExtensionMessageType.IMPORT_PLUGIN: this.import(message.payload, cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(message.payload, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
-      case ExtensionMessageType.DECRYPT_KEYPAIR: this.decryptKeypair(message.payload, cb); break;
+      case ExtensionMessageType.SIGNUP: this.signup(message.payload, cb); break;
     }
   }
 
@@ -148,22 +148,19 @@ export class Background {
 
   requestSignature(payload: any, cb: Function): void {
     this.load(plugin => {
-      const account = AccountUtils.getAccount(payload.identity, plugin.keychain.accounts);
-      const keypair = KeypairUtils.decrypt(account.keypair, this.seed);
       EOSUtils.requestSignature({
         plugin,
-        identity: payload.identity,
         payload,
-        privateKey: keypair.privateKey
       }).then(result => cb(result));
     });
   }
 
-  decryptKeypair(keypair: IKeypair, cb: Function): void {
+  signup({ signargs, keypair }, cb: Function): void {
     const privateKey = AES.decrypt(keypair.privateKey, this.seed);
-    cb({
-      privateKey,
-      publicKey: keypair.publicKey
+    EOSUtils.signer(privateKey, signargs, signature => {
+      cb(signature ? {
+        signatures: [ signature ]
+      } : null);
     });
   }
 }

@@ -7,8 +7,6 @@ export interface ISigner {
 
 export interface ISignatureOptions {
   plugin: IPlugin;
-  identity: IAccountIdentity;
-  privateKey: string;
   payload: any;
 }
 

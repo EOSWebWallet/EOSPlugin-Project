@@ -67,14 +67,14 @@ export class SendService {
   signup(): void {
     const signupOptions = this.signature$.value;
     ExtensionMessageService.send({
-      type: ExtensionMessageType.DECRYPT_KEYPAIR,
-      payload: signupOptions.keypair
-    }).then(keypair =>
-      EOSUtils.signer(keypair.privateKey, signupOptions.signargs, signature => {
+      type: ExtensionMessageType.SIGNUP,
+      payload: { signargs: signupOptions.signargs, keypair: signupOptions.keypair }
+    }).then(result => {
+      if (result) {
         this.signature$.next(null);
-        signupOptions.signup({ signatures: [ signature ] });
-      })
-    );
+        signupOptions.signup(result);
+      }
+    });
   }
 
   deny(): void {

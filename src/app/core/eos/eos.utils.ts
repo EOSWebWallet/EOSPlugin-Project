@@ -2,16 +2,19 @@ import * as Eos from 'eosjs';
 import * as ricardianParser from 'eos-rc-parser';
 
 import { PromptType, ISignaturePromtOptions } from '../prompt/prompt.interface';
-import { NetworkError, NetworkMessageType } from '../message/message.interface';
+import { NetworkError, NetworkMessageType, ExtensionMessageType } from '../message/message.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
 import { ISigner, ISignatureOptions, ISignatureResult } from './eos.interface';
 import { IPlugin } from '../plugin/plugin.interface';
 import { IAccountIdentity } from '../account/account.interface';
 
+import { ExtensionMessageService } from '../message/message.service';
+
 import { NetworkUtils } from '../network/network.utils';
 import { AccountUtils } from '../account/account.utils';
 import { BrowserAPIUtils } from '../browser/browser.utils';
 import { PromptUtils } from '../prompt/prompt.utils';
+import { PluginUtils } from '../plugin/plugin.utils';
 
 const { ecc } = Eos.modules;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
@@ -78,39 +81,29 @@ export class EOSUtils {
 
   static requestSignature(options: ISignatureOptions): Promise<ISignatureResult | NetworkError> {
     return new Promise(resolve => {
-      const { identity, plugin, privateKey, payload } = options;
-      const account = AccountUtils.getAccount(identity, plugin.keychain.accounts);
-      if (!account) {
-        resolve(NetworkError.signatureAccountMissing());
-      }
+      const { plugin, payload } = options;
 
-      const networkAccount = AccountUtils.getNetworkAccount(identity.accounts[0], account);
-      const requiredAccounts = EOSUtils.actionParticipants(payload);
-      const formattedName = EOSUtils.accountFormatter(networkAccount);
-      if (!requiredAccounts.includes(formattedName) && !requiredAccounts.includes(account.keypair.publicKey)) {
-        resolve(NetworkError.signatureAccountMissing());
+      if (!PluginUtils.isEncrypted(plugin)) {
+        const account = AccountUtils.getAccount(payload.identity, plugin.keychain.accounts);
+        if (!account) {
+          resolve(NetworkError.signatureAccountMissing());
+        }
       }
 
       PromptUtils.open({
         type: PromptType.REQUEST_SIGNATURE,
-        network: account.network,
-        networkAccount,
+        identity: payload.identity,
         signargs: payload,
-        responder: approval => {
-          if (!approval) {
+        responder: signature => {
+          if (signature === false) {
               resolve(NetworkError.signatureError('signature_rejected', 'User rejected the signature request'));
               return false;
           }
-
-          EOSUtils.signer(privateKey, payload, signature => {
-            if (!signature) {
-              resolve(NetworkError.maliciousEvent());
-              return false;
-            }
-            resolve({
-              signatures: [ signature ]
-            });
-          });
+          if (signature === null) {
+            resolve(NetworkError.maliciousEvent());
+            return false;
+          }
+          resolve(signature);
         }
       } as ISignaturePromtOptions);
     });

@@ -1,4 +1,5 @@
-import { INetwork, INetworkAccount } from '../network/network.interface';
+import { INetwork } from '../network/network.interface';
+import { IAccountIdentity } from '../account/account.interface';
 
 export interface IPromptOptions {
   type: PromptType;
@@ -12,8 +13,7 @@ export interface IIdentityPromtOptions extends IPromptOptions {
 
 export interface ISignaturePromtOptions extends IPromptOptions {
   type: PromptType.REQUEST_SIGNATURE;
-  network: INetwork;
-  networkAccount: INetworkAccount;
+  identity: IAccountIdentity;
   signargs: any;
 }
 

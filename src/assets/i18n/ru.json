@@ -6,7 +6,8 @@
       "select": "Выбрать",
       "publicKey": "Публичный ключ",
       "deny": "Отменить",
-      "accept": "Принять"
+      "accept": "Принять",
+      "emptyMessage": "Список аккаунтов пуст!"
     },
     "signature": {
       "requestAdditionalInfo": "запрашивает доп. информацию",

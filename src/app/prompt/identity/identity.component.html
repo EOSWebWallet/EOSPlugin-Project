@@ -24,6 +24,9 @@
         </div>
       </div>
     </div>
+    <div *ngIf="!accounts || !accounts.length" class="empty">
+      {{ 'prompt.identity.emptyMessage' | translate }}
+    </div>
   </ng-scrollbar>
 </div>
 <div class="footer">

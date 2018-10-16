@@ -13,7 +13,7 @@
       <div class="tab" [class.active]="activeTab === 1" (click)="changeTab(1)">{{ 'prompt.signature.json' | translate }}</div>
     </div>
     <div class="tab-content">
-      <ng-scrollbar>
+      <ng-scrollbar autoHide="true">
         <div *ngIf="activeTab === 0">
           <div class="properties">
             <div class="actions">

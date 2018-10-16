@@ -1,5 +1,5 @@
 <div class="content" [ngClass]="page.footer || 'full-height'">
-  <ng-scrollbar>
+  <ng-scrollbar autoHide="true">
     <div class="header" *ngIf="page.header">
       <a [routerLink]="page.backLink" *ngIf="page.backLink" (click)="page.back && page.back()">
         <app-icon type="keyboard_arrow_left"></app-icon>

@@ -102,6 +102,19 @@ export class PluginEffects {
     map(plugin => ({ type: PluginUtils.PLUGIN_STORE, payload: plugin }))
   );
 
+  @Effect()
+  lock$ = this.actions.pipe(
+    ofType(AuthService.AUTH_LOCK),
+    switchMap((action: UnsafeAction) => {
+      return from(ExtensionMessageService.send({ type: ExtensionMessageType.SET_SEED, payload: '' }))
+        .pipe(
+          map(() => ({
+            type: PluginUtils.PLUGIN_LOAD,
+          }))
+        );
+    })
+  );
+
   constructor(
     private actions: Actions,
     private pluginService: PluginService

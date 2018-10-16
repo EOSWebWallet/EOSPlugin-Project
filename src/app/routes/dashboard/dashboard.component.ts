@@ -7,6 +7,7 @@ import { INetworkAccountInfo, INetworkAccountAction } from '../../core/eos/eos.i
 
 import { AccountService } from '../../core/account/account.service';
 import { EOSService } from '../../core/eos/eos.service';
+import { AuthService } from '../../core/auth/auth.service';
 
 import { AbstractPageComponent } from '../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../layout/page/page.component';
@@ -26,7 +27,8 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private accountService: AccountService,
-    private eosService: EOSService
+    private eosService: EOSService,
+    private authService: AuthService
   ) {
     super(pageLayout, {});
   }
@@ -49,5 +51,9 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
       this.accountInfo = info;
       this.accountActions = actions;
     });
+  }
+
+  onLock(): void {
+    this.authService.lock();
   }
 }

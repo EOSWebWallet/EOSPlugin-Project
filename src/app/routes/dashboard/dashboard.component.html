@@ -1,6 +1,9 @@
 
 <div class="content">
-  <h2>{{ selectedNetworkAccountName$ | async }}</h2>
+  <div class="header">
+    <h2>{{ selectedNetworkAccountName$ | async }}</h2>
+    <app-icon type="icon-lock2" (click)="onLock()"></app-icon>
+  </div>
   <div class="balance">
     <table>
       <tr>

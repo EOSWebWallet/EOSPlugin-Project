@@ -33,6 +33,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   static AUTH_PASSWORD_CAHNGE_SUCCESS = 'AUTH_PASSWORD_CAHNGE_SUCCESS';
   static AUTH_LOGIN = 'AUTH_LOGIN';
   static AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
+  static AUTH_LOCK = 'AUTH_LOCK';
 
   constructor(
     protected actions: Actions,
@@ -84,6 +85,11 @@ export class AuthService extends AbstractStateService implements CanActivate {
 
   changePassword(password: string, newPassword: string): void {
     this.dispatchAction(AuthService.AUTH_PASSWORD_CAHNGE, { password, newPassword });
+  }
+
+  lock(): void {
+    this.dispatchAction(AuthService.AUTH_LOCK);
+    this.router.navigateByUrl(AuthService.PATH_LOGIN);
   }
 
   private navigateToInitialRoute(): void {

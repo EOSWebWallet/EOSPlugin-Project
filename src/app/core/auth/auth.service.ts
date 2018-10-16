@@ -17,6 +17,8 @@ import { ExtensionMessageService } from '../message/message.service';
 
 import { PluginUtils } from '../plugin/plugin.utils';
 
+declare var window: any;
+
 @Injectable()
 export class AuthService extends AbstractStateService implements CanActivate {
 
@@ -95,7 +97,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
         this.router.navigateByUrl(AuthService.PATH_REGISTER);
       } else if (hasAuthorization && !isAuthorized) {
         this.router.navigateByUrl(AuthService.PATH_LOGIN);
-      } else if (location.search.indexOf('prompt') !== -1) {
+      } else if (window.isPrompt) {
         this.router.navigateByUrl(AuthService.PATH_PROMPT);
       } else {
         this.router.navigateByUrl(AuthService.PATH_HOME);
@@ -105,11 +107,23 @@ export class AuthService extends AbstractStateService implements CanActivate {
 
   private navigateAfterRegistration(): void {
     this.getAction(AuthService.AUTH_REGISTER_SUCCESS)
-      .subscribe(() => this.router.navigateByUrl(AuthService.PATH_HOME));
+      .subscribe(() => {
+        if (window.isPrompt) {
+          this.router.navigateByUrl(AuthService.PATH_PROMPT);
+        } else {
+          this.router.navigateByUrl(AuthService.PATH_HOME);
+        }
+      });
   }
 
   private navigateAfterLogin(): void {
     this.getAction(AuthService.AUTH_LOGIN_SUCCESS)
-      .subscribe(() => this.router.navigateByUrl(AuthService.PATH_HOME));
+      .subscribe(() => {
+        if (window.isPrompt) {
+          this.router.navigateByUrl(AuthService.PATH_PROMPT);
+        } else {
+          this.router.navigateByUrl(AuthService.PATH_HOME);
+        }
+      });
   }
 }

@@ -135,8 +135,7 @@ export class Background {
 
   getIdentity(requestData: any, cb: Function): void {
     this.load(plugin => {
-      const accounts = AccountUtils.filterAccountsByNetwork(plugin.keychain.accounts, requestData.network);
-      AccountUtils.getIdentity(accounts, identity => {
+      AccountUtils.getIdentity(requestData.network, identity => {
         if (!identity) {
           cb(NetworkError.signatureError('identity_rejected', 'User rejected the provision of an Identity'));
           return false;

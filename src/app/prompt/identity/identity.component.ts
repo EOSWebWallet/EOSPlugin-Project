@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { first, filter } from 'rxjs/internal/operators';
 
 import { IAccount, IAccountIdentity } from '../../core/account/account.interface';
 import { INetworkAccount, INetwork } from '../../core/network/network.interface';
 
+import { AccountService } from '../../core/account/account.service';
 import { PromptService } from '../prompt.service';
 
 import { AccountUtils } from '../../core/account/account.utils';
@@ -14,20 +16,30 @@ import { IIdentityPromtOptions } from '../../core/prompt/prompt.interface';
   templateUrl: './identity.component.html',
   styleUrls: [ './identity.component.scss' ]
 })
-export class IdentityComponent {
+export class IdentityComponent implements OnInit {
 
   identity: IAccountIdentity;
 
+  accounts: IAccount[] = [];
+
   constructor(
     private promptService: PromptService,
+    private accountService: AccountService
   ) { }
 
-  get accounts(): IAccount[] {
-    return (<IIdentityPromtOptions> this.promptService.prompt).accounts;
+  ngOnInit(): void {
+    this.accountService.accounts$
+      .pipe(
+        filter(Boolean),
+        first()
+      )
+      .subscribe(accounts =>
+        this.accounts = AccountUtils.filterAccountsByNetwork(accounts, this.network)
+      );
   }
 
   get network(): INetwork {
-    return this.accounts[0].network;
+    return (<IIdentityPromtOptions> this.promptService.prompt).network;
   }
 
   isSelected(networkAccount: INetworkAccount): boolean {

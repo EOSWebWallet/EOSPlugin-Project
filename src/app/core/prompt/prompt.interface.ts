@@ -1,4 +1,3 @@
-import { IAccount } from '../account/account.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
 
 export interface IPromptOptions {
@@ -8,7 +7,7 @@ export interface IPromptOptions {
 
 export interface IIdentityPromtOptions extends IPromptOptions {
   type: PromptType.REQUEST_IDENTITY;
-  accounts: IAccount[];
+  network: INetwork;
 }
 
 export interface ISignaturePromtOptions extends IPromptOptions {

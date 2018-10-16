@@ -15,10 +15,10 @@ export class AccountUtils {
     };
   }
 
-  static getIdentity(accounts: IAccount[], callback: Function): Promise<void> {
+  static getIdentity(network: INetwork, callback: Function): Promise<void> {
     return PromptUtils.open({
       type: PromptType.REQUEST_IDENTITY,
-      accounts,
+      network,
       responder: identity => {
         if (!identity || identity.hasOwnProperty('isError')) {
             callback(null);

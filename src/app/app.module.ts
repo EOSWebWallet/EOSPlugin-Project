@@ -31,6 +31,12 @@ import { StorageUtils } from './core/storage/storage.service';
 // background.seed =
 // '2f944c8efe2b6d0dd4019d06ffae60fb67720224cf9fb3df1c942694c700ee1639cf764612380022468b19c9642135ad3de271b6e5fe5b5c1d6e248d26255d21';
 
+declare var window: any;
+
+if (location.search.indexOf('prompt') !== -1) {
+  window.isPrompt = true;
+}
+
 export function getInitialState(): Partial<IAppState> {
   return { ...initialState };
 }

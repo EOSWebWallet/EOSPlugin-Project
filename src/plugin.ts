@@ -7,6 +7,7 @@ import { IAccountIdentity } from './app/core/account/account.interface';
 import { EOSUtils } from './app/core/eos/eos.utils';
 import { INetwork } from './app/core/network/network.interface';
 
+declare var window: any;
 
 interface IResolver {
   id: string;
@@ -14,19 +15,25 @@ interface IResolver {
   reject: (payload: any) => void;
 }
 
+interface IPluginConfig {
+  [network: string]: IAccountIdentity;
+}
+
 export class EOSPlugin {
   static STREAM_NAME = 'eosPlugin';
 
   private stream: EncryptedStream | any;
   private resolvers: IResolver[] = [];
-  private identity: IAccountIdentity;
 
   readonly eos = EOSUtils.createEOS({
-    requestSignature: signargs => {
-      this.throwIfNoIdentity();
+    requestSignature: async signargs => {
+      const identity = await this.getIdentity(signargs.network);
+      if (!identity || !identity.publicKey) {
+        throw new NetworkError('There is no identity with an account set on your EOSPlugin instance.');
+      }
       return this.send(NetworkMessageType.REQUEST_SIGNATURE, {
         ...signargs,
-        identity: this.identity
+        identity
       });
     }
   });
@@ -36,12 +43,42 @@ export class EOSPlugin {
     this.subscribe();
   }
 
-  getIdentity(network: INetwork): Promise<IAccountIdentity> {
+  requestIdentity(network: INetwork): Promise<IAccountIdentity> {
     return this.send(NetworkMessageType.GET_IDENTITY, { network })
       .then(identity => {
-        this.identity = identity;
+        this.saveIdentity(identity, network);
         return identity;
       });
+  }
+
+  getIdentity(network: INetwork): Promise<IAccountIdentity> {
+    const identity = this.checkIdentity(network);
+    return identity
+      ? Promise.resolve(identity)
+      : this.send(NetworkMessageType.GET_IDENTITY, { network })
+        .then(requestedIdentity => {
+          this.saveIdentity(requestedIdentity, network);
+          return requestedIdentity;
+        });
+  }
+
+  private checkIdentity(network: INetwork): IAccountIdentity {
+    return this.config[`${network.protocol}://${network.host}:${network.port}`];
+  }
+
+  private saveIdentity(identity: IAccountIdentity, network: INetwork): void {
+    this.config = {
+      ...this.config,
+      [`${network.protocol}://${network.host}:${network.port}`]: identity
+    };
+  }
+
+  private get config(): IPluginConfig {
+    return JSON.parse(window.localStorage.getItem('eosPlugin') || '{}');
+  }
+
+  private set config(config: IPluginConfig) {
+    window.localStorage.setItem('eosPlugin', JSON.stringify(config));
   }
 
   private send(type: NetworkMessageType, payload: any): Promise<any> {
@@ -69,15 +106,5 @@ export class EOSPlugin {
         }
       }
     });
-  }
-
-  private throwIfNoIdentity() {
-    if (!this.identity || !this.identity.publicKey) {
-      this.throws('There is no identity with an account set on your Scatter instance.');
-    }
-  }
-
-  private throws(msg) {
-    throw new NetworkError(msg);
   }
 }

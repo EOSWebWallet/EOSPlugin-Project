@@ -6,13 +6,14 @@ import { ExtensionMessageType, IExtensionMessage, NetworkError } from './app/cor
 
 import { IPlugin } from './app/core/plugin/plugin.interface';
 import { IKeypair } from './app/core/keypair/keypair.interface';
+import { IAccountIdentity } from './app/core/account/account.interface';
+import { INetwork } from './app/core/network/network.interface';
 
 import { PluginUtils } from './app/core/plugin/plugin.utils';
 import { KeypairUtils } from './app/core/keypair/keypair.utils';
 import { StorageUtils } from './app/core/storage/storage.service';
 import { BrowserAPIUtils } from './app/core/browser/browser.utils';
 import { AccountUtils } from './app/core/account/account.utils';
-import { INetwork } from './app/core/network/network.interface';
 import { EOSUtils } from './app/core/eos/eos.utils';
 import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
 

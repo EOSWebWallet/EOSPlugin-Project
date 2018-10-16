@@ -19,11 +19,7 @@ const proxy = (dummy, handler) => new Proxy(dummy, handler);
 export class EOSUtils {
 
   static createEOS(signer: ISigner): Function {
-    return (network, _eos, _options: any = {}, protocol = 'http') => {
-      if (!network.hasOwnProperty('protocol') || !network.protocol.length) {
-        network.protocol = protocol;
-      }
-
+    return (network, _eos, _options: any = {}) => {
       network = NetworkUtils.fromJson(network);
       if (!NetworkUtils.isValid(network)) {
         throw NetworkError.noNetwork();
@@ -208,20 +204,12 @@ export class EOSUtils {
 
       const data = abi.fromBuffer(action.name, action.data);
       const actionAbi = abi.abi.actions.find(fcAction => fcAction.name === action.name);
-      let ricardian = actionAbi ? actionAbi.ricardian_contract : null;
-
-      if (ricardian) {
-        const htmlFormatting = { h1: 'div class="ricardian-action"', h2: 'div class="ricardian-description"' };
-        const signer = action.authorization.length === 1 ? action.authorization[0].actor : null;
-        ricardian = ricardianParser.parse(action.name, data, ricardian, signer, htmlFormatting);
-      }
 
       return {
         data,
         code: action.account,
         type: action.name,
         authorization: action.authorization,
-        ricardian
       };
     }));
   }

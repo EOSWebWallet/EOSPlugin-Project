@@ -16,7 +16,7 @@
         [errors]="passwordErrors"
         required
       ></app-password>
-      <a href="">Delete Data</a>
+      <a href="" (click)="onDestroy($event)">{{ 'routes.login.destroy' | translate }}</a>
       <app-button [label]="'routes.login.submit' | translate" (click)="onLogin()" [disabled]="form.invalid"></app-button>
     </form>
   </div>

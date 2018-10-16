@@ -52,7 +52,8 @@
     },
     "login": {
       "password": "Пароль",
-      "submit": "Войти"
+      "submit": "Войти",
+      "destroy": "Удалить данные"
     },
     "keys": {
       "accounts": {
@@ -133,7 +134,7 @@
         "message": "Удаление всех данных",
         "destroy": "Удалить",
         "confirmMessage": "Все данные будут удалены!",
-        "successMessage": "Все данные йдалены!"
+        "successMessage": "Все данные удалены!"
       },
       "about": {
         "title": "О расширении",

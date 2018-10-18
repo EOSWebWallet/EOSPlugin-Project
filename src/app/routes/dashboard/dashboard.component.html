@@ -85,25 +85,11 @@
   <div class="transactions">
     <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>
     <table>
-      <tr>
-        <td>jul 29m 10.56 AM</td>
-        <td>from account1</td>
-        <td>1000 IPOS</td>
-      </tr>
-      <tr>
-        <td>jul 29m 10.56 AM</td>
-        <td>from account1</td>
-        <td>1000 IPOS</td>
-      </tr>
-      <tr>
-        <td>jul 29m 10.56 AM</td>
-        <td>from account1</td>
-        <td>1000 IPOS</td>
-      </tr>
-      <tr>
-        <td>jul 29m 10.56 AM</td>
-        <td>from account1</td>
-        <td>1000 IPOS</td>
+      <tr *ngFor="let action of accountActions">
+        <td>{{ action.date | date : 'MMM d, h:mm a' }}</td>
+        <td *ngIf="action.direction === 'from'"><span class="from">{{ 'routes.dashboard.from' | translate }}</span> {{ action.from }}</td>
+        <td *ngIf="action.direction === 'to'"><span class="to">{{ 'routes.dashboard.to' | translate }}</span> {{ action.to }}</td>
+        <td><span>{{ action.quantity }}</span> {{ action.symbol }}</td>
       </tr>
     </table>
   </div>

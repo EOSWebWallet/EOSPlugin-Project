@@ -78,10 +78,22 @@ export class EOSService {
     const { protocol, host, port } = account.network;
     return from(EOSUtils.getActions(protocol, host, port, newtworkAccount.name))
       .pipe(
-        map(res => {
-          return res;
-        })
+        map(res => this.mapAccountActions(res.actions))
       );
+  }
+
+  private mapAccountActions(actions: any[]): INetworkAccountAction[] {
+    return actions
+      .reverse()
+      .filter(a => a.action_trace.act.name === 'transfer')
+      .slice(0, 4)
+      .map(a => ({
+        from: a.action_trace.act.data.from,
+        to: a.action_trace.act.data.to,
+        quantity: a.action_trace.act.data.quantity.split(' ')[0],
+        symbol: a.action_trace.act.data.quantity.split(' ')[1],
+        date: a.block_time
+      }));
   }
 
   private mapAccountInfo(accountInfo: any, courses: any): INetworkAccountInfo {

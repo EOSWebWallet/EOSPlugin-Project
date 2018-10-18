@@ -1,6 +1,7 @@
 import { Component, OnInit, forwardRef, Inject } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { map, flatMap, first, filter } from 'rxjs/operators';
+import { map, flatMap, first, filter, withLatestFrom, } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { INetworkAccountInfo, INetworkAccountAction } from '../../core/eos/eos.interface';
@@ -13,6 +14,7 @@ import { AbstractPageComponent } from '../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../layout/page/page.component';
 
 import { AccountUtils } from '../../core/account/account.utils';
+import { InfoDialogComponent } from '../../shared/dialog/info/info-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,9 +48,17 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
       this.eosService.accountActions$
     )
     .pipe(
-      first()
+      first(),
+      withLatestFrom(this.accountService.selectedAccount$),
+      map(([ [ info, actions ], selectedAccount ]) => ({
+        info,
+        actions: actions.map(a => ({
+          ...a,
+          direction: a.to === selectedAccount.name ? 'from' : 'to'
+        }))
+      }))
     )
-    .subscribe(([ info, actions ]) => {
+    .subscribe(({ info, actions }) => {
       this.accountInfo = info;
       this.accountActions = actions;
     });

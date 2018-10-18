@@ -144,7 +144,7 @@ export class EOSUtils {
   }
 
   static getActions(protocol: string, host: string, port: number, accountName: string): Promise<any> {
-    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getActions(accountName, undefined, -150000);
+    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getActions(accountName, undefined, -500);
   }
 
   private static createSignatureProvider(network, signer, multiSigKeyProvider): Function {

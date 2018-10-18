@@ -95,12 +95,24 @@
 .transactions {
   h2 {
     text-transform: capitalize;
+    margin-bottom: 15px;
   }
   table {
     width: 100%;
     td {
       font-size: 12px;
       padding: 5px 10px 5px 0;
+
+      span {
+        font-weight: 600;
+
+        &.from {
+          color: $color-success;
+        }
+        &.to {
+          color: $color-danger;
+        }
+      }
     }
   }
 }

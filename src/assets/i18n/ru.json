@@ -24,6 +24,8 @@
       "unstaked": "Unstaked",
       "staked": "Staked",
       "transactions": "Транзакции",
+      "from": "с",
+      "to": "на",
       "send": {
         "title": "Перевод",
         "send": "Перевод",

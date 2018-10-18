@@ -39,5 +39,10 @@ export interface INetworkAccountInfo {
 }
 
 export interface INetworkAccountAction {
-  [key: string]: string;
+  from: string;
+  to: string;
+  quantity: string;
+  symbol: string;
+  date: string;
+  direction?: string;
 }

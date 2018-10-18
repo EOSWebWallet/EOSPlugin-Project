@@ -24,6 +24,8 @@
       "unstaked": "Unstaked",
       "staked": "Staked",
       "transactions": "Transactions",
+      "from": "from",
+      "to": "to",
       "send": {
         "title": "Send",
         "send": "Send",

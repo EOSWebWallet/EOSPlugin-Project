@@ -11,6 +11,7 @@ import { StorageUtils } from '../../../core/storage/storage.service';
 @Component({
   selector: 'app-language',
   templateUrl: './language.component.html',
+  styleUrls: [ './language.component.scss' ]
 })
 export class LanguageComponent extends AbstractPageComponent {
 

@@ -8,15 +8,15 @@
     <table>
       <tr>
         <td>{{ 'routes.dashboard.totalBalance' | translate }}:</td>
-        <td>{{ accountInfo.totalBalance }} EOS / <span>{{ accountInfo.usdTotal }} USD</span></td>
+        <td>{{ accountInfo.totalBalance || 0 }} EOS / <span>{{ accountInfo.usdTotal || 0 }} USD</span></td>
       </tr>
       <tr>
         <td>{{ 'routes.dashboard.unstaked' | translate }}:</td>
-        <td>{{ accountInfo.unstaked }} EOS</td>
+        <td>{{ accountInfo.unstaked || 0 }} EOS</td>
       </tr>
       <tr>
         <td>{{ 'routes.dashboard.staked' | translate }}:</td>
-        <td>{{ accountInfo.staked }} EOS</td>
+        <td>{{ accountInfo.staked || 0 }} EOS</td>
       </tr>
     </table>
   </div>
@@ -36,7 +36,7 @@
           [value]="accountInfo.cpuPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          <span>{{ accountInfo.cpuUsedSec }}</span> <br/> {{ accountInfo.cpuMaxSec }} <span>sec</span>
+          <span>{{ accountInfo.cpuUsedSec || 0 }}</span> <br/> {{ accountInfo.cpuMaxSec || 0 }} <span>sec</span>
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@
           [value]="accountInfo.netPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          <span>{{ accountInfo.netUsedKb }}</span> <br/> {{ accountInfo.netMaxKb }} <span>kb</span>
+          <span>{{ accountInfo.netUsedKb || 0 }}</span> <br/> {{ accountInfo.netMaxKb || 0 }} <span>kb</span>
         </div>
       </div>
     </div>
@@ -74,13 +74,13 @@
           [value]="accountInfo.ramPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          <span>{{ accountInfo.ramUsedKb }}</span> <br/> {{ accountInfo.ramMaxKb }} <span>kb</span>
+          <span>{{ accountInfo.ramUsedKb || 0 }}</span> <br/> {{ accountInfo.ramMaxKb || 0 }} <span>kb</span>
         </div>
       </div>
     </div>
   </div>
   <div class="controls">
-    <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send"></app-button>
+    <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!(selectedNetworkAccountName$ | async)"></app-button>
   </div>
   <div class="transactions">
     <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>

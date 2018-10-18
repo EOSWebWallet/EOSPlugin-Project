@@ -1,6 +1,6 @@
 import { Component, OnInit, forwardRef, Inject } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { map, flatMap, first } from 'rxjs/operators';
+import { map, flatMap, first, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { INetworkAccountInfo, INetworkAccountAction } from '../../core/eos/eos.interface';
@@ -35,8 +35,9 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
 
   readonly selectedNetworkAccountName$ = this.accountService.selectedAccount$
     .pipe(
+      filter(Boolean),
       map(a => a.accounts.find(na => na.selected)),
-      map(na => na && na.name)
+      map(na => na && `${na.name}@${na.authority}`)
     );
 
   ngOnInit(): void {

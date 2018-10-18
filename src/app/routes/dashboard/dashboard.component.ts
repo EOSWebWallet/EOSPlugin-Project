@@ -1,6 +1,7 @@
-import { Component, OnInit, forwardRef, Inject } from '@angular/core';
+import { Component, OnInit, forwardRef, Inject, LOCALE_ID } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { TranslateService } from '@ngx-translate/core';
 import { map, flatMap, first, filter, withLatestFrom, } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
@@ -19,7 +20,14 @@ import { InfoDialogComponent } from '../../shared/dialog/info/info-dialog.compon
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: [ './dashboard.component.scss' ]
+  styleUrls: [ './dashboard.component.scss' ],
+  providers: [
+    {
+      provide: LOCALE_ID,
+      deps: [ TranslateService ],
+      useFactory: translate => translate.currentLang
+    }
+  ]
 })
 export class DashboardComponent extends AbstractPageComponent implements OnInit {
 

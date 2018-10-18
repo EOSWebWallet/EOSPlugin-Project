@@ -6,6 +6,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { registerLocaleData } from '@angular/common';
+
+import localeRu from '@angular/common/locales/ru';
 
 import { HttpLoaderFactory } from './core/translate/translate-loader.factory';
 
@@ -36,6 +39,8 @@ declare var window: any;
 if (location.search.indexOf('prompt') !== -1) {
   window.isPrompt = true;
 }
+
+registerLocaleData(localeRu);
 
 export function getInitialState(): Partial<IAppState> {
   return { ...initialState };

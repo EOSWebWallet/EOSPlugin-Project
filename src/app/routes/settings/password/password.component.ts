@@ -1,9 +1,10 @@
 import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, delay } from 'rxjs/internal/operators';
 
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
+import { IControlErrors } from '../../../shared/form/form.interface';
 
 import { AuthService } from '../../../core/auth/auth.service';
 import { DialogService } from '../../../shared/dialog/dialog.service';
@@ -19,6 +20,15 @@ export class PasswordComponent extends AbstractPageComponent {
 
   @ViewChild('form') passwordForm: FormGroup;
 
+  @ViewChild('password')
+  passwordControl: FormControl;
+
+  @ViewChild('newPassword')
+  newPasswordControl: FormControl;
+
+  @ViewChild('newPasswordConfirm')
+  newPasswordConfirmControl: FormControl;
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private authService: AuthService,
@@ -32,6 +42,25 @@ export class PasswordComponent extends AbstractPageComponent {
       action: () => this.onChange(),
       disabled: () => !this.isValid
     });
+  }
+
+  get passwordErrors(): IControlErrors {
+    return this.passwordControl.touched && this.passwordControl.errors;
+  }
+
+  get newPasswordErrors(): IControlErrors {
+    return this.newPasswordControl.touched && this.newPasswordControl.errors;
+  }
+
+  get newPasswordConfirmErrors(): IControlErrors {
+    return this.newPasswordConfirmControl.touched && this.newPasswordConfirmControl.errors
+      || this.passwordEqualityError;
+  }
+
+  get passwordEqualityError(): IControlErrors {
+    return this.newPasswordControl.value && this.newPasswordConfirmControl.value
+      && this.newPasswordControl.value !== this.newPasswordConfirmControl.value
+        ? { passwordEquality: true } : null;
   }
 
   onChange(): void {

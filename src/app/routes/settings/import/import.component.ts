@@ -1,13 +1,13 @@
 import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { filter, flatMap } from 'rxjs/internal/operators';
 
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
+import { IFile } from '../../../shared/form/file/file.interface';
+import { IControlErrors } from '../../../shared/form/form.interface';
 
 import { AuthService } from '../../../core/auth/auth.service';
-
-import { IFile } from '../../../shared/form/file/file.interface';
-
 import { PluginService } from '../../../core/plugin/plugin.service';
 import { DialogService } from '../../../shared/dialog/dialog.service';
 
@@ -19,6 +19,9 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
   styleUrls: [ './import.component.scss' ],
 })
 export class ImportComponent extends AbstractPageComponent {
+  @ViewChild('passwordControl')
+  passwordControl: FormControl;
+
   password: string;
 
   file: IFile;
@@ -37,6 +40,10 @@ export class ImportComponent extends AbstractPageComponent {
       action: () => this.onImport(),
       disabled: () => !this.password || !this.password.length || !this.file
     });
+  }
+
+  get passwordErrors(): IControlErrors {
+    return this.passwordControl.touched && this.passwordControl.errors;
   }
 
   onSelect(file: IFile): void {

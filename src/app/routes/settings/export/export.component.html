@@ -1,3 +1,10 @@
 <p>{{ 'routes.settings.export.message' | translate }}</p>
-<app-password [(ngModel)]="password" [label]="'routes.settings.export.password' | translate"></app-password>
+<app-password
+  #passwordControl="ngModel"
+  [(ngModel)]="password"
+  [label]="'routes.settings.export.password' | translate"
+  [errors]="passwordErrors"
+  minlength="8"
+  required
+></app-password>
 <a #link download="plugin.eospb"></a>

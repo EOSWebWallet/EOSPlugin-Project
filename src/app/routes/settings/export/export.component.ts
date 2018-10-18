@@ -1,7 +1,9 @@
 import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map, delay } from 'rxjs/internal/operators';
 
+import { IControlErrors } from '../../../shared/form/form.interface';
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 
 import { AuthService } from '../../../core/auth/auth.service';
@@ -15,6 +17,7 @@ import { PluginService } from '../../../core/plugin/plugin.service';
   styleUrls: [ './export.component.scss' ],
 })
 export class ExportComponent extends AbstractPageComponent {
+  @ViewChild('passwordControl') passwordControl: FormControl;
 
   @ViewChild('link') downloadRef: ElementRef;
 
@@ -33,6 +36,10 @@ export class ExportComponent extends AbstractPageComponent {
       action: () => this.onExport(),
       disabled: () => !this.password || !this.password.length
     });
+  }
+
+  get passwordErrors(): IControlErrors {
+    return this.passwordControl.touched && this.passwordControl.errors;
   }
 
   onExport(): void {

@@ -10,11 +10,11 @@
       <app-password
         name="password"
         [ngModel]="value"
-        [ngModelOptions]="{updateOn: 'blur'}"
         #password="ngModel"
         [label]="'routes.login.password' | translate"
         [errors]="passwordErrors"
         required
+        minlength="8"
       ></app-password>
       <a href="" (click)="onDestroy($event)">{{ 'routes.login.destroy' | translate }}</a>
       <app-button [label]="'routes.login.submit' | translate" (click)="onLogin()" [disabled]="form.invalid"></app-button>

@@ -31,3 +31,7 @@ mat-form-field {
   color: $color-danger;
   font-size: 12px;
 }
+
+input[disabled] {
+  color: $color-inactive-dark !important;
+}

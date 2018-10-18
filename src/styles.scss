@@ -84,3 +84,7 @@ body {
 mat-dialog-container.mat-dialog-container {
   border-radius: 0;
 }
+
+.mat-placeholder-required {
+  display: none !important;
+}

@@ -23,10 +23,10 @@ export class TextComponent implements ControlValueAccessor {
   @Input() label: string;
   @Input() errors: IControlErrors;
   @Input() required: boolean;
+  @Input() disabled: boolean;
   @Input() step: number;
 
   value: string;
-  disabled = false;
 
   get controlErrors(): string[] {
     return this.errors && Object.keys(this.errors);

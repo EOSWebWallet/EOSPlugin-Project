@@ -6,7 +6,7 @@ import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { TextComponent } from '../../../shared/form/text/text.component';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
-import { KeypairUtils } from '../../../core/keypair/keypair.utils';
+import { Keypairs } from '../../../core/keypair/keypair';
 
 @Component({
   selector: 'app-generate',
@@ -35,7 +35,7 @@ export class GenerateComponent extends AbstractPageComponent {
 
   onGenerate(): void {
     if (this.privateKey) {
-      KeypairUtils.makePublicKey({
+      Keypairs.makePublicKey({
         privateKey: this.privateKey,
         publicKey: ''
       }).then(keypair => {
@@ -43,7 +43,7 @@ export class GenerateComponent extends AbstractPageComponent {
         this.publicKey = keypair.publicKey;
       });
     } else {
-      KeypairUtils.generateKeyPair()
+      Keypairs.generateKeyPair()
         .then(keypair => {
           this.privateKey = keypair.privateKey;
           this.publicKey = keypair.publicKey;

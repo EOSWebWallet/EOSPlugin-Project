@@ -5,7 +5,7 @@ import { IKeypair } from './keypair.interface';
 
 const { ecc } = Eos.modules;
 
-export class KeypairUtils {
+export class Keypairs {
 
   static isEncrypted(keypair: IKeypair): boolean {
     return keypair.privateKey.length > 51;
@@ -14,7 +14,7 @@ export class KeypairUtils {
   static encrypt(keypair: IKeypair, seed: string): any {
     return  {
       ...keypair,
-      privateKey: KeypairUtils.isEncrypted(keypair)
+      privateKey: Keypairs.isEncrypted(keypair)
         ? keypair.privateKey
         : AES.encrypt(keypair.privateKey, seed)
     };
@@ -23,7 +23,7 @@ export class KeypairUtils {
   static decrypt(keypairData: any, seed: string): IKeypair {
     return {
       ...keypairData,
-      privateKey: KeypairUtils.isEncrypted(keypairData)
+      privateKey: Keypairs.isEncrypted(keypairData)
         ? AES.decrypt(keypairData.privateKey, seed)
         : keypairData.privateKey
     };
@@ -40,8 +40,8 @@ export class KeypairUtils {
   static makePublicKey(keypair: IKeypair): Promise<IKeypair> {
     return new Promise(resolve => resolve({
       privateKey: keypair.privateKey,
-      publicKey: keypair.privateKey.length > 50 && KeypairUtils.validPrivateKey(keypair.privateKey)
-        ? KeypairUtils.privateToPublic(keypair.privateKey)
+      publicKey: keypair.privateKey.length > 50 && Keypairs.validPrivateKey(keypair.privateKey)
+        ? Keypairs.privateToPublic(keypair.privateKey)
         : ''
     }));
   }

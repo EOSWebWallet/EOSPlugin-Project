@@ -1,13 +1,13 @@
 import { ISettings } from './settings.interface';
 
-import { NetworkUtils } from '../network/network.utils';
+import { Networks } from '../network/network';
 
-export class SettingsUtils {
+export class Settings {
 
   static fromJson(json: any): ISettings {
     return {
       networks: json.networks
-        ? json.networks.map(x => NetworkUtils.fromJson(x))
+        ? json.networks.map(x => Networks.fromJson(x))
         : []
     };
   }

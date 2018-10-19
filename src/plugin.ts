@@ -1,10 +1,10 @@
 import * as Eos from 'eosjs';
 const { ecc } = Eos.modules;
 import { NetworkMessageType, INetworkMessage, NetworkError } from './app/core/message/message.interface';
-import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
+import { Encryption } from './app/core/encryption/encryption';
 import { EncryptedStream } from 'extension-streams/dist';
 import { IAccountIdentity } from './app/core/account/account.interface';
-import { EOSUtils } from './app/core/eos/eos.utils';
+import { EOS } from './app/core/eos/eos';
 import { INetwork } from './app/core/network/network.interface';
 
 declare var window: any;
@@ -25,7 +25,7 @@ export class EOSPlugin {
   private stream: EncryptedStream | any;
   private resolvers: IResolver[] = [];
 
-  readonly eos = EOSUtils.createEOS({
+  readonly eos = EOS.create({
     requestSignature: async signargs => {
       const identity = await this.getIdentity(signargs.network);
       if (!identity || !identity.publicKey) {
@@ -83,7 +83,7 @@ export class EOSPlugin {
 
   private send(type: NetworkMessageType, payload: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      const resolver = EncryptUtils.numeric(24);
+      const resolver = Encryption.numeric(24);
       const message: INetworkMessage = { type, payload, resolver };
       this.resolvers.push({ id: resolver, resolve, reject });
       this.stream.send(message, EOSPlugin.STREAM_NAME);

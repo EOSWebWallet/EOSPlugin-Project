@@ -17,7 +17,7 @@ import { EOSService } from '../../../../core/eos/eos.service';
 import { AbstractPageComponent } from '../../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../../layout/page/page.component';
 
-import { KeypairUtils } from '../../../../core/keypair/keypair.utils';
+import { Keypairs } from '../../../../core/keypair/keypair';
 
 @Component({
   selector: 'app-account',
@@ -83,7 +83,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
   }
 
   generatePublicKey(): void {
-    KeypairUtils.makePublicKey(this.account.keypair)
+    Keypairs.makePublicKey(this.account.keypair)
       .then(keypair => this.account.keypair = keypair);
   }
 

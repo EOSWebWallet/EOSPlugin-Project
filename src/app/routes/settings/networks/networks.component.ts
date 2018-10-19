@@ -12,7 +12,7 @@ import { AccountService } from '../../../core/account/account.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
-import { NetworkUtils } from '../../../core/network/network.utils';
+import { Networks } from '../../../core/network/network';
 
 @Component({
   selector: 'app-networks',
@@ -83,10 +83,10 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
   private createNew(networks: INetwork[]): INetwork {
     const last = networks
       .map(n => n.name)
-      .filter(n => n.startsWith(NetworkUtils.NETWORK_PREFIX))
-      .map(n => parseInt(n.replace(NetworkUtils.NETWORK_PREFIX, ''), 10))
+      .filter(n => n.startsWith(Networks.NETWORK_PREFIX))
+      .map(n => parseInt(n.replace(Networks.NETWORK_PREFIX, ''), 10))
       .sort((a, b) => a - b)
       .pop() || 0;
-    return NetworkUtils.createNetwork(NetworkUtils.NETWORK_PREFIX + (last + 1));
+    return Networks.createNetwork(Networks.NETWORK_PREFIX + (last + 1));
   }
 }

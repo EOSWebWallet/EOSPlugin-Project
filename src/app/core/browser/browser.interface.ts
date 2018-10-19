@@ -19,6 +19,6 @@ export interface IBrowserStorage {
 }
 
 export interface BrowserStream {
-  send(msg: any): Promise<{}>;
+  send(msg: any): Promise<any>;
   watch(callback: any): void;
 }

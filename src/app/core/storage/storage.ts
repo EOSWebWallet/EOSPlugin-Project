@@ -2,9 +2,9 @@ import { IPlugin } from '../plugin/plugin.interface';
 
 import { Browser } from '../browser/browser';
 
-import { PluginUtils } from '../plugin/plugin.utils';
+import { Plugins } from '../plugin/plugin';
 
-export class StorageUtils {
+export class PluginStorage {
   private static KEY_SALT = 'salt';
 
   static save(plugin: IPlugin): Promise<IPlugin> {
@@ -17,8 +17,8 @@ export class StorageUtils {
     return new Promise(resolve => {
       Browser.storage.local.get('plugin', result => resolve(
         result.plugin
-          ? PluginUtils.fromJson(result.plugin)
-          : PluginUtils.createPlugin()
+          ? Plugins.fromJson(result.plugin)
+          : Plugins.createPlugin()
         ));
     });
   }

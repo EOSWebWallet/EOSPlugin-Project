@@ -14,7 +14,7 @@ import { AuthService } from '../../core/auth/auth.service';
 import { AbstractPageComponent } from '../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../layout/page/page.component';
 
-import { AccountUtils } from '../../core/account/account.utils';
+import { Accounts } from '../../core/account/account';
 import { InfoDialogComponent } from '../../shared/dialog/info/info-dialog.component';
 
 @Component({

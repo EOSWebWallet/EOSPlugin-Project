@@ -6,7 +6,7 @@ import { IListItem } from '../../../shared/list/list.interface';
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
-import { StorageUtils } from '../../../core/storage/storage.service';
+import { PluginStorage } from '../../../core/storage/storage';
 
 @Component({
   selector: 'app-language',
@@ -36,7 +36,7 @@ export class LanguageComponent extends AbstractPageComponent {
 
   onSelect(item: IListItem): void {
     this.translate.use(item.value);
-    StorageUtils.setLang(item.value);
+    PluginStorage.setLang(item.value);
   }
 
   private isSelected(language: string): boolean {

@@ -9,13 +9,13 @@ import { IKeypair } from './app/core/keypair/keypair.interface';
 import { IAccountIdentity } from './app/core/account/account.interface';
 import { INetwork } from './app/core/network/network.interface';
 
-import { PluginUtils } from './app/core/plugin/plugin.utils';
-import { KeypairUtils } from './app/core/keypair/keypair.utils';
-import { StorageUtils } from './app/core/storage/storage.service';
+import { Plugins } from './app/core/plugin/plugin';
+import { Keypairs } from './app/core/keypair/keypair';
+import { PluginStorage } from './app/core/storage/storage';
 import { Browser } from './app/core/browser/browser';
-import { AccountUtils } from './app/core/account/account.utils';
-import { EOSUtils } from './app/core/eos/eos.utils';
-import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
+import { Accounts } from './app/core/account/account';
+import { EOS } from './app/core/eos/eos';
+import { Encryption } from './app/core/encryption/encryption';
 
 export class Background {
 
@@ -49,10 +49,10 @@ export class Background {
 
   isAuthorized(cb: Function) {
     if (this.seed.length) {
-      StorageUtils.get().then(pluginData => {
+      PluginStorage.get().then(pluginData => {
         try {
-          const plugin = PluginUtils.decrypt(pluginData, this.seed);
-          cb(!PluginUtils.isEncrypted(plugin));
+          const plugin = Plugins.decrypt(pluginData, this.seed);
+          cb(!Plugins.isEncrypted(plugin));
         } catch (e) {
           this.seed = '';
           cb(false);
@@ -69,24 +69,24 @@ export class Background {
   }
 
   srorePlugin(pluginData: any, cb: Function): void {
-    const plugin = PluginUtils.fromJson(pluginData);
+    const plugin = Plugins.fromJson(pluginData);
 
     plugin.keychain.accounts = plugin.keychain.accounts.map(account => ({
       ...account,
-      keypair: KeypairUtils.encrypt(account.keypair, this.seed)
+      keypair: Keypairs.encrypt(account.keypair, this.seed)
     }));
 
-    const encryptedPlugin = PluginUtils.encrypt(plugin, this.seed);
+    const encryptedPlugin = Plugins.encrypt(plugin, this.seed);
 
-    StorageUtils.save(encryptedPlugin)
-      .then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
+    PluginStorage.save(encryptedPlugin)
+      .then(saved => cb(Plugins.decrypt(saved, this.seed)));
   }
 
   load(cb: Function): void {
-    StorageUtils.get().then(pluginData => {
+    PluginStorage.get().then(pluginData => {
       cb(!this.seed.length
         ? pluginData
-        : PluginUtils.decrypt(pluginData, this.seed)
+        : Plugins.decrypt(pluginData, this.seed)
       );
     });
   }
@@ -100,25 +100,25 @@ export class Background {
   export(payload: any, cb: Function): void {
     this.load(plugin => {
       plugin.keychain.accounts = plugin.keychain.accounts.map(account => {
-        const decrypted = KeypairUtils.decrypt(account.keypair, this.seed);
+        const decrypted = Keypairs.decrypt(account.keypair, this.seed);
         return ({
           ...account,
-          keypair: KeypairUtils.encrypt(decrypted, payload.seed)
+          keypair: Keypairs.encrypt(decrypted, payload.seed)
         });
       });
-      const pluginData = PluginUtils.encrypt(plugin, payload.seed);
-      StorageUtils.getSalt().then(salt => cb({ pluginData, salt }));
+      const pluginData = Plugins.encrypt(plugin, payload.seed);
+      PluginStorage.getSalt().then(salt => cb({ pluginData, salt }));
     });
   }
 
   async import(payload: any, cb: Function) {
-    const { pluginData, salt } = PluginUtils.createPluginData(<string> payload.file.value);
-    await StorageUtils.setSalt(salt);
-    const [m, s] = await EncryptUtils.generateMnemonic(payload.password);
-    const decryptedPlugin = PluginUtils.decrypt(pluginData, s);
-    if (!PluginUtils.isEncrypted(decryptedPlugin)) {
+    const { pluginData, salt } = Plugins.createPluginData(<string> payload.file.value);
+    await PluginStorage.setSalt(salt);
+    const [m, s] = await Encryption.generateMnemonic(payload.password);
+    const decryptedPlugin = Plugins.decrypt(pluginData, s);
+    if (!Plugins.isEncrypted(decryptedPlugin)) {
       this.seed = s;
-      StorageUtils.save(pluginData).then(saved => cb(PluginUtils.decrypt(saved, this.seed)));
+      PluginStorage.save(pluginData).then(saved => cb(Plugins.decrypt(saved, this.seed)));
     } else {
       cb(false);
     }
@@ -136,7 +136,7 @@ export class Background {
 
   getIdentity(requestData: any, cb: Function): void {
     this.load(plugin => {
-      AccountUtils.getIdentity(requestData.network, identity => {
+      Accounts.requestIdentity(requestData.network, identity => {
         if (!identity) {
           cb(NetworkError.signatureError('identity_rejected', 'User rejected the provision of an Identity'));
           return false;
@@ -148,7 +148,7 @@ export class Background {
 
   requestSignature(payload: any, cb: Function): void {
     this.load(plugin => {
-      EOSUtils.requestSignature({
+      EOS.requestSignature({
         plugin,
         payload,
       }).then(result => cb(result));
@@ -157,7 +157,7 @@ export class Background {
 
   signup({ signargs, keypair }, cb: Function): void {
     const privateKey = AES.decrypt(keypair.privateKey, this.seed);
-    EOSUtils.signer(privateKey, signargs, signature => {
+    EOS.signer(privateKey, signargs, signature => {
       cb(signature ? {
         signatures: [ signature ]
       } : null);

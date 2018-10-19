@@ -10,11 +10,11 @@ import { ISignaturePromtOptions } from '../../core/prompt/prompt.interface';
 
 import { PromptService } from '../prompt.service';
 import { AccountService } from '../../core/account/account.service';
-import { ExtensionMessageService } from '../../core/message/message.service';
 
-import { AccountUtils } from '../../core/account/account.utils';
-import { PromptUtils } from '../../core/prompt/prompt.utils';
+import { Accounts } from '../../core/account/account';
+import { Prompts } from '../../core/prompt/prompt';
 import { ExtensionMessageType } from '../../core/message/message.interface';
+import { Browser } from '../../core/browser/browser';
 
 @Component({
   selector: 'app-prompt-signature',
@@ -39,7 +39,7 @@ export class SignatureComponent implements OnInit {
     this.accountService.accounts$
       .pipe(
         filter(Boolean),
-        map(accounts => AccountUtils.getAccount(this.identity, accounts)),
+        map(accounts => Accounts.findAccount(this.identity, accounts)),
         first()
       )
       .subscribe(account => {
@@ -56,7 +56,7 @@ export class SignatureComponent implements OnInit {
   }
 
   get networkAccount(): INetworkAccount {
-    return this.account && AccountUtils.getNetworkAccount(this.identity.accounts[0], this.account);
+    return this.account && Accounts.findNetworkAccount(this.identity.accounts[0], this.account);
   }
 
   get network(): INetwork {
@@ -64,18 +64,18 @@ export class SignatureComponent implements OnInit {
   }
 
   onAccept(): void {
-    ExtensionMessageService.send({
+    Browser.stream.send({
       type: ExtensionMessageType.SIGNUP,
       payload: { signargs: this.signargs, keypair: this.account.keypair }
     }).then(signature => {
       this.promptService.prompt.responder(signature);
-      PromptUtils.close();
+      Prompts.close();
     });
   }
 
   onDeny(): void {
     this.promptService.prompt.responder(false);
-    PromptUtils.close();
+    Prompts.close();
   }
 
   changeTab(activeTab: number): void {

@@ -14,8 +14,6 @@ import { NetworksService } from '../../../core/network/networks.service';
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
-import { NetworkUtils } from '../../../core/network/network.utils';
-
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',

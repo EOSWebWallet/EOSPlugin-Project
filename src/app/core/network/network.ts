@@ -2,7 +2,7 @@ import Eos from 'eosjs';
 
 import { INetwork } from './network.interface';
 
-export class NetworkUtils {
+export class Networks {
   static NETWORK_PREFIX = 'Network';
 
   static fromJson(json: any): INetwork {

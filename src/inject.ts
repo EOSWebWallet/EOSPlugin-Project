@@ -1,6 +1,6 @@
 import { EncryptedStream } from 'extension-streams';
 import { NetworkMessageType } from './app/core/message/message.interface';
-import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
+import { Encryption } from './app/core/encryption/encryption';
 import { EOSPlugin } from './plugin';
 
 declare var window: any;
@@ -10,7 +10,7 @@ export class Inject {
   static PLUGIN_NAME = 'eosPlugin';
 
   constructor() {
-    const stream = new EncryptedStream(Inject.STREAM_NAME, EncryptUtils.text(64));
+    const stream = new EncryptedStream(Inject.STREAM_NAME, Encryption.text(64));
 
     stream.listenWith(msg => {
       if (msg && msg.hasOwnProperty('type') && msg.type === NetworkMessageType.PUSH_PLUGIN) {

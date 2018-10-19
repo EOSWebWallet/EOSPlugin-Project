@@ -1,7 +1,6 @@
 import { EncryptedStream, LocalStream } from 'extension-streams/dist';
-import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
+import { Encryption } from './app/core/encryption/encryption';
 import { NetworkMessageType, NetworkError, ExtensionMessageType, INetworkMessage } from './app/core/message/message.interface';
-import { ExtensionMessageService } from './app/core/message/message.service';
 import { Browser } from './app/core/browser/browser';
 
 export class Content {
@@ -20,7 +19,7 @@ export class Content {
   }
 
   setupEncryptedStream(): void {
-    this.stream = new EncryptedStream(Content.PLUGIN_NAME, EncryptUtils.text(256));
+    this.stream = new EncryptedStream(Content.PLUGIN_NAME, Encryption.text(256));
     this.stream.listenWith(msg => this.contentListener(msg));
 
     this.stream.onSync(() => {
@@ -87,7 +86,7 @@ export class Content {
       return;
     }
 
-    ExtensionMessageService.send({ type: ExtensionMessageType.GET_IDENTITY, payload: message.payload })
+    Browser.stream.send({ type: ExtensionMessageType.GET_IDENTITY, payload: message.payload })
       .then(res => this.respond(message, res));
   }
 
@@ -96,7 +95,7 @@ export class Content {
       return;
     }
 
-    ExtensionMessageService.send({ type: ExtensionMessageType.REQUEST_SIGNATURE, payload: message.payload })
+    Browser.stream.send({ type: ExtensionMessageType.REQUEST_SIGNATURE, payload: message.payload })
       .then(res => this.respond(message, res));
   }
 }

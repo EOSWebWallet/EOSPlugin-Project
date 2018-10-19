@@ -2,11 +2,10 @@ import Eos from 'eosjs';
 
 import { IAccount, IAccountIdentity, INetworkAccountIdentity } from './account.interface';
 import { INetwork, INetworkAccount } from '../network/network.interface';
-import { PromptUtils } from '../prompt/prompt.utils';
+import { Prompts } from '../prompt/prompt';
 import { PromptType, IIdentityPromtOptions } from '../prompt/prompt.interface';
-import { NetworkUtils } from '../network/network.utils';
 
-export class AccountUtils {
+export class Accounts {
 
   static fromJson(json: any): IAccount {
     return {
@@ -15,8 +14,8 @@ export class AccountUtils {
     };
   }
 
-  static getIdentity(network: INetwork, callback: Function): Promise<void> {
-    return PromptUtils.open({
+  static requestIdentity(network: INetwork, callback: Function): Promise<void> {
+    return Prompts.open({
       type: PromptType.REQUEST_IDENTITY,
       network,
       responder: identity => {
@@ -29,7 +28,7 @@ export class AccountUtils {
     } as IIdentityPromtOptions);
   }
 
-  static createAccountIdentity(account: IAccount, networkAccount: INetworkAccount): IAccountIdentity {
+  static createIdentity(account: IAccount, networkAccount: INetworkAccount): IAccountIdentity {
     return {
       name: account.name,
       publicKey: account.keypair.publicKey,
@@ -41,11 +40,11 @@ export class AccountUtils {
     };
   }
 
-  static filterAccountsByNetwork(accounts: IAccount[], network: INetwork): IAccount[] {
+  static findAccounts(network: INetwork, accounts: IAccount[]): IAccount[] {
     return accounts.filter(a => a.network.host === network.host && a.network.port === network.port);
   }
 
-  static getAccount(identity: IAccountIdentity, accounts: IAccount[]): IAccount {
+  static findAccount(identity: IAccountIdentity, accounts: IAccount[]): IAccount {
     return accounts.find(a =>
       a.name === identity.name
         && a.keypair.publicKey === identity.publicKey
@@ -53,7 +52,7 @@ export class AccountUtils {
     );
   }
 
-  static getNetworkAccount(identity: INetworkAccountIdentity, account: IAccount): INetworkAccount {
+  static findNetworkAccount(identity: INetworkAccountIdentity, account: IAccount): INetworkAccount {
     return account.accounts.find(a => a.name === identity.name && a.authority === identity.authority);
   }
 }

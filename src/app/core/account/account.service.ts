@@ -12,7 +12,7 @@ import { INetworkAccount, INetwork } from '../network/network.interface';
 
 import { AbstractEntityService } from '../state/state.service';
 
-import { PluginUtils } from '../plugin/plugin.utils';
+import { Plugins } from '../plugin/plugin';
 
 @Injectable()
 export class AccountService extends AbstractEntityService {
@@ -112,7 +112,7 @@ export class AccountService extends AbstractEntityService {
     this.plugin$
       .pipe(first())
       .subscribe((plugin: IPlugin) =>
-        this.dispatchAction(PluginUtils.PLUGIN_STORE, {
+        this.dispatchAction(Plugins.PLUGIN_STORE, {
           ...plugin,
           keychain: {
             ...plugin.keychain,

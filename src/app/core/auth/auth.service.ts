@@ -13,9 +13,9 @@ import { IAppState } from '../state/state.interface';
 import { ExtensionMessageType } from '../message/message.interface';
 
 import { AbstractStateService } from '../state/state.service';
-import { ExtensionMessageService } from '../message/message.service';
 
-import { PluginUtils } from '../plugin/plugin.utils';
+import { Plugins } from '../plugin/plugin';
+import { Browser } from '../browser/browser';
 
 declare var window: any;
 
@@ -49,7 +49,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   }
 
   get isAuthorized(): Observable<boolean> {
-    return from(ExtensionMessageService.send({ type: ExtensionMessageType.IS_AUTHORIZED }));
+    return from(Browser.stream.send({ type: ExtensionMessageType.IS_AUTHORIZED }));
   }
 
   get hasAuthorization(): Observable<boolean> {
@@ -80,7 +80,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   }
 
   destroy(): void {
-    this.dispatchAction(PluginUtils.PLUGIN_DESTROY);
+    this.dispatchAction(Plugins.PLUGIN_DESTROY);
   }
 
   changePassword(password: string, newPassword: string): void {

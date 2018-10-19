@@ -1,19 +1,19 @@
 import { NetworkError, ExtensionMessageType } from '../message/message.interface';
 import { Browser } from '../browser/browser';
-import { ExtensionMessageService } from '../message/message.service';
 import { IPromptOptions } from './prompt.interface';
 
 declare var browser: any;
 declare var window: any;
 
-export class PromptUtils {
+export class Prompts {
+  static PATH_PROMPT = '/index.html?prompt';
 
   private static openWindow = null;
 
   static async open(options: IPromptOptions): Promise<void> {
-    if (PromptUtils.openWindow) {
-      PromptUtils.openWindow.close();
-      PromptUtils.openWindow = null;
+    if (Prompts.openWindow) {
+      Prompts.openWindow.close();
+      Prompts.openWindow = null;
     }
 
     const height = 650;
@@ -24,24 +24,24 @@ export class PromptUtils {
     const getPopup = async () => {
       try {
         const url = Browser.runtime.getURL('/index.html?prompt');
-        this.openWindow = Browser.createWindow(url, width, height, options);
+        return Browser.createWindow(url, width, height, options);
       } catch (e) {
-        console.log('prompt error', e);
         return null;
       }
     };
 
-    const popup = await getPopup();
+    this.openWindow = await getPopup();
 
-    // Handles the user closing the popup without taking any action
-    popup.onbeforeunload = () => {
-      options.responder(NetworkError.promptClosedWithoutAction());
+    if (this.openWindow) {
+      this.openWindow.onbeforeunload = () => {
+        options.responder(NetworkError.promptClosedWithoutAction());
 
-      // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
-      // Must return undefined to bypass form protection
-      this.openWindow = null;
-      return undefined;
-    };
+        // https://developer.mozilla.org/en-US/docs/Web/API/WindowEventHandlers/onbeforeunload
+        // Must return undefined to bypass form protection
+        this.openWindow = null;
+        return undefined;
+      };
+    }
   }
 
   static async close(): Promise<void> {

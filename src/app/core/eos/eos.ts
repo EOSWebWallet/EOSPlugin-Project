@@ -8,23 +8,21 @@ import { ISigner, ISignatureOptions, ISignatureResult } from './eos.interface';
 import { IPlugin } from '../plugin/plugin.interface';
 import { IAccountIdentity } from '../account/account.interface';
 
-import { ExtensionMessageService } from '../message/message.service';
-
-import { NetworkUtils } from '../network/network.utils';
-import { AccountUtils } from '../account/account.utils';
+import { Networks } from '../network/network';
+import { Accounts } from '../account/account';
 import { Browser } from '../browser/browser';
-import { PromptUtils } from '../prompt/prompt.utils';
-import { PluginUtils } from '../plugin/plugin.utils';
+import { Prompts } from '../prompt/prompt';
+import { Plugins } from '../plugin/plugin';
 
 const { ecc } = Eos.modules;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
 
-export class EOSUtils {
+export class EOS {
 
-  static createEOS(signer: ISigner): Function {
+  static create(signer: ISigner): Function {
     return (network, _eos, _options: any = {}) => {
-      network = NetworkUtils.fromJson(network);
-      if (!NetworkUtils.isValid(network)) {
+      network = Networks.fromJson(network);
+      if (!Networks.isValid(network)) {
         throw NetworkError.noNetwork();
       }
       const httpEndpoint = `${network.protocol}://${network.host}:${network.port}`;
@@ -39,7 +37,7 @@ export class EOSUtils {
               throw NetworkError.usedKeyProvider();
             }
 
-            const signProvider = EOSUtils.createSignatureProvider(
+            const signProvider = EOS.createSignatureProvider(
               network,
               signer,
               args.find(arg => arg.hasOwnProperty('signProvider'))
@@ -83,14 +81,14 @@ export class EOSUtils {
     return new Promise(resolve => {
       const { plugin, payload } = options;
 
-      if (!PluginUtils.isEncrypted(plugin)) {
-        const account = AccountUtils.getAccount(payload.identity, plugin.keychain.accounts);
+      if (!Plugins.isEncrypted(plugin)) {
+        const account = Accounts.findAccount(payload.identity, plugin.keychain.accounts);
         if (!account) {
           resolve(NetworkError.signatureAccountMissing());
         }
       }
 
-      PromptUtils.open({
+      Prompts.open({
         type: PromptType.REQUEST_SIGNATURE,
         identity: payload.identity,
         signargs: payload,
@@ -112,7 +110,6 @@ export class EOSUtils {
   static signer(privateKey: string, payload: any, cb: Function): void {
     cb(privateKey ? ecc.sign(Buffer.from(payload.buf.data || payload.buf, 'utf8'), privateKey) : null);
   }
-
 
   static getKeyAccounts(protocol: string, host: string, port: number, publicKey: string): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -149,7 +146,7 @@ export class EOSUtils {
 
   private static createSignatureProvider(network, signer, multiSigKeyProvider): Function {
     return async signargs => {
-      signargs.messages = await EOSUtils.mapSignargs(signargs, network);
+      signargs.messages = await EOS.mapSignargs(signargs, network);
 
       const result = await signer.requestSignature({
         ...signargs,
@@ -173,7 +170,7 @@ export class EOSUtils {
   }
 
   private static async mapSignargs(signargs, network) {
-    const eos = Eos({ httpEndpoint: NetworkUtils.fullhost(network), chainId: network.chainId });
+    const eos = Eos({ httpEndpoint: Networks.fullhost(network), chainId: network.chainId });
 
     const contracts = signargs.transaction.actions.map(action => action.account)
       .reduce((acc, contract) => {

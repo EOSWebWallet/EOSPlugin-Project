@@ -16,7 +16,7 @@ export interface IAccountIdentity {
 }
 
 export interface INetworkAccountIdentity {
+  blockchain: 'eos';
   name: string;
   authority: string;
-  blockchain: string;
 }

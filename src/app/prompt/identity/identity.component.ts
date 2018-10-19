@@ -7,8 +7,8 @@ import { INetworkAccount, INetwork } from '../../core/network/network.interface'
 import { AccountService } from '../../core/account/account.service';
 import { PromptService } from '../prompt.service';
 
-import { AccountUtils } from '../../core/account/account.utils';
-import { PromptUtils } from '../../core/prompt/prompt.utils';
+import { Accounts } from '../../core/account/account';
+import { Prompts } from '../../core/prompt/prompt';
 import { IIdentityPromtOptions } from '../../core/prompt/prompt.interface';
 
 @Component({
@@ -34,7 +34,7 @@ export class IdentityComponent implements OnInit {
         first()
       )
       .subscribe(accounts =>
-        this.accounts = AccountUtils.filterAccountsByNetwork(accounts, this.network)
+        this.accounts = Accounts.findAccounts(this.network, accounts)
       );
   }
 
@@ -49,16 +49,16 @@ export class IdentityComponent implements OnInit {
   }
 
   onSelect(account: IAccount, networkAccount: INetworkAccount): void {
-    this.identity = AccountUtils.createAccountIdentity(account, networkAccount);
+    this.identity = Accounts.createIdentity(account, networkAccount);
   }
 
   onDeny(): void {
     this.promptService.prompt.responder(null);
-    PromptUtils.close();
+    Prompts.close();
   }
 
   onAccept(): void {
     this.promptService.prompt.responder(this.identity);
-    PromptUtils.close();
+    Prompts.close();
   }
 }

@@ -10,17 +10,17 @@ import { ISignatureResult } from '../../../core/eos/eos.interface';
 import { ExtensionMessageType } from '../../../core/message/message.interface';
 
 import { AccountService } from '../../../core/account/account.service';
-import { ExtensionMessageService } from '../../../core/message/message.service';
 import { EOSService } from '../../../core/eos/eos.service';
 
-import { EOSUtils } from '../../../core/eos/eos.utils';
-import { KeypairUtils } from '../../../core/keypair/keypair.utils';
+import { EOS } from '../../../core/eos/eos';
+import { Keypairs } from '../../../core/keypair/keypair';
+import { Browser } from '../../../core/browser/browser';
 
 @Injectable()
 export class SendService {
   readonly signature$ = new BehaviorSubject<ISignupOptions>(null);
 
-  readonly eosInstance = EOSUtils.createEOS({
+  readonly eosInstance = EOS.create({
     requestSignature: signargs =>
       new Promise<ISignatureResult>(signup => {
         this.accountService.selectedAccount$
@@ -66,7 +66,7 @@ export class SendService {
 
   signup(): void {
     const signupOptions = this.signature$.value;
-    ExtensionMessageService.send({
+    Browser.stream.send({
       type: ExtensionMessageType.SIGNUP,
       payload: { signargs: signupOptions.signargs, keypair: signupOptions.keypair }
     }).then(result => {

@@ -11,7 +11,7 @@ import { IAccount } from '../account/account.interface';
 
 import { AccountService } from '../account/account.service';
 
-import { EOSUtils } from './eos.utils';
+import { EOS } from './eos';
 
 @Injectable()
 export class EOSService {
@@ -57,12 +57,12 @@ export class EOSService {
   }
 
   getKeyAccounts(network: INetwork, publicKey: string): Observable<INetworkAccount[]> {
-    return from(EOSUtils.getKeyAccounts(network.protocol, network.host, network.port, publicKey));
+    return from(EOS.getKeyAccounts(network.protocol, network.host, network.port, publicKey));
   }
 
   getAccountInfo(account: IAccount, networkAccount: INetworkAccount): Observable<INetworkAccountInfo> {
     const { protocol, host, port } = account.network;
-    return from(EOSUtils.getAccountInfo(protocol, host, port, networkAccount.name))
+    return from(EOS.getAccountInfo(protocol, host, port, networkAccount.name))
       .pipe(
         flatMap(accountInfo =>
           this.courses$
@@ -76,7 +76,7 @@ export class EOSService {
 
   getActions(account: IAccount, newtworkAccount: INetworkAccount): Observable<INetworkAccountAction[]> {
     const { protocol, host, port } = account.network;
-    return from(EOSUtils.getActions(protocol, host, port, newtworkAccount.name))
+    return from(EOS.getActions(protocol, host, port, newtworkAccount.name))
       .pipe(
         map(res => this.mapAccountActions(res.actions))
       );

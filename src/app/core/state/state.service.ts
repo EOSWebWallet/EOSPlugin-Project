@@ -6,8 +6,6 @@ import { map, first, filter } from 'rxjs/internal/operators';
 import { IAppState, IStateEntity, UnsafeAction } from './state.interface';
 import { IPlugin } from '../plugin/plugin.interface';
 
-import { PluginUtils } from '../plugin/plugin.utils';
-
 export abstract class AbstractStateService {
 
   protected abstract actions: Actions;

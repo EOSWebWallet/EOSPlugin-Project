@@ -10,7 +10,7 @@ declare var browser: any;
 export class Browser {
 
   private static browserStream: BrowserStream;
-  private static browserStorage : IBrowserStorage;
+  private static browserStorage: IBrowserStorage;
 
   static get storage(): any {
     if (!Browser.browserStorage) {
@@ -62,11 +62,11 @@ export class Browser {
   }
 
   private static get api(): IBrowserAPI {
-    return chrome || browser;
+    return Browser.type === BrowserType.FIREFOX ? browser : chrome;
   }
 
   private static get type(): BrowserType {
-    return chrome ? BrowserType.CHROME : BrowserType.FIREFOX;
+    return window.browser ? BrowserType.FIREFOX : BrowserType.CHROME;
   }
 
   private static createLocalStream(): any {

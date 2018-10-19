@@ -46,8 +46,8 @@ export class PromptUtils {
 
   static async close(): Promise<void> {
     if (typeof browser !== 'undefined') {
-      const { id: windowId } = (await BrowserAPIUtils.windows.getCurrent());
-      BrowserAPIUtils.windows.remove(windowId);
+      const { id } = await browser.windows.getCurrent();
+      browser.windows.remove(id);
     } else {
       window.onbeforeunload = () => {};
       window.close();

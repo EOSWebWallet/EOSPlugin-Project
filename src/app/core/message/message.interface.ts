@@ -66,7 +66,7 @@ export class NetworkError {
   static usedKeyProvider(): NetworkError {
     return new NetworkError(
       'malicious',
-      'Do not use a `keyProvider` with a Scatter. Use a `signProvider` and return only signatures to this object.'
+      'Do not use a `keyProvider` with a EOS Plugin. Use a `signProvider` and return only signatures to this object.'
         + ' A malicious person could retrieve your keys otherwise.',
       NetworkErrorCode.NO_SIGNATURE
     );

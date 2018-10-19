@@ -29,7 +29,7 @@ export class EOSPlugin {
     requestSignature: async signargs => {
       const identity = await this.getIdentity(signargs.network);
       if (!identity || !identity.publicKey) {
-        throw new NetworkError('There is no identity with an account set on your EOSPlugin instance.');
+        throw new NetworkError('identity_missing', 'There is no identity with an account set on your EOSPlugin instance.');
       }
       return this.send(NetworkMessageType.REQUEST_SIGNATURE, {
         ...signargs,

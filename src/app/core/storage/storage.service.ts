@@ -1,6 +1,6 @@
 import { IPlugin } from '../plugin/plugin.interface';
 
-import { BrowserAPIUtils } from '../browser/browser.utils';
+import { Browser } from '../browser/browser';
 
 import { PluginUtils } from '../plugin/plugin.utils';
 
@@ -9,13 +9,13 @@ export class StorageUtils {
 
   static save(plugin: IPlugin): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPIUtils.storage.local.set({ plugin }, () => resolve(plugin));
+      Browser.storage.local.set({ plugin }, () => resolve(plugin));
     });
   }
 
   static get(): Promise<IPlugin> {
     return new Promise(resolve => {
-      BrowserAPIUtils.storage.local.get('plugin', result => resolve(
+      Browser.storage.local.get('plugin', result => resolve(
         result.plugin
           ? PluginUtils.fromJson(result.plugin)
           : PluginUtils.createPlugin()
@@ -25,7 +25,7 @@ export class StorageUtils {
 
   static getSalt(): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPIUtils.storage.local.get('salt', possible => {
+      Browser.storage.local.get('salt', possible => {
         if (JSON.stringify(possible) !== '{}') {
           resolve(possible.salt);
         } else {
@@ -37,19 +37,19 @@ export class StorageUtils {
 
   static setSalt(salt: string): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPIUtils.storage.local.set({ salt }, () => resolve(salt));
+      Browser.storage.local.set({ salt }, () => resolve(salt));
     });
   }
 
   static setLang(lang: string): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPIUtils.storage.local.set({ lang }, () => resolve(lang));
+      Browser.storage.local.set({ lang }, () => resolve(lang));
     });
   }
 
   static getLang(): Promise<string> {
     return new Promise(resolve => {
-      BrowserAPIUtils.storage.local.get('lang', possible => resolve(possible.lang));
+      Browser.storage.local.get('lang', possible => resolve(possible.lang));
     });
   }
 }

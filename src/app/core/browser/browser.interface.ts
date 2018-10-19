@@ -4,3 +4,21 @@ export interface IBrowserAPI {
   extension?: any;
   windows?: any;
 }
+
+export enum BrowserType {
+  CHROME,
+  FIREFOX
+}
+
+export interface IBrowserStorage {
+  local: {
+    set: (value: any, cb: Function) => void;
+    get: (key: string, cb: Function) => void;
+    clear: () => void;
+  };
+}
+
+export interface BrowserStream {
+  send(msg: any): Promise<{}>;
+  watch(callback: any): void;
+}

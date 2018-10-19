@@ -1,5 +1,5 @@
 import { NetworkError, ExtensionMessageType } from '../message/message.interface';
-import { BrowserAPIUtils } from '../browser/browser.utils';
+import { Browser } from '../browser/browser';
 import { ExtensionMessageService } from '../message/message.service';
 import { IPromptOptions } from './prompt.interface';
 
@@ -23,8 +23,8 @@ export class PromptUtils {
 
     const getPopup = async () => {
       try {
-        const url = BrowserAPIUtils.runtime.getURL('/index.html?prompt');
-        this.openWindow = BrowserAPIUtils.openWindow(url, width, height, options);
+        const url = Browser.runtime.getURL('/index.html?prompt');
+        this.openWindow = Browser.createWindow(url, width, height, options);
       } catch (e) {
         console.log('prompt error', e);
         return null;

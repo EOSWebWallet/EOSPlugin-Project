@@ -2,7 +2,7 @@ import { EncryptedStream, LocalStream } from 'extension-streams/dist';
 import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
 import { NetworkMessageType, NetworkError, ExtensionMessageType, INetworkMessage } from './app/core/message/message.interface';
 import { ExtensionMessageService } from './app/core/message/message.service';
-import { BrowserAPIUtils } from './app/core/browser/browser.utils';
+import { Browser } from './app/core/browser/browser';
 
 export class Content {
 
@@ -31,9 +31,9 @@ export class Content {
   }
 
   injectInteractionScript(): void {
-    if (BrowserAPIUtils.extension) {
+    if (Browser.extension) {
       const script = document.createElement('script');
-      script.src = BrowserAPIUtils.extension.getURL(Content.INJECTION_SCRIPT_FILENAME);
+      script.src = Browser.extension.getURL(Content.INJECTION_SCRIPT_FILENAME);
       (document.head || document.documentElement).appendChild(script);
       script.onload = () => script.remove();
     }
@@ -49,9 +49,9 @@ export class Content {
       return;
     }
 
-    msg.domain = BrowserAPIUtils.host;
+    msg.domain = Browser.host;
     if (msg.hasOwnProperty('payload')) {
-      msg.payload.domain = BrowserAPIUtils.host;
+      msg.payload.domain = Browser.host;
     }
 
     switch (msg.type) {

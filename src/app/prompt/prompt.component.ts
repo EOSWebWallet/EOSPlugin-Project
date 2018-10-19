@@ -4,10 +4,6 @@ import { IPromptOptions } from '../core/prompt/prompt.interface';
 
 import { PromptService } from './prompt.service';
 
-import { BrowserAPIUtils } from '../core/browser/browser.utils';
-
-declare var window: any;
-
 @Component({
   selector: 'app-prompt',
   templateUrl: './prompt.component.html',

@@ -12,7 +12,7 @@ import { INetwork } from './app/core/network/network.interface';
 import { PluginUtils } from './app/core/plugin/plugin.utils';
 import { KeypairUtils } from './app/core/keypair/keypair.utils';
 import { StorageUtils } from './app/core/storage/storage.service';
-import { BrowserAPIUtils } from './app/core/browser/browser.utils';
+import { Browser } from './app/core/browser/browser';
 import { AccountUtils } from './app/core/account/account.utils';
 import { EOSUtils } from './app/core/eos/eos.utils';
 import { EncryptUtils } from './app/core/encrypt/encrypt.utils';
@@ -26,7 +26,7 @@ export class Background {
   }
 
   initExtensionMessaging(): void {
-    BrowserAPIUtils.localStream.watch((request, cb) => {
+    Browser.stream.watch((request, cb) => {
       this.dispenseMessage(cb, request);
     });
   }
@@ -93,7 +93,7 @@ export class Background {
 
   destroy(cb: Function): void {
     this.seed = '';
-    BrowserAPIUtils.storage.local.clear();
+    Browser.storage.local.clear();
     cb(true);
   }
 

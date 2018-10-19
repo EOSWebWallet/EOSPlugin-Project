@@ -12,7 +12,7 @@ import { ExtensionMessageService } from '../message/message.service';
 
 import { NetworkUtils } from '../network/network.utils';
 import { AccountUtils } from '../account/account.utils';
-import { BrowserAPIUtils } from '../browser/browser.utils';
+import { Browser } from '../browser/browser';
 import { PromptUtils } from '../prompt/prompt.utils';
 import { PluginUtils } from '../plugin/plugin.utils';
 
@@ -153,7 +153,7 @@ export class EOSUtils {
 
       const result = await signer.requestSignature({
         ...signargs,
-        domain: BrowserAPIUtils.host,
+        domain: Browser.host,
         network
       });
 

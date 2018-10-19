@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { IPromptOptions } from '../core/prompt/prompt.interface';
 
-import { BrowserAPIUtils } from '../core/browser/browser.utils';
+import { Browser } from '../core/browser/browser';
 
 declare var window: any;
 
@@ -10,6 +10,6 @@ declare var window: any;
 export class PromptService {
 
   get prompt(): IPromptOptions {
-    return BrowserAPIUtils.getWindowData();
+    return Browser.getWindowData();
   }
 }

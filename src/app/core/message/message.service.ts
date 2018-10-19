@@ -1,11 +1,11 @@
 import { LocalStream } from 'extension-streams/dist';
 
 import { IExtensionMessage } from './message.interface';
-import { BrowserAPIUtils } from '../browser/browser.utils';
+import { Browser } from '../browser/browser';
 
 export class ExtensionMessageService {
 
   static send(message: IExtensionMessage): Promise<any> {
-    return BrowserAPIUtils.localStream.send(message);
+    return Browser.stream.send(message);
   }
 }

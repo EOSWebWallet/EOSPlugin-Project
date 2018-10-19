@@ -82,7 +82,7 @@
   <div class="controls">
     <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!(selectedNetworkAccountName$ | async)"></app-button>
   </div>
-  <div class="transactions">
+  <div class="transactions" *ngIf="accountActions.length">
     <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>
     <table>
       <tr *ngFor="let action of accountActions">

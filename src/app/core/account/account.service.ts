@@ -32,11 +32,9 @@ export class AccountService extends AbstractEntityService {
   }
 
   get selectedAccount$(): Observable<IAccount> {
-    return this.plugin$
+    return this.accounts$
       .pipe(
-        map(plugin =>
-          plugin.keychain.accounts.find(a => !!a.accounts.find(aa => aa.selected))
-        )
+        map(accounts => accounts && accounts.find(a => !!a.accounts.find(aa => aa.selected)))
       );
   }
 

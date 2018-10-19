@@ -5,7 +5,7 @@
         <div>
           <p class="name">{{ network.name }}</p>
           <app-toolbar-icon [type]="network.selected ? 'selected' : 'select'" (click)="onSelect(network)"></app-toolbar-icon>
-          <app-toolbar-icon type="edit" (click)="editableNetwork = network"></app-toolbar-icon>
+          <app-toolbar-icon type="edit" [class.disabled]="hasAccounts(network)" (click)="onEdit(network)"></app-toolbar-icon>
           <app-toolbar-icon type="remove" (click)="onDelete(network)"></app-toolbar-icon>
         </div>
         <div>

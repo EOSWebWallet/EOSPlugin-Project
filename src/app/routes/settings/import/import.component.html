@@ -8,6 +8,7 @@
     minlength="8"
     required
   ></app-password>
+  <!-- Firefox issue, extension popup auto hides on file select: https://bugzilla.mozilla.org/show_bug.cgi?id=1292701 -->
   <app-file [label]="'routes.settings.import.file'" (select)="onSelect($event)"></app-file>
 </div>
 

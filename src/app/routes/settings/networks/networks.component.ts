@@ -1,11 +1,14 @@
-import { Component, forwardRef, Inject, AfterViewInit } from '@angular/core';
+import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { first, map, filter } from 'rxjs/operators';
 
+import { IAccount } from '../../../core/account/account.interface';
 import { INetwork } from '../../../core/network/network.interface';
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 
 import { NetworksService } from '../../../core/network/networks.service';
+import { AccountService } from '../../../core/account/account.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
@@ -16,13 +19,16 @@ import { NetworkUtils } from '../../../core/network/network.utils';
   templateUrl: './networks.component.html',
   styleUrls: [ './networks.component.scss' ],
 })
-export class NetworksComponent extends AbstractPageComponent implements AfterViewInit {
+export class NetworksComponent extends AbstractPageComponent implements OnInit {
 
   editableNetwork: INetwork;
+
+  accounts: IAccount[] = [];
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private networskService: NetworksService,
+    private accountService: AccountService
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -30,6 +36,15 @@ export class NetworksComponent extends AbstractPageComponent implements AfterVie
       footer: 'routes.settings.networks.add',
       action: () => this.onAdd()
     });
+  }
+
+  ngOnInit(): void {
+    this.accountService.accounts$
+      .pipe(
+        filter(Boolean),
+        first()
+      )
+      .subscribe(accounts => this.accounts = accounts);
   }
 
   get networks$(): Observable<INetwork[]> {
@@ -53,6 +68,16 @@ export class NetworksComponent extends AbstractPageComponent implements AfterVie
 
   onSelect(network: INetwork): void {
     this.networskService.select(network.id);
+  }
+
+  onEdit(network: INetwork): void {
+    if (!this.hasAccounts(network)) {
+      this.editableNetwork = network;
+    }
+  }
+
+  hasAccounts(network: INetwork): boolean {
+    return !!this.accounts.find(a => a.network.id === network.id);
   }
 
   private createNew(networks: INetwork[]): INetwork {

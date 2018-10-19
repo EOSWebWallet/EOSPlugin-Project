@@ -5,12 +5,15 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs/internal/Observable';
 import { map, first, filter } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
+import { IAccount } from '../account/account.interface';
 import { IAppState } from '../state/state.interface';
 import { INetwork } from './network.interface';
 
 import { AbstractEntityService } from '../state/state.service';
 import { SettingsService } from '../settings/settings.service';
+import { AccountService } from '../account/account.service';
 
 import { IPlugin } from '../plugin/plugin.interface';
 
@@ -25,7 +28,8 @@ export class NetworksService extends AbstractEntityService {
     private httpClient: HttpClient,
     protected actions: Actions,
     protected store: Store<IAppState>,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private accountService: AccountService
   ) {
     super();
   }
@@ -71,13 +75,16 @@ export class NetworksService extends AbstractEntityService {
   }
 
   delete(id: string): void {
-    this.networks$
-      .pipe(
-        first()
-      )
-      .subscribe(networks =>
-        this.set(networks.filter(n => n.id !== id))
-      );
+    combineLatest(
+      this.networks$,
+      this.accountService.accounts$
+    )
+    .pipe(
+      first()
+    )
+    .subscribe(([ networks, accounts ]) =>
+      this.set(networks.filter(n => n.id !== id), accounts.filter(a => a.network.id !== id))
+    );
   }
 
   select(id: string): void {
@@ -93,12 +100,16 @@ export class NetworksService extends AbstractEntityService {
       );
   }
 
-  private set(networks: INetwork[]): void {
+  private set(networks: INetwork[], accounts: IAccount[] = null): void {
     this.plugin$
       .pipe(first())
       .subscribe((plugin: IPlugin) =>
         this.dispatchAction(PluginUtils.PLUGIN_STORE, {
           ...plugin,
+          keychain: {
+            ...plugin.keychain,
+            accounts: accounts ? accounts : plugin.keychain.accounts
+          },
           settings: {
             ...plugin.settings,
             networks: networks

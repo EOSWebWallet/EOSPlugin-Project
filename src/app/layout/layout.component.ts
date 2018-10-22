@@ -15,7 +15,7 @@ export class LayoutComponent {
 
   navLinks: INavLink[] = [
     { icon: 'icon-home', path: 'home' },
-    // { icon: 'icon-user', path: 'user' },
+    { icon: 'icon-user', path: 'user' },
     { icon: 'icon-key', path: 'keys' },
     { icon: 'icon-settings', path: 'settings' }
   ];

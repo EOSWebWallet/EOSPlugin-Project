@@ -23,6 +23,7 @@ import { GenerateModule } from '../routes/keys/generate/generate.module';
 import { LanguageModule } from '../routes/settings/language/language.module';
 import { SendModule } from '../routes/dashboard/send/send.module';
 import { ConfirmModule } from '../routes/dashboard/send/confirm/confirm.module';
+import { UserModule } from '../routes/user/user.module';
 
 import { AuthService } from '../core/auth/auth.service';
 
@@ -42,6 +43,7 @@ import { GenerateComponent } from '../routes/keys/generate/generate.component';
 import { LanguageComponent } from '../routes/settings/language/language.component';
 import { SendComponent } from '../routes/dashboard/send/send.component';
 import { ConfirmComponent } from '../routes/dashboard/send/confirm/confirm.component';
+import { UserComponent } from '../routes/user/user.component';
 
 const routes: Routes = [
   {
@@ -53,6 +55,7 @@ const routes: Routes = [
       { path: 'home', component: DashboardComponent },
       { path: 'home/send', component: SendComponent },
       { path: 'home/send/confirm', component: ConfirmComponent },
+      { path: 'user', component: UserComponent },
       { path: 'keys', component: KeysComponent },
       { path: 'keys/accounts', component: AccountsComponent },
       { path: 'keys/generate', component: GenerateComponent },
@@ -96,6 +99,7 @@ const routes: Routes = [
     LanguageModule,
     SendModule,
     ConfirmModule,
+    UserModule
   ],
   declarations: [
     LayoutComponent,

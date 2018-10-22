@@ -1,0 +1,9 @@
+<mat-list>
+  <ng-container *ngFor="let account of accounts">
+    <mat-list-item *ngFor="let networkAccount of account.accounts" class="network-account-panel">
+      <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
+      <app-toolbar-icon [type]="networkAccount.selected ? 'selected' : 'select'" (click)="onSelectAccount(networkAccount)"></app-toolbar-icon>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </ng-container>
+</mat-list>

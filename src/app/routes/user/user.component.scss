@@ -1,21 +1,10 @@
 @import "~src/variables";
 
 .mat-list-item {
-  height: inherit;
   font-size: 14px;
 }
 
-.account-panel {
-  width: 100%;
-  padding: 0 9px 15px 9px;
-
-  &.disabled p {
-    color: $color-inactive-dark !important;
-  }
-}
-
 .network-account-panel {
-  display: flex;
   padding: 5px 0;
 
   p {

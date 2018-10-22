@@ -52,7 +52,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
       backLink: '/app/keys/accounts',
       header: 'routes.keys.accounts.account.title',
       footer: 'routes.keys.accounts.account.save',
-      action: () => this.onSave()
+      action: () => this.onSave(),
+      disabled: () => this.form.invalid
     });
   }
 

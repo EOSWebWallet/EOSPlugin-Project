@@ -1,5 +1,5 @@
 <div>
-  <app-button icon="add" [label]="'routes.keys.accounts.add' | translate" (click)="onAdd()">
+  <app-button icon="add" [label]="'routes.keys.accounts.add' | translate" (click)="onAdd()" [disabled]="!hasNetworks">
     <mat-icon>add</mat-icon>
   </app-button>
 
@@ -12,14 +12,14 @@
             <p class="host">{{ account.network.host }}</p>
           </div>
           <div>
-            <app-toolbar-icon type="edit" (click)="!isDisabled(account) && onEdit(account)"></app-toolbar-icon>
-            <app-toolbar-icon type="remove" (click)="!isDisabled(account) && onDelete(account)"></app-toolbar-icon>
+            <app-toolbar-icon type="edit" (click)="onEdit(account)"></app-toolbar-icon>
+            <app-toolbar-icon type="remove" (click)="onDelete(account)"></app-toolbar-icon>
           </div>
         </div>
         <div *ngFor="let networkAccount of account.accounts" class="network-account-panel">
           <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
-          <app-toolbar-icon [type]="networkAccount.selected ? 'selected' : 'select'" (click)="!isDisabled(account) && onSelectAccount(networkAccount)"></app-toolbar-icon>
-          <app-toolbar-icon type="remove" (click)="!isDisabled(account) && onDeleteAccount(networkAccount)"></app-toolbar-icon>
+          <app-toolbar-icon [type]="networkAccount.selected ? 'selected' : 'select'" (click)="onSelectAccount(networkAccount)"></app-toolbar-icon>
+          <app-toolbar-icon type="remove" (click)="onDeleteAccount(networkAccount)"></app-toolbar-icon>
         </div>
       </div>
       <mat-divider></mat-divider>

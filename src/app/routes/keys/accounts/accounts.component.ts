@@ -26,7 +26,9 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
 
   selectedNetwork: INetwork;
 
-  accountSub: Subscription;
+  hasNetworks: boolean;
+
+  private accountSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -43,12 +45,18 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
   ngOnInit(): void {
     this.accountSub = combineLatest(
       this.accountService.accounts$,
-      this.networkService.selectedNetwork$
+      this.networkService.selectedNetwork$,
     )
     .subscribe(([ accounts, network ]) => {
       this.accounts = accounts;
       this.selectedNetwork = network;
     });
+
+    this.networkService.networks$
+      .pipe(
+        first()
+      )
+      .subscribe(networks => this.hasNetworks = !!networks.length);
   }
 
   ngOnDestroy(): void {

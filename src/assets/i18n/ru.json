@@ -45,7 +45,8 @@
           "unstaked": "Unstaked",
           "staked": "Staked"
         }
-      }
+      },
+      "emptyMessage": "Список аккаутов пуст. Пожалуйста, выберите активный аккаунт."
     },
     "registration": {
       "password": "Новый пароль",
@@ -147,6 +148,9 @@
         "terms": "Terms of Usage",
         "attribution": "Attribution"
       }
+    },
+    "users": {
+      "emptyMessage": "Список аккаунтов сети пуст."
     }
   },
   "shared": {

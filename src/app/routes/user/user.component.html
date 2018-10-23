@@ -1,4 +1,4 @@
-<mat-list>
+<mat-list *ngIf="accounts.length; else empty">
   <ng-container *ngFor="let account of accounts">
     <mat-list-item *ngFor="let networkAccount of account.accounts" class="network-account-panel">
       <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
@@ -7,3 +7,7 @@
     </mat-list-item>
   </ng-container>
 </mat-list>
+
+<ng-template #empty>
+  <div class="empty">{{ 'routes.users.emptyMessage' | translate }}</div>
+</ng-template>

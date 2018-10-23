@@ -1,5 +1,5 @@
 
-<div class="content">
+<div class="content" *ngIf="selectedNetworkAccountName$ | async; else empty">
   <div class="header">
     <h2>{{ selectedNetworkAccountName$ | async }}</h2>
     <app-icon type="icon-lock2" (click)="onLock()"></app-icon>
@@ -94,3 +94,6 @@
     </table>
   </div>
 </div>
+<ng-template #empty>
+  <div class="empty">{{ 'routes.dashboard.emptyMessage' | translate }}</div>
+</ng-template>

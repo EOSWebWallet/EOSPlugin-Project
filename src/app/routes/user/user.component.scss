@@ -11,3 +11,11 @@
     flex-grow: 1;
   }
 }
+
+.empty {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+  padding: 0 25px;
+}

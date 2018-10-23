@@ -45,7 +45,8 @@
           "unstaked": "Unstaked",
           "staked": "Staked"
         }
-      }
+      },
+      "emptyMessage": "Account list is empty. Please select active account."
     },
     "registration": {
       "password": "New Password",
@@ -147,6 +148,9 @@
         "terms": "Terms of Usage",
         "attribution": "Attribution"
       }
+    },
+    "users": {
+      "emptyMessage": "Network account list is empty."
     }
   },
   "shared": {

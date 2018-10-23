@@ -37,6 +37,8 @@ export class SelectComponent implements ControlValueAccessor {
       this.value = Array.isArray(value)
         ? value.map(o => o.value)
         : value.value;
+    } else {
+      this.value = '';
     }
   }
 

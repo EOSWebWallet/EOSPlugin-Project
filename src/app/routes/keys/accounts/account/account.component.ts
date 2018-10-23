@@ -134,6 +134,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
 
   private requestNetworkAccounts(key: string, network: INetwork): void {
     this.accountOptions = null;
+    this.resetAccountControl();
     this.eosService.getKeyAccounts(network, key)
       .pipe(first())
       .subscribe(accounts => {
@@ -147,5 +148,10 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
 
   private get accountId(): string {
     return this.route.snapshot.params.id;
+  }
+
+  private resetAccountControl(): void {
+    const control = this.form.controls['account'];
+    control.setValue('');
   }
 }

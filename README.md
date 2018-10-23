@@ -12,7 +12,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `sh build-dev.sh` or `sh build-prod.sh` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
@@ -25,3 +25,20 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Integration
+
+To integrate plugin in your project:
+
+1. Catch plugin instance by `eosPluginLoaded` event, like:
+  `document.addEventListener('eosPluginLoaded', () => {}`
+
+2. Request and cache identity like: 
+  `window.eosPlugin.requestIdentity({ host: 'jungle.eos.smartz.io', port: 443 })`
+
+3. Get cached or request identity like:
+  `window.eosPlugin.getIdentity({ host: 'jungle.eos.smartz.io', port: 443 })`
+
+4. Use EOS instance like:
+  `window.eosPlugin.eos(network, Eos, options)`
+

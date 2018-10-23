@@ -1,4 +1,4 @@
-<mat-form-field>
+<mat-form-field [class.loading]="isLoading">
   <mat-select *ngIf="!multiple" [placeholder]="label" [ngModel]="value" (selectionChange)="onSelect($event)" [required]="required">
     <mat-option *ngFor="let option of options" [value]="option.value">
       {{ option.label }}
@@ -14,4 +14,5 @@
       {{ 'shared.form.errors.' + error | translate }}
     </p>
   </mat-hint>
+  <div class="lds-hourglass" *ngIf="isLoading"></div>
 </mat-form-field>

@@ -28,6 +28,10 @@ export class SelectComponent implements ControlValueAccessor {
 
   value: string | string[];
 
+  get isLoading(): boolean {
+    return this.options === null;
+  }
+
   writeValue(value: ISelectOption | ISelectOption[]): void {
     if (value) {
       this.value = Array.isArray(value)

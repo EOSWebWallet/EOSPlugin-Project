@@ -133,6 +133,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
   }
 
   private requestNetworkAccounts(key: string, network: INetwork): void {
+    this.accountOptions = null;
     this.eosService.getKeyAccounts(network, key)
       .pipe(first())
       .subscribe(accounts => {

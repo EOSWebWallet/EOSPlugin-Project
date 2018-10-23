@@ -9,7 +9,7 @@
     <form #form="ngForm">
       <app-password
         name="password"
-        [ngModel]="value"
+        ngModel
         #password="ngModel"
         [label]="'routes.registration.password' | translate"
         [errors]="passwordErrors"

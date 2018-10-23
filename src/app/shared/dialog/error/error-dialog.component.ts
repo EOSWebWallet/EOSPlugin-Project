@@ -10,6 +10,8 @@ import { IErrorDialogData } from './error-dialog.interface';
 })
 export class ErrorDialogComponent {
 
+  showDescription = false;
+
   constructor(
     private dialogRef: MatDialogRef<ErrorDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IErrorDialogData

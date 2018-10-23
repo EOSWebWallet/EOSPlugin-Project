@@ -65,7 +65,7 @@ export class Plugins {
             id: 'id2',
             protocol: 'https',
             name: 'Mainnet (Greymass)',
-            host: 'junglenodes.eosmetal.io',
+            host: 'eos.greymass.com',
             port: 443
           },
           {

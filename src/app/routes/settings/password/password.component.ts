@@ -1,7 +1,8 @@
-import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, forwardRef, Inject, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, delay } from 'rxjs/internal/operators';
+import { map, delay, flatMap } from 'rxjs/internal/operators';
 
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 import { IControlErrors } from '../../../shared/form/form.interface';
@@ -16,7 +17,7 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
   templateUrl: './password.component.html',
   styleUrls: [ './password.component.scss' ],
 })
-export class PasswordComponent extends AbstractPageComponent {
+export class PasswordComponent extends AbstractPageComponent implements OnInit, OnDestroy {
 
   @ViewChild('form') passwordForm: FormGroup;
 
@@ -28,6 +29,9 @@ export class PasswordComponent extends AbstractPageComponent {
 
   @ViewChild('newPasswordConfirm')
   newPasswordConfirmControl: FormControl;
+
+  private passwordChangeSub: Subscription;
+  private passwordChangeFailureSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -42,6 +46,25 @@ export class PasswordComponent extends AbstractPageComponent {
       action: () => this.onChange(),
       disabled: () => !this.isValid
     });
+  }
+
+  ngOnInit(): void {
+    this.passwordChangeSub = this.authService.passwordChanged
+      .pipe(
+        flatMap(() => this.dialogService.info('routes.settings.password.successMessage'))
+      )
+      .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
+
+    this.passwordChangeFailureSub = this.authService.passwordChangedFailure
+      .pipe(
+        flatMap(() => this.dialogService.error('routes.settings.password.failureMessage'))
+      )
+      .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
+  }
+
+  ngOnDestroy(): void {
+    this.passwordChangeSub.unsubscribe();
+    this.passwordChangeFailureSub.unsubscribe();
   }
 
   get passwordErrors(): IControlErrors {
@@ -67,8 +90,6 @@ export class PasswordComponent extends AbstractPageComponent {
     const passwod = this.passwordForm.controls['password'].value;
     const newPassword = this.passwordForm.controls['newPassword'].value;
     this.authService.changePassword(passwod, newPassword);
-    this.dialogService.info('routes.settings.password.successMessage')
-      .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
   }
 
   private get isValid(): boolean {

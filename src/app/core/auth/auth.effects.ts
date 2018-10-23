@@ -38,7 +38,6 @@ export class AuthEffects {
     switchMap((action: UnsafeAction) => {
       return from(Encryption.generateMnemonic(action.payload.password))
         .pipe(
-          tap(() => from(PluginStorage.setSalt(Encryption.insecureHash(Encryption.text(32))))),
           flatMap(([ mnemonic, seed ]) =>
             from(Encryption.generateMnemonic(action.payload.newPassword))
               .pipe(
@@ -48,9 +47,11 @@ export class AuthEffects {
           flatMap(([ seed, newSeed ]) =>
             from(Browser.stream.send({ type: ExtensionMessageType.CHANGE_SEED, payload: { seed, newSeed } }))
           ),
-          map(() => ({
+          map(result => result ? ({
             type: AuthService.AUTH_PASSWORD_CAHNGE_SUCCESS,
             payload: action.payload
+          }) : ({
+            type: AuthService.AUTH_PASSWORD_CAHNGE_FAILURE,
           }))
         );
     })

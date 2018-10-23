@@ -5,7 +5,7 @@
   <div class="content">
     <div class="message">
       <p>{{ data.message | translate }}</p>
-      <app-icon type="play_circle_filled" (click)="showDescription = !showDescription"></app-icon>
+      <app-icon type="play_circle_filled" *ngIf="data.description" (click)="showDescription = !showDescription"></app-icon>
     </div>
     <div class="description" [hidden]="!showDescription">
       {{ data.description | translate }}

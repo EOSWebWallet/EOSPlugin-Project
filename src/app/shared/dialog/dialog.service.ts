@@ -30,7 +30,7 @@ export class DialogService {
     .afterClosed();
   }
 
-  error(message: string, description: string): Observable<void> {
+  error(message: string, description?: string): Observable<void> {
     return this.dialog.open(ErrorDialogComponent, {
       width: '240px',
       data: { message, description }

@@ -31,6 +31,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   static AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
   static AUTH_PASSWORD_CAHNGE = 'AUTH_PASSWORD_CAHNGE';
   static AUTH_PASSWORD_CAHNGE_SUCCESS = 'AUTH_PASSWORD_CAHNGE_SUCCESS';
+  static AUTH_PASSWORD_CAHNGE_FAILURE = 'AUTH_PASSWORD_CAHNGE_FAILURE';
   static AUTH_LOGIN = 'AUTH_LOGIN';
   static AUTH_LOGIN_SUCCESS = 'AUTH_LOGIN_SUCCESS';
   static AUTH_LOCK = 'AUTH_LOCK';
@@ -59,6 +60,14 @@ export class AuthService extends AbstractStateService implements CanActivate {
         filter(({ plugin }) => !!plugin),
         map(({ plugin }) => plugin.hasEncryptionKey)
       );
+  }
+
+  get passwordChanged(): Observable<void> {
+    return this.getAction(AuthService.AUTH_PASSWORD_CAHNGE_SUCCESS);
+  }
+
+  get passwordChangedFailure(): Observable<void> {
+    return this.getAction(AuthService.AUTH_PASSWORD_CAHNGE_FAILURE);
   }
 
   canActivate(): Observable<boolean> {

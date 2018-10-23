@@ -113,7 +113,8 @@
         "password": "Старый пароль",
         "newPassword": "Новый пароль",
         "newPasswordConfirm": "Подтвердить пароль",
-        "successMessage": "Пароль изменен!"
+        "successMessage": "Пароль изменен!",
+        "failureMessage": "При изменении пароля произошла ошибка!"
       },
       "import": {
         "title": "Импорт данных",

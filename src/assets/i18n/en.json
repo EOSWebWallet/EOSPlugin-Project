@@ -113,7 +113,8 @@
         "password": "Old password",
         "newPassword": "New password",
         "newPasswordConfirm": "Confirm password",
-        "successMessage": "Password was changed!"
+        "successMessage": "Password was changed!",
+        "failureMessage": "Password change failed!"
       },
       "import": {
         "title": "Import Data",

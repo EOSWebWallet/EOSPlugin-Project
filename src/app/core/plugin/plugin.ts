@@ -53,7 +53,36 @@ export class Plugins {
         accounts: [],
       },
       settings: {
-        networks: []
+        networks: [
+          {
+            id: 'id1',
+            protocol: 'https',
+            name: 'Mainnet (BlockMatrix)',
+            host: 'eosapi.blockmatrix.network',
+            port: 443
+          },
+          {
+            id: 'id2',
+            protocol: 'https',
+            name: 'Mainnet (Greymass)',
+            host: 'junglenodes.eosmetal.io',
+            port: 443
+          },
+          {
+            id: 'id3',
+            protocol: 'https',
+            name: 'Jungle (Eosmetal)',
+            host: 'junglenodes.eosmetal.io',
+            port: 443
+          },
+          {
+            id: 'id4',
+            protocol: 'https',
+            name: 'Jungle (Smartz)',
+            host: 'jungle.eos.smartz.io',
+            port: 443
+          }
+        ]
       },
     };
   }

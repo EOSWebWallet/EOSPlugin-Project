@@ -17,6 +17,7 @@
 
   .name, .host {
     flex-grow: 1;
+    pointer-events: none;
   }
 
   .name, .port span {

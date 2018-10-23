@@ -123,7 +123,8 @@
         "message": "If you ever change browsers or move computers, you will need this seed file to access your accounts. Save them somewhere safe and secret.",
         "import": "Import",
         "file": "Select file on your computer",
-        "confirmMessage": "All data will be changed!"
+        "confirmMessage": "All data will be changed!",
+        "failureMessage": "Data import failed!"
       },
       "export": {
         "title": "Export Data",

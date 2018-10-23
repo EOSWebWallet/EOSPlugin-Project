@@ -113,13 +113,19 @@ export class Background {
 
   async import(payload: any, cb: Function) {
     const { pluginData, salt } = Plugins.createPluginData(<string> payload.file.value);
+    const oldSalt = await PluginStorage.getSalt();
     await PluginStorage.setSalt(salt);
     const [m, s] = await Encryption.generateMnemonic(payload.password);
-    const decryptedPlugin = Plugins.decrypt(pluginData, s);
-    if (!Plugins.isEncrypted(decryptedPlugin)) {
-      this.seed = s;
-      PluginStorage.save(pluginData).then(saved => cb(Plugins.decrypt(saved, this.seed)));
-    } else {
+    try {
+      const decryptedPlugin = Plugins.decrypt(pluginData, s);
+      if (!Plugins.isEncrypted(decryptedPlugin)) {
+        this.seed = s;
+        PluginStorage.save(pluginData).then(saved => cb(Plugins.decrypt(saved, this.seed)));
+      } else {
+        cb(false);
+      }
+    } catch (e) {
+      await PluginStorage.setSalt(oldSalt);
       cb(false);
     }
   }

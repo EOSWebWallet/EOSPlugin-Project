@@ -2,6 +2,7 @@ import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/c
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { filter, flatMap } from 'rxjs/internal/operators';
+import { of } from 'rxjs/internal/observable/of';
 
 import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
 import { IFile } from '../../../shared/form/file/file.interface';
@@ -55,8 +56,8 @@ export class ImportComponent extends AbstractPageComponent {
       .pipe(
         filter(Boolean),
         flatMap(() => this.pluginService.import(this.password, this.file)),
-        filter(Boolean)
+        flatMap(result => result ? of(result) : this.dialogService.error('routes.settings.import.failureMessage'))
       )
-      .subscribe(result => this.router.navigateByUrl(this.pageConfig.backLink));
+      .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
   }
 }

@@ -51,25 +51,24 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
     );
 
   ngOnInit(): void {
+    this.eosService.accountInfo$
+      .pipe(
+        first()
+      )
+      .subscribe(info => this.accountInfo = info);
+
     combineLatest(
-      this.eosService.accountInfo$,
-      this.eosService.accountActions$
+      this.eosService.accountActions$,
+      this.accountService.selectedAccount$
     )
     .pipe(
       first(),
-      withLatestFrom(this.accountService.selectedAccount$),
-      map(([ [ info, actions ], selectedAccount ]) => ({
-        info,
-        actions: actions.map(a => ({
-          ...a,
-          direction: a.to === selectedAccount.name ? 'from' : 'to'
-        }))
-      }))
+      map(([ actions, selectedAccount ]) => actions.map(a => ({
+        ...a,
+        direction: a.to === selectedAccount.name ? 'from' : 'to'
+      })))
     )
-    .subscribe(({ info, actions }) => {
-      this.accountInfo = info;
-      this.accountActions = actions;
-    });
+    .subscribe(actions => this.accountActions = actions);
   }
 
   onLock(): void {

@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, forwardRef, Inject, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
-import { first, map } from 'rxjs/internal/operators';
+import { Subject } from 'rxjs/internal/Subject';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { first, map, debounceTime } from 'rxjs/internal/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 import { of } from 'rxjs/internal/observable/of';
 
@@ -24,7 +26,7 @@ import { Keypairs } from '../../../../core/keypair/keypair';
   templateUrl: './account.component.html',
   styleUrls: [ './account.component.scss' ]
 })
-export class AccountComponent extends AbstractPageComponent implements OnInit {
+export class AccountComponent extends AbstractPageComponent implements OnInit, OnDestroy {
   @ViewChild('form') form: FormGroup;
 
   account: Partial<IAccountForm> = {
@@ -39,6 +41,9 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
 
   accounts: INetworkAccount[] = [];
   accountOptions: ISelectOption[] = [];
+
+  private privateKeyChanged$ = new Subject<void>();
+  private privateKeySub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -81,6 +86,16 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
         this.requestNetworkAccounts(account.keypair.publicKey, account.network);
       }
     });
+
+    this.privateKeySub = this.privateKeyChanged$
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe(() => this.generatePublicKey());
+  }
+
+  ngOnDestroy(): void {
+    this.privateKeySub.unsubscribe();
   }
 
   generatePublicKey(): void {
@@ -112,6 +127,10 @@ export class AccountComponent extends AbstractPageComponent implements OnInit {
     }
 
     this.router.navigateByUrl(this.pageConfig.backLink);
+  }
+
+  onPrivateKeyChanged(): void {
+    this.privateKeyChanged$.next();
   }
 
   private getAccountName(account: INetworkAccount): string {

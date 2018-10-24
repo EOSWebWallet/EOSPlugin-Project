@@ -10,7 +10,7 @@
       name="privateKey"
       [(ngModel)]="account.keypair.privateKey"
       [label]="'routes.keys.accounts.account.privateKey' | translate"
-      (focusout)="generatePublicKey()"
+      (ngModelChange)="onPrivateKeyChanged()"
       required
     ></app-password>
     <app-text

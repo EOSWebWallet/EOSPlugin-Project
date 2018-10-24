@@ -32,7 +32,7 @@
     "bootstrap": "^4.1.3",
     "core-js": "^2.5.4",
     "eos-rc-parser": "^1.0.4",
-    "eosjs": "^16.0.6",
+    "eosjs": "16.0.2",
     "eosjs-api": "^7.0.0",
     "eosjs-ecc": "^4.0.4",
     "extension-streams": "^1.0.7",

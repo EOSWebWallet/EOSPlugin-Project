@@ -95,5 +95,12 @@
   </div>
 </div>
 <ng-template #empty>
-  <div class="empty">{{ 'routes.dashboard.emptyMessage' | translate }}</div>
+  <div class="content">
+    <div class="header">
+      <app-icon type="icon-lock2" (click)="onLock()"></app-icon>
+    </div>
+    <div class="empty">
+      {{ 'routes.dashboard.emptyMessage' | translate }}
+    </div>
+  </div>
 </ng-template>

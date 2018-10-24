@@ -56,10 +56,7 @@ export class PasswordComponent extends AbstractPageComponent implements OnInit, 
       .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
 
     this.passwordChangeFailureSub = this.authService.passwordChangedFailure
-      .pipe(
-        flatMap(() => this.dialogService.error('routes.settings.password.failureMessage'))
-      )
-      .subscribe(() => this.router.navigateByUrl(this.pageConfig.backLink));
+      .subscribe(() => this.dialogService.error('routes.settings.password.failureMessage'));
   }
 
   ngOnDestroy(): void {

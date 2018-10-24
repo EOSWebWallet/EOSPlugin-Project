@@ -25,14 +25,26 @@
   width: 40px;
 }
 
-.controls {
+.menu {
   display: flex;
   align-items: center;
   margin-left: auto;
   padding: 0 25px;
+  cursor: pointer;
 }
 
 app-icon {
   width: 17px;
   height: 17px;
+}
+
+.mat-menu-item {
+  font-family: $font-family-primary;
+  font-size: 14px;
+}
+
+mat-menu {
+  position: absolute;
+  right: 0;
+  top: 50px;
 }

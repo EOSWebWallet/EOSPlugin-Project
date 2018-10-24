@@ -2,15 +2,15 @@
   <div class="header">
     <nav mat-tab-nav-bar>
       <a mat-tab-link
-          *ngFor="let link of navLinks"
-          routerLinkActive
-          #rla="routerLinkActive"
-          [routerLink]="link.path"
-          [active]="rla.isActive"
+        *ngFor="let link of navLinks"
+        routerLinkActive
+        #rla="routerLinkActive"
+        [routerLink]="link.path"
+        [active]="rla.isActive"
       >
         <app-icon [type]="link.icon"></app-icon>
       </a>
-      <div class="controls">
+      <div mat-button [matMenuTriggerFor]="menu" class="menu">
         {{ selectedNetwork$ | async }}
       </div>
     </nav>
@@ -20,4 +20,7 @@
       <router-outlet></router-outlet>
     </app-page-layout>
   </div>
+  <mat-menu #menu="matMenu">
+    <li mat-menu-item *ngFor="let network of networks$ | async" (click)="onSelectNetwork(network)">{{ network.name }}</li>
+  </mat-menu>
 </div>

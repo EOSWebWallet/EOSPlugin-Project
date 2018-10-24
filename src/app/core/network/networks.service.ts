@@ -107,7 +107,12 @@ export class NetworksService extends AbstractEntityService {
           ...plugin,
           keychain: {
             ...plugin.keychain,
-            accounts: accounts ? accounts : plugin.keychain.accounts
+            accounts: (accounts ? accounts : plugin.keychain.accounts)
+              .map(a => ({
+                ...a,
+                accounts: a.accounts
+                  .map(na => ({ ...na, selected: false }))
+              }))
           },
           settings: {
             ...plugin.settings,

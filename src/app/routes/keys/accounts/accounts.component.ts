@@ -24,8 +24,6 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
 
   accounts: IAccount[];
 
-  selectedNetwork: INetwork;
-
   hasNetworks: boolean;
 
   private accountSub: Subscription;
@@ -43,14 +41,8 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
   }
 
   ngOnInit(): void {
-    this.accountSub = combineLatest(
-      this.accountService.accounts$,
-      this.networkService.selectedNetwork$,
-    )
-    .subscribe(([ accounts, network ]) => {
-      this.accounts = accounts;
-      this.selectedNetwork = network;
-    });
+    this.accountSub = this.accountService.accounts$
+      .subscribe(accounts => this.accounts = accounts);
 
     this.networkService.networks$
       .pipe(
@@ -61,10 +53,6 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
 
   ngOnDestroy(): void {
     this.accountSub.unsubscribe();
-  }
-
-  isDisabled(account: IAccount): boolean {
-    return !this.selectedNetwork || account.network.name !== this.selectedNetwork.name;
   }
 
   onAdd(): void {

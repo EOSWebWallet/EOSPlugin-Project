@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { ScrollbarModule } from 'ngx-scrollbar';
 
 import { DashboardModule } from '../routes/dashboard/dashboard.module';
@@ -81,6 +82,7 @@ const routes: Routes = [
     MatTabsModule,
     MatIconModule,
     MatButtonModule,
+    MatMenuModule,
     ScrollbarModule,
     DashboardModule,
     KeysModule,

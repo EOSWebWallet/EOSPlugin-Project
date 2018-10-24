@@ -171,6 +171,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
 
   private resetAccountControl(): void {
     const control = this.form.controls['account'];
-    control.setValue('');
+    if (control) {
+      control.setValue('');
+    }
   }
 }

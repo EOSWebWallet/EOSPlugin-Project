@@ -164,3 +164,10 @@ mat-icon {
   width: 10px;
   height: 15px;
 }
+
+.icon-transfer {
+  mask-image: url('../../../../../../assets/icon-transfer.png');
+  background: $color-primary !important;
+  width: 23px;
+  height: 23px;
+}

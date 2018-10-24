@@ -34,6 +34,7 @@
     ></app-select>
 
     <app-select
+      #selectedAccounts="ngModel"
       name="account"
       [multiple]="true"
       [ngModel]="account.accounts"
@@ -41,5 +42,9 @@
       [options]="accountOptions"
       required
     ></app-select>
+    <div *ngFor="let networkAccount of selectedAccounts.value" class="network-account-panel">
+      <p>{{ networkAccount.label }}</p>
+      <app-toolbar-icon type="remove" (click)="onDeleteAccount(networkAccount)"></app-toolbar-icon>
+    </div>
   </form>
 </div>

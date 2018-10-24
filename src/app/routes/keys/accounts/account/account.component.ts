@@ -133,6 +133,12 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
     this.privateKeyChanged$.next();
   }
 
+  onDeleteAccount(accountOption: ISelectOption): void {
+    const control = this.form.controls['account'];
+    this.account.accounts = control.value.filter(na => na.value !== accountOption.value);
+    control.setValue(this.account.accounts);
+  }
+
   private getAccountName(account: INetworkAccount): string {
     return `${account.name}@${account.authority}`;
   }

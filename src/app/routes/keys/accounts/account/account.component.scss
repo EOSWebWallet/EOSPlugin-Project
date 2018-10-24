@@ -10,3 +10,13 @@ h1 {
   text-align: center;
   padding: 25px 0 15px 0;
 }
+
+.network-account-panel {
+  display: flex;
+  padding: 5px 0;
+
+  p {
+    flex-grow: 1;
+    text-align: center;
+  }
+}

@@ -2,7 +2,7 @@
   <ng-scrollbar>
     <div class="header">
       <h1>{{ 'prompt.identity.title' | translate }}</h1>
-      <p><a href="">eostoolkit.io</a>{{ 'prompt.identity.requestAdditionalInfo' | translate }}</p>
+      <p><a [href]="'siteURL' | translate" target="_blank">{{ 'siteName' | translate }}</a>{{ 'prompt.identity.requestAdditionalInfo' | translate }}</p>
     </div>
     <div class="network">
       {{ network.name }}

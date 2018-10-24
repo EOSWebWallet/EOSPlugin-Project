@@ -1,7 +1,7 @@
 <div class="content">
   <div class="header">
     <h1>{{ networkAccount.name }}@{{ networkAccount.authority }} </h1>
-    <p><a href="">eostoolkit.io</a>{{ 'prompt.signature.requestAdditionalInfo' | translate }}</p>
+    <p><a [href]="'siteURL' | translate" target="_blank">{{ 'siteName' | translate }}</a>{{ 'prompt.signature.requestAdditionalInfo' | translate }}</p>
   </div>
   <div class="network">
     <app-icon type="icon-network"></app-icon>

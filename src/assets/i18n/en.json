@@ -1,4 +1,6 @@
 {
+  "siteName": "eosplugin.io",
+  "siteURL": "https://eosplugin.io",
   "prompt": {
     "identity": {
       "title": "Identity Request",

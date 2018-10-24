@@ -1,9 +1,10 @@
 import { Component, OnInit, forwardRef, Inject, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { filter, map, flatMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { IAccount } from '../../core/account/account.interface';
-import { INetworkAccount } from '../../core/network/network.interface';
+import { INetworkAccount, INetwork } from '../../core/network/network.interface';
 
 import { NetworksService } from '../../core/network/networks.service';
 import { AccountService } from '../../core/account/account.service';
@@ -18,6 +19,7 @@ import { PageLayoutComponent } from '../../layout/page/page.component';
 })
 export class UserComponent extends AbstractPageComponent implements OnInit, OnDestroy {
 
+  network: INetwork;
   accounts: IAccount[] = [];
 
   private accountSub: Subscription;
@@ -31,21 +33,25 @@ export class UserComponent extends AbstractPageComponent implements OnInit, OnDe
   }
 
   ngOnInit(): void {
-    this.accountSub = this.networkService.selectedNetwork$
-      .pipe(
-        filter(Boolean),
-        flatMap(network =>
-          this.accountService.accounts$
-            .pipe(
-              map(accounts => accounts.filter(a => a.network.id === network.id))
-            )
-        )
-      )
-      .subscribe(accounts => this.accounts = accounts);
+    this.accountSub = combineLatest(
+      this.networkService.selectedNetwork$,
+      this.accountService.accounts$
+    )
+    .pipe(
+      filter(([ network, accounts ]) => !!accounts)
+    )
+    .subscribe(([ network, accounts ]) => {
+      this.network = network;
+      this.accounts = accounts;
+    });
   }
 
   ngOnDestroy(): void {
     this.accountSub.unsubscribe();
+  }
+
+  isActive(account: IAccount): boolean {
+    return this.network && account.network.id === this.network.id;
   }
 
   onSelectAccount(networkAccount: INetworkAccount): void {

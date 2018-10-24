@@ -1,8 +1,19 @@
 <mat-list *ngIf="accounts.length; else empty">
   <ng-container *ngFor="let account of accounts">
-    <mat-list-item *ngFor="let networkAccount of account.accounts" class="network-account-panel">
-      <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
-      <app-toolbar-icon [type]="networkAccount.selected ? 'selected' : 'select'" (click)="onSelectAccount(networkAccount)"></app-toolbar-icon>
+    <mat-list-item *ngFor="let networkAccount of account.accounts">
+      <div class="network-account-panel" [class.disabled]="!isActive(account)">
+        <div class="account">
+          <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
+          <app-toolbar-icon
+            [type]="networkAccount.selected ? 'selected' : 'select'"
+            (click)="onSelectAccount(networkAccount)"
+          ></app-toolbar-icon>
+        </div>
+        <div class="description">
+          <p>{{ account.name }}</p>
+          <p>{{ account.network.name }}</p>
+        </div>
+      </div>
       <mat-divider></mat-divider>
     </mat-list-item>
   </ng-container>

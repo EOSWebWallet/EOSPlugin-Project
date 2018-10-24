@@ -1,14 +1,34 @@
 @import "~src/variables";
 
-.mat-list-item {
+mat-list-item.mat-list-item {
+  height: inherit;
   font-size: 14px;
 }
 
 .network-account-panel {
+  display: flex;
+  flex-direction: column;
   padding: 5px 0;
+  width: 100%;
+
+  .account, .description {
+    display: flex;
+  }
+
+  .description {
+    margin-top: 5px;
+
+    p:last-child {
+      text-align: right;
+    }
+  }
 
   p {
     flex-grow: 1;
+  }
+
+  &.disabled p {
+    color: $color-inactive-dark;
   }
 }
 

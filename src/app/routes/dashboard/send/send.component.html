@@ -3,11 +3,11 @@
     <table>
       <tr>
         <td>{{ 'routes.dashboard.send.unstaked' | translate }}:</td>
-        <td>{{ accountInfo.unstaked }} EOS</td>
+        <td>{{ accountInfo.unstaked || 0 }} EOS</td>
       </tr>
       <tr>
         <td>{{ 'routes.dashboard.send.staked' | translate }}:</td>
-        <td>{{ accountInfo.staked }} EOS</td>
+        <td>{{ accountInfo.staked || 0 }} EOS</td>
       </tr>
     </table>
   </div>

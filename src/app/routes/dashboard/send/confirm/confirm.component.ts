@@ -65,7 +65,7 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
   }
 
   get quantityUSD(): number {
-    return Number((this.quantity * this.courseUSD).toFixed(3));
+    return Number((this.quantity * this.courseUSD).toFixed(3)) || 0;
   }
 
   get symbol(): string {

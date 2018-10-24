@@ -13,15 +13,15 @@
   <table>
     <tr>
       <td>{{ 'routes.dashboard.send.confirm.totalBalance' | translate }}:</td>
-      <td>{{ accountInfo.totalBalance }} EOS / <span>{{ accountInfo.usdTotal }} USD</span></td>
+      <td>{{ accountInfo.totalBalance || 0 }} EOS / <span>{{ accountInfo.usdTotal || 0 }} USD</span></td>
     </tr>
     <tr>
       <td>{{ 'routes.dashboard.send.confirm.unstaked' | translate }}:</td>
-      <td>{{ accountInfo.unstaked }} EOS / <span>{{ accountInfo.usdUnstaked }} USD</span></td>
+      <td>{{ accountInfo.unstaked || 0 }} EOS / <span>{{ accountInfo.usdUnstaked || 0 }} USD</span></td>
     </tr>
     <tr>
       <td>{{ 'routes.dashboard.send.confirm.staked' | translate }}:</td>
-      <td>{{ accountInfo.staked }} EOS / <span>{{ accountInfo.usdStaked }} USD</span></td>
+      <td>{{ accountInfo.staked || 0 }} EOS / <span>{{ accountInfo.usdStaked || 0 }} USD</span></td>
     </tr>
   </table>
 </div>

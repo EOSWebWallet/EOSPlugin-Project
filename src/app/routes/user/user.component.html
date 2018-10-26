@@ -6,7 +6,7 @@
           <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
           <app-toolbar-icon
             [type]="networkAccount.selected ? 'selected' : 'select'"
-            (click)="onSelectAccount(networkAccount)"
+            (click)="onSelectAccount(account, networkAccount)"
           ></app-toolbar-icon>
         </div>
         <div class="description">

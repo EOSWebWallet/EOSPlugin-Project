@@ -54,7 +54,9 @@ export class UserComponent extends AbstractPageComponent implements OnInit, OnDe
     return this.network && account.network.id === this.network.id;
   }
 
-  onSelectAccount(networkAccount: INetworkAccount): void {
-    this.accountService.selectAccount(networkAccount);
+  onSelectAccount(account: IAccount, networkAccount: INetworkAccount): void {
+    if (this.isActive(account)) {
+      this.accountService.selectAccount(networkAccount);
+    }
   }
 }

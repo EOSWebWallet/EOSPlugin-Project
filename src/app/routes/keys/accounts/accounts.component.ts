@@ -22,11 +22,14 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
 export class AccountsComponent extends AbstractPageComponent implements OnInit, OnDestroy {
   static PATH_ACCOUNT = '/app/keys/accounts/account';
 
+  network: INetwork;
+
   accounts: IAccount[];
 
   hasNetworks: boolean;
 
   private accountSub: Subscription;
+  private networkSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -49,10 +52,18 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
         first()
       )
       .subscribe(networks => this.hasNetworks = !!networks.length);
+
+    this.networkSub = this.networkService.selectedNetwork$
+      .subscribe(network => this.network = network);
   }
 
   ngOnDestroy(): void {
     this.accountSub.unsubscribe();
+    this.networkSub.unsubscribe();
+  }
+
+  isActive(account: IAccount): boolean {
+    return this.network && account.network.id === this.network.id;
   }
 
   onAdd(): void {
@@ -67,8 +78,10 @@ export class AccountsComponent extends AbstractPageComponent implements OnInit, 
     this.accountService.delete(account.id);
   }
 
-  onSelectAccount(networkAccount: INetworkAccount): void {
-    this.accountService.selectAccount(networkAccount);
+  onSelectAccount(account: IAccount, networkAccount: INetworkAccount): void {
+    if (this.isActive(account)) {
+      this.accountService.selectAccount(networkAccount);
+    }
   }
 
   onDeleteAccount(networkAccount: INetworkAccount): void {

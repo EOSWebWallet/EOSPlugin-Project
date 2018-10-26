@@ -80,7 +80,7 @@
     </div>
   </div>
   <div class="controls">
-    <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!(selectedNetworkAccountName$ | async)"></app-button>
+    <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!hasAccountInfo || !(selectedNetworkAccountName$ | async)"></app-button>
   </div>
   <div class="transactions" *ngIf="accountActions.length">
     <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>

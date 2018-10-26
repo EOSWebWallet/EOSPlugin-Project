@@ -2,7 +2,7 @@ import { Component, forwardRef, Inject, ViewChild, OnDestroy, OnInit } from '@an
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
-import { filter, first, map, flatMap, catchError } from 'rxjs/internal/operators';
+import { filter, first, map, flatMap, catchError, distinctUntilChanged, skip } from 'rxjs/internal/operators';
 
 import { INetworkAccountInfo } from '../../../core/eos/eos.interface';
 
@@ -31,6 +31,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
 
   private signatureSub: Subscription;
   private symbolsSub: Subscription;
+  private accountSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -51,7 +52,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
 
   readonly selectedNetworkAccountName$ = this.accountService.selectedAccount$
     .pipe(
-      map(a => a.accounts.find(na => na.selected)),
+      map(a => a && a.accounts.find(na => na.selected)),
       map(na => na && na.name)
     );
 
@@ -70,11 +71,19 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
 
     this.symbolsSub = this.eosService.symbols$
       .subscribe(symbols => this.symbols = symbols);
+
+    this.accountSub = this.accountService.selectedAccount$
+      .pipe(
+        distinctUntilChanged(),
+        skip(1)
+      )
+      .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
   }
 
   ngOnDestroy(): void {
     this.signatureSub.unsubscribe();
     this.symbolsSub.unsubscribe();
+    this.accountSub.unsubscribe();
   }
 
   filterSymbols(key: string): string[] {

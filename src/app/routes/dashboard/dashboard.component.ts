@@ -45,8 +45,7 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
 
   readonly selectedNetworkAccountName$ = this.accountService.selectedAccount$
     .pipe(
-      filter(Boolean),
-      map(a => a.accounts.find(na => na.selected)),
+      map(a => a && a.accounts.find(na => na.selected)),
       map(na => na && `${na.name}@${na.authority}`)
     );
 
@@ -69,6 +68,10 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
       })))
     )
     .subscribe(actions => this.accountActions = actions);
+  }
+
+  get hasAccountInfo(): boolean {
+    return Object.keys(this.accountInfo).length > 0;
   }
 
   onLock(): void {

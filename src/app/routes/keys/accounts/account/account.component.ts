@@ -3,9 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { first, map, debounceTime } from 'rxjs/internal/operators';
+import { first, map, debounceTime, flatMap } from 'rxjs/internal/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 import { of } from 'rxjs/internal/observable/of';
+import { from } from 'rxjs/internal/observable/from';
 
 import { IAccount } from '../../../../core/account/account.interface';
 import { INetwork, INetworkAccount } from '../../../../core/network/network.interface';
@@ -89,18 +90,23 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
 
     this.privateKeySub = this.privateKeyChanged$
       .pipe(
-        debounceTime(500)
+        debounceTime(500),
+        flatMap(() => from(Keypairs.makePublicKey(this.account.keypair))),
       )
-      .subscribe(() => this.generatePublicKey());
+      .subscribe(keypair => {
+        if (this.account.keypair.publicKey !== keypair.publicKey) {
+          const networkOption = this.form.controls['network'].value;
+          if (networkOption) {
+            const network = this.networks.find(n => n.id === networkOption.value);
+            this.requestNetworkAccounts(keypair.publicKey, network);
+          }
+        }
+        this.account.keypair = keypair;
+      });
   }
 
   ngOnDestroy(): void {
     this.privateKeySub.unsubscribe();
-  }
-
-  generatePublicKey(): void {
-    Keypairs.makePublicKey(this.account.keypair)
-      .then(keypair => this.account.keypair = keypair);
   }
 
   onNetworkSelect(networkOption: ISelectOption): void {
@@ -160,15 +166,19 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   private requestNetworkAccounts(key: string, network: INetwork): void {
     this.accountOptions = null;
     this.resetAccountControl();
-    this.eosService.getKeyAccounts(network, key)
-      .pipe(first())
-      .subscribe(accounts => {
-        this.accounts = accounts;
-        this.accountOptions = this.accounts.map(account => ({
-          label: this.getAccountName(account),
-          value: this.getAccountName(account),
-        }));
-      });
+    if (key) {
+      this.eosService.getKeyAccounts(network, key)
+        .pipe(first())
+        .subscribe(accounts => {
+          this.accounts = accounts;
+          this.accountOptions = this.accounts.map(account => ({
+            label: this.getAccountName(account),
+            value: this.getAccountName(account),
+          }));
+        });
+    } else {
+      this.accountOptions = [];
+    }
   }
 
   private get accountId(): string {
@@ -178,7 +188,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   private resetAccountControl(): void {
     const control = this.form.controls['account'];
     if (control) {
-      control.setValue('');
+      control.setValue([]);
     }
   }
 }

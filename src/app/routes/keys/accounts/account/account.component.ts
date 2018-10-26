@@ -115,7 +115,10 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   }
 
   onSave(): void {
-    const data = this.form.value;
+    const data = {
+      ...this.form.value,
+      publicKey: this.form.controls['publicKey'].value
+    };
     const updatedAccount = {
       id: this.accountId,
       name: data.name,

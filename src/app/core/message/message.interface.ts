@@ -80,10 +80,6 @@ export class NetworkError {
     return new NetworkError(_type, _message, NetworkErrorCode.NO_SIGNATURE);
   }
 
-  static identityMissing(): NetworkError {
-    return this.signatureError('identity_missing', 'Identity no longer exists on the user\'s keychain');
-  }
-
   static signatureAccountMissing(): NetworkError {
     return this.signatureError('account_missing', 'Missing required accounts, repull the identity');
   }

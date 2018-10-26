@@ -27,7 +27,10 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
 
   accountInfo: INetworkAccountInfo = {};
 
+  symbols = [];
+
   private signatureSub: Subscription;
+  private symbolsSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -64,11 +67,21 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
         first()
       )
       .subscribe(info => this.accountInfo = info);
+
+    this.symbolsSub = this.eosService.symbols$
+      .subscribe(symbols => this.symbols = symbols);
   }
 
   ngOnDestroy(): void {
     this.signatureSub.unsubscribe();
+    this.symbolsSub.unsubscribe();
   }
+
+  filterSymbols(key: string): string[] {
+    return this.symbols.filter(symbol => symbol.toUpperCase().indexOf(key) !== -1);
+  }
+
+  autocomplete = key => this.filterSymbols(key);
 
   onSend(): void {
     this.sendService.send(this.form.value)

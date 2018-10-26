@@ -25,6 +25,7 @@ export class TextComponent implements ControlValueAccessor {
   @Input() required: boolean;
   @Input() disabled: boolean;
   @Input() step: number;
+  @Input() autocomplete: (key: string) => string[];
 
   value: string;
 

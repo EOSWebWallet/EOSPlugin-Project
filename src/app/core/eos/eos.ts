@@ -144,6 +144,10 @@ export class EOS {
     return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getActions(accountName, undefined, -500);
   }
 
+  static getTokenInfo (protocol: string, host: string, port: number, code: string, account: string): Promise<any> {
+    return new Eos({ httpEndpoint: `${protocol}://${host}:${port}` }).getCurrencyBalance(code, account);
+  }
+
   private static createSignatureProvider(network, signer, multiSigKeyProvider): Function {
     return async signargs => {
       signargs.messages = await EOS.mapSignargs(signargs, network);

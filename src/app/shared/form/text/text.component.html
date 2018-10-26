@@ -8,9 +8,17 @@
     [step]="step"
     [required]="required"
     [disabled]="disabled"
+    [matAutocomplete]="autocompleteRef"
     (ngModelChange)="onChange($event)"
     (focusout)="onFocusOut()"
   />
+  <mat-autocomplete #autocompleteRef="matAutocomplete">
+    <ng-container *ngIf="autocomplete">
+      <mat-option *ngFor="let autocompleteValue of autocomplete(value)" [value]="autocompleteValue">
+        {{ autocompleteValue }}
+      </mat-option>
+    </ng-container>
+  </mat-autocomplete>
   <mat-hint *ngIf="errors">
     <p *ngFor="let error of controlErrors">
       {{ 'shared.form.errors.' + error | translate }}

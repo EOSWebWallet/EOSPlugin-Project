@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { TextComponent } from './text/text.component';
 import { ButtonComponent } from './button/button.component';
@@ -26,6 +27,7 @@ import { FileComponent } from './file/file.component';
     MatFormFieldModule,
     MatIconModule,
     MatSelectModule,
+    MatAutocompleteModule,
   ],
   declarations: [
     TextComponent,

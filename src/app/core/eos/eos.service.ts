@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, flatMap, filter } from 'rxjs/internal/operators';
+import { map, flatMap, filter, catchError } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
+import { forkJoin } from 'rxjs/internal/observable/forkJoin';
+import { of } from 'rxjs/internal/observable/of';
 
 import { INetwork, INetworkAccount } from '../network/network.interface';
-import { IChainInfo, INetworkAccountInfo, INetworkAccountAction } from './eos.interface';
+import { IChainInfo, INetworkAccountInfo, INetworkAccountAction, Tokens } from './eos.interface';
 import { IAccount } from '../account/account.interface';
 
 import { AccountService } from '../account/account.service';
@@ -36,6 +38,16 @@ export class EOSService {
         networkAccount: account.accounts.find(na => na.selected)
       })),
       flatMap(({ account, networkAccount }) => this.getActions(account, networkAccount))
+    );
+
+  readonly symbols$ = this.accountService.selectedAccount$
+    .pipe(
+      filter(Boolean),
+      map(account => ({
+        account,
+        networkAccount: account.accounts.find(na => na.selected)
+      })),
+      flatMap(({ account, networkAccount }) => this.getSymbols(account, networkAccount))
     );
 
   constructor(
@@ -80,6 +92,33 @@ export class EOSService {
       .pipe(
         map(res => this.mapAccountActions(res.actions))
       );
+  }
+
+  getSymbols(account: IAccount, newtworkAccount: INetworkAccount): Observable<string[]> {
+    const { protocol, host, port } = account.network;
+    return forkJoin(Tokens.map(token =>
+      from(EOS.getTokenInfo(protocol, host, port, token, newtworkAccount.name))
+        .pipe(
+          catchError(err => of(false))
+        )
+    ))
+    .pipe(
+      map(result => result.filter(item => item !== false && item.length > 0)),
+      filter(result => result && !!result.length),
+      map(result => {
+        const userSymbols = [];
+        result.forEach(resultArr => {
+          resultArr.forEach(element => {
+            const symbol = element.substring(element.lastIndexOf(' ') + 1);
+            const findSymbol = userSymbols.map(s => s.toLocaleLowerCase()).find(s => symbol.toLocaleLowerCase());
+            if (!findSymbol) {
+              userSymbols.push(symbol);
+            }
+          });
+        });
+        return userSymbols;
+      })
+    );
   }
 
   private mapAccountActions(actions: any[]): INetworkAccountAction[] {

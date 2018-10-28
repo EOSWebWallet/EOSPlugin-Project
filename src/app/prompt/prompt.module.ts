@@ -30,13 +30,6 @@ export function getInitialState(): Partial<IAppState> {
   return { ...initialState };
 }
 
-const routes: Routes = [
-  {
-    path: '',
-    component: PromptComponent
-  },
-];
-
 @NgModule({
   declarations: [
     PromptComponent
@@ -44,7 +37,6 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     CoreModule,
-    RouterModule.forChild(routes),
     EffectsModule.forRoot([
       AuthEffects,
       PluginEffects,

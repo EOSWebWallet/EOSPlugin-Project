@@ -7,16 +7,8 @@ import { SharedModule } from '../../shared/shared.module';
 
 import { RegistrationComponent } from './registration.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: RegistrationComponent
-  },
-];
-
 @NgModule({
   imports: [
-    RouterModule.forChild(routes),
     FormsModule,
     TranslateModule,
     SharedModule,

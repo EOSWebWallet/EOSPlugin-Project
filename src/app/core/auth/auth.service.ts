@@ -1,6 +1,6 @@
 import { Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { Store, select } from '@ngrx/store';
 import { of } from 'rxjs/internal/observable/of';
@@ -16,6 +16,7 @@ import { AbstractStateService } from '../state/state.service';
 
 import { Plugins } from '../plugin/plugin';
 import { Browser } from '../browser/browser';
+import { PluginStorage } from '../storage/storage';
 
 declare var window: any;
 
@@ -26,6 +27,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   static PATH_PROMPT = '/prompt';
   static PATH_LOGIN = '/login';
   static PATH_REGISTER = '/registration';
+  static PATH_CONFIRM = '/app/home/send/confirm';
 
   static AUTH_REGISTER = 'AUTH_REGISTER';
   static AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
@@ -47,6 +49,14 @@ export class AuthService extends AbstractStateService implements CanActivate {
 
     this.navigateAfterRegistration();
     this.navigateAfterLogin();
+
+    this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+        map(e => <NavigationEnd>e),
+        filter(e => e.url !== AuthService.PATH_CONFIRM)
+      )
+      .subscribe(e => PluginStorage.setRoute(e.url))
   }
 
   get isAuthorized(): Observable<boolean> {
@@ -104,10 +114,11 @@ export class AuthService extends AbstractStateService implements CanActivate {
   private navigateToInitialRoute(): void {
     combineLatest(
       this.hasAuthorization,
-      this.isAuthorized
+      this.isAuthorized,
+      from(PluginStorage.getRoute())
     )
     .pipe(first())
-    .subscribe(([ hasAuthorization, isAuthorized ]) => {
+    .subscribe(([ hasAuthorization, isAuthorized, route ]) => {
       if (!hasAuthorization) {
         this.router.navigateByUrl(AuthService.PATH_REGISTER);
       } else if (hasAuthorization && !isAuthorized) {
@@ -115,7 +126,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
       } else if (window.isPrompt) {
         this.router.navigateByUrl(AuthService.PATH_PROMPT);
       } else {
-        this.router.navigateByUrl(AuthService.PATH_HOME);
+        this.router.navigateByUrl(route || AuthService.PATH_HOME);
       }
     });
   }

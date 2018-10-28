@@ -52,4 +52,16 @@ export class PluginStorage {
       Browser.storage.local.get('lang', possible => resolve(possible.lang));
     });
   }
+
+  static setRoute(route: string): Promise<string> {
+    return new Promise(resolve => {
+      Browser.storage.local.set({ route }, () => resolve(route));
+    });
+  }
+
+  static getRoute(): Promise<string> {
+    return new Promise(resolve => {
+      Browser.storage.local.get('route', possible => resolve(possible.route));
+    });
+  }
 }

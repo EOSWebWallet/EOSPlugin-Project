@@ -9,12 +9,9 @@ export class Networks {
     return { ...json };
   }
 
-  static createNetwork(name: string): INetwork {
+  static createNetwork(): INetwork {
     return {
-      name,
       protocol: 'https',
-      host: 'network.host',
-      port: 443
     };
   }
 

@@ -21,6 +21,7 @@ import { Networks } from '../../../core/network/network';
 })
 export class NetworksComponent extends AbstractPageComponent implements OnInit {
 
+  newNetwork: INetwork;
   editableNetwork: INetwork;
 
   accounts: IAccount[] = [];
@@ -52,13 +53,12 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
   }
 
   onAdd(): void {
-    this.networskService.networks$
-      .pipe(first())
-      .subscribe(networks => this.networskService.save(this.createNew(networks)));
+    this.newNetwork = Networks.createNetwork();
+    this.editableNetwork = null;
   }
 
-  onUpdate(network: INetwork): void {
-    this.networskService.update(network.id, network);
+  onUpdate(): void {
+    this.networskService.update(this.editableNetwork.id, this.editableNetwork);
     this.editableNetwork = null;
   }
 
@@ -72,21 +72,21 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
 
   onEdit(network: INetwork): void {
     if (!this.hasAccounts(network)) {
-      this.editableNetwork = network;
+      this.editableNetwork = { ...network };
+      this.newNetwork = null;
     }
+  }
+
+  onCreate(): void {
+    this.networskService.save(this.newNetwork);
+    this.newNetwork = null;
   }
 
   hasAccounts(network: INetwork): boolean {
     return !!this.accounts.find(a => a.network.id === network.id);
   }
 
-  private createNew(networks: INetwork[]): INetwork {
-    const last = networks
-      .map(n => n.name)
-      .filter(n => n.startsWith(Networks.NETWORK_PREFIX))
-      .map(n => parseInt(n.replace(Networks.NETWORK_PREFIX, ''), 10))
-      .sort((a, b) => a - b)
-      .pop() || 0;
-    return Networks.createNetwork(Networks.NETWORK_PREFIX + (last + 1));
+  isEditing(network: INetwork): boolean {
+    return network && this.editableNetwork && network.id === this.editableNetwork.id;
   }
 }

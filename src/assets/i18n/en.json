@@ -95,7 +95,8 @@
         "host": "Network URL",
         "port": "Port",
         "save": "Save",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "create": "Add"
       },
       "language": {
         "title": "Select Language",

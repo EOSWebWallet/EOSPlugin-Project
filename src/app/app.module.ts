@@ -25,9 +25,9 @@ import { AppComponent } from './app.component';
 
 import { reducers, initialState } from './core/state/root.reducer';
 
-import { background, Background } from '../background';
-import { content, Content } from '../content';
-import { inject, Inject } from '../inject';
+// import { background, Background } from '../background';
+// import { content, Content } from '../content';
+// import { inject, Inject } from '../inject';
 
 import { PluginStorage } from './core/storage/storage';
 
@@ -78,9 +78,9 @@ export class AppModule {
 
   static DEFAULT_LANGUAGE = 'en';
 
-  private background: Background;
-  private content: Content;
-  private inject: Inject;
+  // private background: Background;
+  // private content: Content;
+  // private inject: Inject;
 
   constructor(private translate: TranslateService) {
     translate.setDefaultLang('en');

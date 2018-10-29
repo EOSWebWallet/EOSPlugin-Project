@@ -28,6 +28,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   static PATH_LOGIN = '/login';
   static PATH_REGISTER = '/registration';
   static PATH_CONFIRM = '/app/home/send/confirm';
+  static PATH_APP = '/app';
 
   static AUTH_REGISTER = 'AUTH_REGISTER';
   static AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
@@ -54,7 +55,8 @@ export class AuthService extends AbstractStateService implements CanActivate {
       .pipe(
         filter(e => e instanceof NavigationEnd),
         map(e => <NavigationEnd>e),
-        filter(e => e.url !== AuthService.PATH_CONFIRM)
+        filter(e => e.url !== AuthService.PATH_CONFIRM),
+        filter(e => e.url.indexOf(AuthService.PATH_APP) !== -1)
       )
       .subscribe(e => PluginStorage.setRoute(e.url))
   }

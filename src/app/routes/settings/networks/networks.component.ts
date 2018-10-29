@@ -82,6 +82,12 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
     this.newNetwork = null;
   }
 
+  onCancel(event: any): void {
+    event.preventDefault();
+    this.newNetwork = null;
+    this.editableNetwork = null;
+  }
+
   hasAccounts(network: INetwork): boolean {
     return !!this.accounts.find(a => a.network.id === network.id);
   }

@@ -22,7 +22,7 @@
         <app-text name="port" [(ngModel)]="editableNetwork.port" [label]="'routes.settings.networks.port' | translate" required></app-text>
         <div>
           <app-button type="accept" [label]="'routes.settings.networks.save' | translate" (click)="onUpdate()" [disabled]="form.invalid"></app-button>
-          <app-button type="reject" [label]="'routes.settings.networks.cancel' | translate" (click)="editableNetwork = null"></app-button>
+          <app-button type="reject" [label]="'routes.settings.networks.cancel' | translate" (click)="onCancel($event)"></app-button>
         </div>
       </form>
       <mat-divider></mat-divider>
@@ -35,7 +35,7 @@
       <app-text name="port" [(ngModel)]="newNetwork.port" [label]="'routes.settings.networks.port' | translate" required></app-text>
       <div>
         <app-button type="accept" [label]="'routes.settings.networks.create' | translate" (click)="onCreate()" [disabled]="form.invalid"></app-button>
-        <app-button type="reject" [label]="'routes.settings.networks.cancel' | translate" (click)="newNetwork = null"></app-button>
+        <app-button type="reject" [label]="'routes.settings.networks.cancel' | translate" (click)="onCancel($event)"></app-button>
       </div>
     </form>
   </mat-list-item>

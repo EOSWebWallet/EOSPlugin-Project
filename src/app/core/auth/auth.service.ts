@@ -58,7 +58,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
         filter(e => e.url !== AuthService.PATH_CONFIRM),
         filter(e => e.url.indexOf(AuthService.PATH_APP) !== -1)
       )
-      .subscribe(e => PluginStorage.setRoute(e.url))
+      .subscribe(e => PluginStorage.setRoute(e.url));
   }
 
   get isAuthorized(): Observable<boolean> {

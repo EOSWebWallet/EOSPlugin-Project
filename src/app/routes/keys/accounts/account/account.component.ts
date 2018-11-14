@@ -86,6 +86,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
       if (account) {
         this.account = this.createAccountForm(account);
         this.requestNetworkAccounts(account.keypair.publicKey, account.network);
+      } else {
+        this.account = this.createEmptyForm(this.networkOptions[0]);
       }
     });
 
@@ -165,6 +167,13 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
         value: this.getAccountName(a)
       }))
     };
+  }
+
+  private createEmptyForm(defaultNetwork: ISelectOption): IAccountForm {
+    return {
+      keypair: {},
+      network: defaultNetwork
+    } as IAccountForm;
   }
 
   private requestNetworkAccounts(key: string, network: INetwork): void {

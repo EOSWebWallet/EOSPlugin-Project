@@ -1,28 +1,29 @@
-<div>
-  <app-button icon="add" [label]="'routes.keys.accounts.add' | translate" (click)="onAdd()" [disabled]="!hasNetworks">
-    <mat-icon>add</mat-icon>
-  </app-button>
+<app-button icon="add" [label]="'routes.keys.accounts.add' | translate" (click)="onAdd()" [disabled]="!hasNetworks">
+  <mat-icon>add</mat-icon>
+</app-button>
 
-  <mat-list>
-    <mat-list-item *ngFor="let account of accounts">
-      <div class="account-panel">
-        <div class="network-panel">
-          <div>
-            <p class="name">{{ account.name }}</p>
-            <p class="host">{{ account.network.host }}</p>
-          </div>
-          <div>
-            <app-toolbar-icon type="edit" (click)="onEdit(account)"></app-toolbar-icon>
-            <app-toolbar-icon type="remove" (click)="onDelete(account)"></app-toolbar-icon>
-          </div>
+<mat-list *ngIf="accounts.length; else empty">
+  <mat-list-item *ngFor="let account of accounts">
+    <div class="account-panel">
+      <div class="network-panel">
+        <div>
+          <p class="name">{{ account.name }}</p>
+          <p class="host">{{ account.network.host }}</p>
         </div>
-        <div *ngFor="let networkAccount of account.accounts" class="network-account-panel">
-          <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
-          <app-toolbar-icon [type]="networkAccount.selected ? 'selected' : 'select'" (click)="onSelectAccount(account, networkAccount)" [class.disabled]="!isActive(account)"></app-toolbar-icon>
-          <app-toolbar-icon type="remove" (click)="onDeleteAccount(networkAccount)"></app-toolbar-icon>
+        <div>
+          <app-toolbar-icon type="edit" (click)="onEdit(account)"></app-toolbar-icon>
+          <app-toolbar-icon type="remove" (click)="onDelete(account)"></app-toolbar-icon>
         </div>
       </div>
-      <mat-divider></mat-divider>
-    </mat-list-item>
-  </mat-list>
-</div>
+      <div *ngFor="let networkAccount of account.accounts" class="network-account-panel">
+        <p>{{ networkAccount.name }}@{{ networkAccount.authority }}</p>
+        <app-toolbar-icon [type]="networkAccount.selected ? 'selected' : 'select'" (click)="onSelectAccount(account, networkAccount)" [class.disabled]="!isActive(account)"></app-toolbar-icon>
+        <app-toolbar-icon type="remove" (click)="onDeleteAccount(networkAccount)"></app-toolbar-icon>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-list-item>
+</mat-list>
+<ng-template #empty>
+  <div class="empty">{{ 'routes.keys.accounts.emptyMessage' | translate }}</div>
+</ng-template>

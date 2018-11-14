@@ -74,7 +74,8 @@
           "networkAccounts": "Account Name",
           "save": "Save",
           "eos": "EOS Account"
-        }
+        },
+        "emptyMessage": "Account list is empty. To get started, you need to create a group."
       },
       "generate": {
         "title": "Generate Key Pair",

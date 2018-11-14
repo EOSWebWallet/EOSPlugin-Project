@@ -155,7 +155,7 @@
       }
     },
     "users": {
-      "emptyMessage": "Network account list is empty."
+      "emptyMessage": "Accounts list is empty."
     }
   },
   "shared": {

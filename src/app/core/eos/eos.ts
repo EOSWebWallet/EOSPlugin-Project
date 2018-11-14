@@ -120,17 +120,20 @@ export class EOS {
           return false;
         }
 
-        Promise.all(
+        return Promise.all(
           res.account_names
-            .map(name => eos.getAccount(name).catch(e => resolve([])))
+            .map(name => eos.getAccount(name).catch(e => null))
         ).then(multires => {
           const accounts = [];
-          multires.map(account => {
-            (<any>account).permissions.map(permission => {
-              accounts.push({ name: (<any>account).account_name, authority: permission.perm_name });
+          multires
+            .filter(Boolean)
+            .map(account => {
+              (<any>account).permissions.map(permission => {
+                accounts.push({ name: (<any>account).account_name, authority: permission.perm_name });
+              });
             });
-          });
           resolve(accounts);
+          return accounts;
         }).catch(e => resolve([]));
       }).catch(e => resolve([]));
     });

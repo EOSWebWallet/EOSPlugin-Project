@@ -45,6 +45,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
 
   private privateKeyChanged$ = new Subject<void>();
   private privateKeySub: Subscription;
+  private accountSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -170,7 +171,11 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
     this.accountOptions = null;
     this.resetAccountControl();
     if (key) {
-      this.eosService.getKeyAccounts(network, key)
+      if (this.accountSub) {
+        this.accountSub.unsubscribe();
+        this.accountSub = null;
+      }
+      this.accountSub = this.eosService.getKeyAccounts(network, key)
         .pipe(first())
         .subscribe(accounts => {
           this.accounts = accounts;

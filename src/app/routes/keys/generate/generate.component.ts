@@ -34,21 +34,21 @@ export class GenerateComponent extends AbstractPageComponent {
   }
 
   onGenerate(): void {
-    if (this.privateKey) {
-      Keypairs.makePublicKey({
-        privateKey: this.privateKey,
-        publicKey: ''
-      }).then(keypair => {
+    Keypairs.generateKeyPair()
+      .then(keypair => {
         this.privateKey = keypair.privateKey;
         this.publicKey = keypair.publicKey;
       });
-    } else {
-      Keypairs.generateKeyPair()
-        .then(keypair => {
-          this.privateKey = keypair.privateKey;
-          this.publicKey = keypair.publicKey;
-        });
-    }
+  }
+
+  onPrivateKeyEnter(): void {
+    Keypairs.makePublicKey({
+      privateKey: this.privateKey,
+      publicKey: ''
+    }).then(keypair => {
+      this.privateKey = keypair.privateKey;
+      this.publicKey = keypair.publicKey;
+    });
   }
 
   onCopyPrivateKey(event: Event): void {

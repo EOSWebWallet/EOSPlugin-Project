@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Inject, LOCALE_ID } from '@angular/core';
+import { Component, OnInit, forwardRef, Inject, LOCALE_ID, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,10 +29,12 @@ import { InfoDialogComponent } from '../../shared/dialog/info/info-dialog.compon
     }
   ]
 })
-export class DashboardComponent extends AbstractPageComponent implements OnInit {
+export class DashboardComponent extends AbstractPageComponent implements OnInit, OnDestroy {
 
   accountInfo: INetworkAccountInfo = {};
-  accountActions: INetworkAccountAction[] = [];
+  accountActions: INetworkAccountAction[];
+
+  private accountActionsSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -56,18 +58,12 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit 
       )
       .subscribe(info => this.accountInfo = info);
 
-    combineLatest(
-      this.eosService.accountActions$,
-      this.accountService.selectedAccount$
-    )
-    .pipe(
-      first(),
-      map(([ actions, selectedAccount ]) => actions.map(a => ({
-        ...a,
-        direction: a.to === selectedAccount.name ? 'from' : 'to'
-      })))
-    )
-    .subscribe(actions => this.accountActions = actions);
+    this.accountActionsSub = this.eosService.actionsHistory$
+      .subscribe(actions => this.accountActions = actions);
+  }
+
+  ngOnDestroy(): void {
+    this.accountActionsSub.unsubscribe();
   }
 
   get hasAccountInfo(): boolean {

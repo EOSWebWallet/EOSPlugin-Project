@@ -82,16 +82,23 @@
   <div class="controls">
     <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!hasAccountInfo || !(selectedNetworkAccountName$ | async)"></app-button>
   </div>
-  <div class="transactions" *ngIf="accountActions.length">
-    <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>
-    <table>
-      <tr *ngFor="let action of accountActions">
-        <td>{{ action.date | date : 'MMM d, h:mm a' }}</td>
-        <td *ngIf="action.direction === 'from'"><span class="from">{{ 'routes.dashboard.from' | translate }}</span> {{ action.from }}</td>
-        <td *ngIf="action.direction === 'to'"><span class="to">{{ 'routes.dashboard.to' | translate }}</span> {{ action.to }}</td>
-        <td><span>{{ action.quantity }}</span> {{ action.symbol }}</td>
-      </tr>
-    </table>
+  <div class="transactions">
+    <div *ngIf="accountActions; else spinner">
+      <ng-container *ngIf="accountActions.length">
+        <h2>{{ 'routes.dashboard.transactions' | translate }}</h2>
+        <table>
+          <tr *ngFor="let action of accountActions">
+            <td>{{ action.date | date : 'MMM d, h:mm a' }}</td>
+            <td *ngIf="action.direction === 'from'"><span class="from">{{ 'routes.dashboard.from' | translate }}</span> {{ action.from }}</td>
+            <td *ngIf="action.direction === 'to'"><span class="to">{{ 'routes.dashboard.to' | translate }}</span> {{ action.to }}</td>
+            <td><span>{{ action.quantity }}</span> {{ action.symbol }}</td>
+          </tr>
+        </table>
+      </ng-container>
+    </div>
+    <ng-template #spinner>
+      <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+    </ng-template>
   </div>
 </div>
 <ng-template #empty>

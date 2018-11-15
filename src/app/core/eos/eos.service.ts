@@ -2,16 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, flatMap, filter, catchError } from 'rxjs/internal/operators';
+import { map, flatMap, filter, catchError, startWith, throttleTime, first } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { of } from 'rxjs/internal/observable/of';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
+import { interval } from 'rxjs/internal/observable/interval';
 
 import { INetwork, INetworkAccount } from '../network/network.interface';
 import { IChainInfo, INetworkAccountInfo, INetworkAccountAction, Tokens } from './eos.interface';
 import { IAccount } from '../account/account.interface';
 
 import { AccountService } from '../account/account.service';
+import { AuthService } from '../auth/auth.service';
 
 import { EOS } from './eos';
 
@@ -30,7 +33,7 @@ export class EOSService {
       flatMap(({ account, networkAccount }) => this.getAccountInfo(account, networkAccount))
     );
 
-  readonly accountActions$ = this.accountService.selectedAccount$
+  readonly actions$ = this.accountService.selectedAccount$
     .pipe(
       filter(Boolean),
       map(account => ({
@@ -50,10 +53,36 @@ export class EOSService {
       flatMap(({ account, networkAccount }) => this.getSymbols(account, networkAccount))
     );
 
+    readonly accountActions$ = interval(10000)
+    .pipe(
+      startWith(0),
+      flatMap(() => this.authService.isAuthorized),
+      filter(Boolean),
+      flatMap(() => this.accountService.selectedAccount$),
+      throttleTime(1000),
+      filter(Boolean),
+      flatMap(selectedAccount =>
+        this.actions$
+          .pipe(
+            first(),
+            map(actions => actions.map(a => ({
+              ...a,
+              direction: a.to === selectedAccount.name ? 'from' : 'to'
+            })))
+          )
+      )
+    );
+
+  readonly actionsHistory$ = new BehaviorSubject<INetworkAccountAction[]>(null);
+
   constructor(
     private httpClient: HttpClient,
-    private accountService: AccountService
-  ) { }
+    private accountService: AccountService,
+    private authService: AuthService
+  ) {
+    this.accountActions$
+      .subscribe(actions => this.actionsHistory$.next(actions));
+  }
 
   requestCurrentCourses(): Observable<any> {
     return this.httpClient.get('https://api.coingecko.com/api/v3/coins/eos');

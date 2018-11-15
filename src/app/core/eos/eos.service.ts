@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, flatMap, filter, catchError, startWith, throttleTime, first } from 'rxjs/internal/operators';
+import { map, flatMap, filter, catchError, startWith, first, distinctUntilChanged, tap, switchMap, takeWhile } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { of } from 'rxjs/internal/observable/of';
@@ -40,7 +40,15 @@ export class EOSService {
         account,
         networkAccount: account.accounts.find(na => na.selected)
       })),
-      flatMap(({ account, networkAccount }) => this.getActions(account, networkAccount))
+      flatMap(({ account, networkAccount }) =>
+        this.getActions(account, networkAccount)
+          .pipe(
+            map(actions => actions.map(a => ({
+              ...a,
+              direction: a.to === account.name ? 'from' : 'to'
+            })))
+          )
+      )
     );
 
   readonly symbols$ = this.accountService.selectedAccount$
@@ -53,26 +61,6 @@ export class EOSService {
       flatMap(({ account, networkAccount }) => this.getSymbols(account, networkAccount))
     );
 
-    readonly accountActions$ = interval(10000)
-    .pipe(
-      startWith(0),
-      flatMap(() => this.authService.isAuthorized),
-      filter(Boolean),
-      flatMap(() => this.accountService.selectedAccount$),
-      throttleTime(1000),
-      filter(Boolean),
-      flatMap(selectedAccount =>
-        this.actions$
-          .pipe(
-            first(),
-            map(actions => actions.map(a => ({
-              ...a,
-              direction: a.to === selectedAccount.name ? 'from' : 'to'
-            })))
-          )
-      )
-    );
-
   readonly actionsHistory$ = new BehaviorSubject<INetworkAccountAction[]>(null);
 
   constructor(
@@ -80,7 +68,39 @@ export class EOSService {
     private accountService: AccountService,
     private authService: AuthService
   ) {
-    this.accountActions$
+    this.accountService.selectedAccount$
+      .pipe(
+        filter(Boolean),
+        distinctUntilChanged(),
+        tap(() => this.actionsHistory$.next(null)),
+        switchMap(() =>
+          interval(10000)
+            .pipe(
+              startWith(true)
+            )
+        ),
+        switchMap(init =>
+          (
+            init === true
+              ? interval(500)
+                .pipe(
+                  takeWhile(i => i < 10),
+                  flatMap(() =>
+                    this.actions$
+                      .pipe(
+                        first()
+                      )
+                  ),
+                )
+              : this.actions$
+          )
+          .pipe(
+            filter(actions => actions && !!actions.length),
+            catchError(() => []),
+            first(),
+          )
+        ),
+      )
       .subscribe(actions => this.actionsHistory$.next(actions));
   }
 

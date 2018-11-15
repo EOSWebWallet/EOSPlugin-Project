@@ -81,6 +81,34 @@ export class Plugins {
             name: 'Jungle (Smartz)',
             host: 'jungle.eos.smartz.io',
             port: 443
+          },
+          {
+            id: 'id5',
+            protocol: 'https',
+            name: 'EOS New York',
+            host: 'api.eosnewyork.io',
+            port: 443
+          },
+          {
+            id: 'id6',
+            protocol: 'https',
+            name: 'EOS Nation',
+            host: 'api.eosn.io',
+            port: 443
+          },
+          {
+            id: 'id7',
+            protocol: 'https',
+            name: 'franceos',
+            host: 'api.franceos.fr',
+            port: 443
+          },
+          {
+            id: 'id8',
+            protocol: 'https',
+            name: 'Cypherglass',
+            host: 'api.cypherglass.com',
+            port: 443
           }
         ]
       },

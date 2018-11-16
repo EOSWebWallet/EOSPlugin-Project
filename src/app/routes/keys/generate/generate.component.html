@@ -1,6 +1,6 @@
 <div class="content">
   <p>{{ 'routes.keys.generate.message' | translate }}</p>
-  <form>
+  <form #form="ngForm">
     <app-text
       name="publicKey"
       #public="ngModel"

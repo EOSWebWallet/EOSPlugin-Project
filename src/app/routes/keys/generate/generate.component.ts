@@ -1,8 +1,12 @@
-import { Component, forwardRef, Inject, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, forwardRef, Inject, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs/internal/Subject';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { first, debounceTime, flatMap } from 'rxjs/internal/operators';
+
+import { UIStateService } from '../../../core/ui/state.service';
 
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
-
 import { TextComponent } from '../../../shared/form/text/text.component';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
@@ -13,7 +17,8 @@ import { Keypairs } from '../../../core/keypair/keypair';
   templateUrl: './generate.component.html',
   styleUrls: [ './generate.component.scss' ],
 })
-export class GenerateComponent extends AbstractPageComponent {
+export class GenerateComponent extends AbstractPageComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('form') form: FormGroup;
 
   @ViewChild('private', { read: TextComponent }) privateKeyField: TextComponent;
   @ViewChild('public', { read: TextComponent }) publicKeyField: TextComponent;
@@ -21,8 +26,13 @@ export class GenerateComponent extends AbstractPageComponent {
   privateKey = '';
   publicKey = '';
 
+  private privateKeyChanged$ = new Subject<void>();
+  private privateKeySub: Subscription;
+  private formSub: Subscription;
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
+    private uiStateService: UIStateService
   ) {
     super(pageLayout, {
       backLink: '/app/keys',
@@ -31,6 +41,21 @@ export class GenerateComponent extends AbstractPageComponent {
       action: () => this.onGenerate(),
       // disabled: () => !this.password || !this.password.length
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.restoreUIState();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyUIState();
+
+    if (this.privateKeySub) {
+      this.privateKeySub.unsubscribe();
+    }
+    if (this.formSub) {
+      this.formSub.unsubscribe();
+    }
   }
 
   onGenerate(): void {
@@ -42,13 +67,7 @@ export class GenerateComponent extends AbstractPageComponent {
   }
 
   onPrivateKeyEnter(): void {
-    Keypairs.makePublicKey({
-      privateKey: this.privateKey,
-      publicKey: ''
-    }).then(keypair => {
-      this.privateKey = keypair.privateKey;
-      this.publicKey = keypair.publicKey;
-    });
+    this.privateKeyChanged$.next();
   }
 
   onCopyPrivateKey(event: Event): void {
@@ -65,5 +84,47 @@ export class GenerateComponent extends AbstractPageComponent {
     const inputEl = field.inputField.nativeElement;
     inputEl.select();
     document.execCommand('copy');
+  }
+
+  private initUIStateHandler(): void {
+    this.formSub = this.form.valueChanges
+      .subscribe(value => {
+        this.uiStateService.setState('generateForm', value);
+      });
+  }
+
+  private initPrivateKeyHandler(): void {
+    this.privateKeySub = this.privateKeyChanged$
+      .pipe(
+        debounceTime(500),
+        flatMap(() => Keypairs.makePublicKey({
+          privateKey: this.privateKey,
+          publicKey: ''
+        }))
+      )
+      .subscribe(keypair => {
+        this.privateKey = keypair.privateKey;
+        this.publicKey = keypair.publicKey;
+      });
+  }
+
+  private restoreUIState(): void {
+    setTimeout(() => {
+      this.uiStateService.getState('generateForm')
+        .pipe(
+          first()
+        )
+        .subscribe(value => {
+          if (value) {
+            this.form.setValue(value);
+          }
+          this.initUIStateHandler();
+          this.initPrivateKeyHandler();
+        });
+    });
+  }
+
+  private destroyUIState(): void {
+    this.uiStateService.setState('generateForm', null);
   }
 }

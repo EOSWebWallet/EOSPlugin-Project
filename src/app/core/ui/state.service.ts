@@ -34,7 +34,7 @@ export class UIStateService extends AbstractStateService {
       .pipe(
         first()
       )
-      .subscribe(state => this.set({
+      .subscribe(state => this.dispatchAction(Plugins.PLUGIN_STORE_UI, {
         ...state,
         [key]: value
       }));
@@ -44,20 +44,6 @@ export class UIStateService extends AbstractStateService {
     return this.state$
       .pipe(
         map(state => state[key])
-      );
-  }
-
-  private set(state: IUIState): void {
-    this.plugin$
-      .pipe(first())
-      .subscribe((plugin: IPlugin) =>
-        this.dispatchAction(Plugins.PLUGIN_STORE, {
-          ...plugin,
-          keychain: {
-            ...plugin.keychain,
-            state
-          }
-        })
       );
   }
 }

@@ -47,6 +47,27 @@ export class PluginEffects {
   );
 
   @Effect()
+  storePluginUI$ = this.actions.pipe(
+    ofType(Plugins.PLUGIN_STORE_UI),
+    switchMap((action: UnsafeAction) => {
+      return from(Browser.stream.send({ type: ExtensionMessageType.LOAD_PLUGIN }))
+        .pipe(
+          map(plugin => Plugins.fromJson(plugin)),
+          map(plugin => ({
+            type: Plugins.PLUGIN_STORE,
+            payload: {
+              ...plugin,
+              keychain: {
+                ...plugin.keychain,
+                state: action.payload
+              }
+            }
+          }))
+        );
+    })
+  );
+
+  @Effect()
   loadPlugin$ = this.actions.pipe(
     ofType(Plugins.PLUGIN_LOAD),
     switchMap((action: UnsafeAction) => {

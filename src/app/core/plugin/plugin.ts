@@ -11,6 +11,7 @@ export class Plugins {
   static PLUGIN_LOAD_SUCCESS = 'PLUGIN_LOAD_SUCCESS';
   static PLUGIN_IMPORT = 'PLUGIN_IMPORT';
   static PLUGIN_DESTROY = 'PLUGIN_DESTROY';
+  static PLUGIN_STORE_UI = 'PLUGIN_STORE_UI';
 
   static fromJson(json: any): IPlugin {
     return {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, forwardRef, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, forwardRef, Inject, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs/internal/Subject';
@@ -16,6 +16,7 @@ import { IAccountForm } from './account.interface';
 import { AccountService } from '../../../../core/account/account.service';
 import { NetworksService } from '../../../../core/network/networks.service';
 import { EOSService } from '../../../../core/eos/eos.service';
+import { UIStateService } from '../../../../core/ui/state.service';
 
 import { AbstractPageComponent } from '../../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../../layout/page/page.component';
@@ -27,7 +28,8 @@ import { Keypairs } from '../../../../core/keypair/keypair';
   templateUrl: './account.component.html',
   styleUrls: [ './account.component.scss' ]
 })
-export class AccountComponent extends AbstractPageComponent implements OnInit, OnDestroy {
+export class AccountComponent extends AbstractPageComponent implements OnInit, OnDestroy, AfterViewInit {
+
   @ViewChild('form') form: FormGroup;
 
   account: Partial<IAccountForm> = {
@@ -46,6 +48,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   private privateKeyChanged$ = new Subject<void>();
   private privateKeySub: Subscription;
   private accountSub: Subscription;
+  private formSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -53,7 +56,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
     private networksService: NetworksService,
     private eosService: EOSService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private uiStateService: UIStateService
   ) {
     super(pageLayout, {
       backLink: '/app/keys/accounts',
@@ -90,26 +94,20 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
         this.account = this.createEmptyForm(this.networkOptions[0]);
       }
     });
+  }
 
-    this.privateKeySub = this.privateKeyChanged$
-      .pipe(
-        debounceTime(500),
-        flatMap(() => from(Keypairs.makePublicKey(this.account.keypair))),
-      )
-      .subscribe(keypair => {
-        if (this.account.keypair.publicKey !== keypair.publicKey) {
-          const networkOption = this.form.controls['network'].value;
-          if (networkOption) {
-            const network = this.networks.find(n => n.id === networkOption.value);
-            this.requestNetworkAccounts(keypair.publicKey, network);
-          }
-        }
-        this.account.keypair = keypair;
-      });
+  ngAfterViewInit(): void {
+    this.restoreUIState();
   }
 
   ngOnDestroy(): void {
-    this.privateKeySub.unsubscribe();
+    this.destroyUIState();
+    if (this.privateKeySub) {
+      this.privateKeySub.unsubscribe();
+    }
+    if (this.formSub) {
+      this.formSub.unsubscribe();
+    }
   }
 
   onNetworkSelect(networkOption: ISelectOption): void {
@@ -207,5 +205,57 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
     if (control) {
       control.setValue([]);
     }
+  }
+
+  private initPrivateKeyHandler(): void {
+    this.privateKeySub = this.privateKeyChanged$
+      .pipe(
+        debounceTime(500),
+        flatMap(() => from(Keypairs.makePublicKey(this.account.keypair))),
+      )
+      .subscribe(keypair => {
+        if (this.account.keypair.publicKey !== keypair.publicKey) {
+          const networkOption = this.form.controls['network'].value;
+          if (networkOption) {
+            const network = this.networks.find(n => n.id === networkOption.value);
+            this.requestNetworkAccounts(keypair.publicKey, network);
+          }
+        }
+        this.account.keypair = keypair;
+      });
+  }
+
+  private initUIStateHandler(): void {
+    this.formSub = this.form.valueChanges
+      .subscribe(value => {
+        this.uiStateService.setState('accountForm', {
+          ...value,
+          ...(
+            this.form.controls['publicKey']
+              ? { publicKey: this.form.controls['publicKey'].value }
+              : { }
+          )
+        });
+      });
+  }
+
+  private restoreUIState(): void {
+    setTimeout(() => {
+      this.uiStateService.getState('accountForm')
+        .pipe(
+          first()
+        )
+        .subscribe(value => {
+          if (value) {
+            this.form.setValue(value);
+          }
+          this.initUIStateHandler();
+          this.initPrivateKeyHandler();
+        });
+    });
+  }
+
+  private destroyUIState(): void {
+    this.uiStateService.setState('accountForm', null);
   }
 }

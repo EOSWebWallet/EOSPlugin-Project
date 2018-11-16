@@ -1,3 +1,5 @@
+@import "~src/variables";
+
 form {
   padding: 0 25px;
 }
@@ -18,5 +20,16 @@ h1 {
   p {
     flex-grow: 1;
     text-align: center;
+  }
+}
+
+::ng-deep app-select.initialized {
+  .mat-form-field-underline,
+  .mat-form-field-ripple {
+    background-color: $color-success !important;
+  }
+  .mat-select-arrow,
+  .mat-form-field-label {
+    color: $color-success !important;
   }
 }

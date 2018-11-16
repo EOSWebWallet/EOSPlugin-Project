@@ -37,6 +37,7 @@
     <app-select
       #selectedAccounts="ngModel"
       name="account"
+      [ngClass]="{ initialized: accountOptions?.length && !selectedAccounts.value.length }"
       [multiple]="true"
       [ngModel]="account.accounts"
       [label]="'routes.keys.accounts.account.networkAccounts' | translate"

@@ -82,7 +82,7 @@ export class EOSService {
               startWith(true)
             )
         ),
-        tap(value => value > 1 && this.actionsHistory$.next([])),
+        tap(value => value > 1 && !this.actionsHistory$.value && this.actionsHistory$.next([])),
         switchMap(init =>
           (
             init === true

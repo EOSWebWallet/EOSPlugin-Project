@@ -51,6 +51,7 @@ export class Plugins {
       hasEncryptionKey,
       keychain: {
         accounts: [],
+        state: {}
       },
       settings: {
         networks: [

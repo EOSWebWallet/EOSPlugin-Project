@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, flatMap, filter, catchError, startWith, first, distinctUntilChanged, tap, switchMap, takeWhile } from 'rxjs/internal/operators';
+import {
+  map, flatMap, filter, catchError, startWith, first,
+  distinctUntilChanged, tap, switchMap, takeWhile
+} from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { of } from 'rxjs/internal/observable/of';

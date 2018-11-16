@@ -9,6 +9,7 @@ export class Keychains {
   static fromJson(json: any): IKeychain {
     return {
       accounts: (json.accounts || []).map(x => Accounts.fromJson(x)),
+      state: json.state || {},
     };
   }
 }

@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Subject } from 'rxjs/internal/Subject';
-import { first, map, filter } from 'rxjs/operators';
+import { first, map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { IAccount } from '../../../core/account/account.interface';
@@ -75,6 +75,10 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit, 
       .subscribe(accounts => this.accounts = accounts);
 
     this.networksSub = this.networks$
+      .pipe(
+        //TODO: for prevent dead lock while updating networks and monitoring ui state, need refactor
+        distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      )
       .subscribe(networks => this.networks = networks);
   }
 

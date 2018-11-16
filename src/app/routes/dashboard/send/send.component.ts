@@ -1,4 +1,4 @@
-import { Component, forwardRef, Inject, ViewChild, OnDestroy, OnInit } from '@angular/core';
+import { Component, forwardRef, Inject, ViewChild, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { AccountService } from '../../../core/account/account.service';
 import { SendService } from './send.service';
 import { EOSService } from '../../../core/eos/eos.service';
 import { DialogService } from '../../../shared/dialog/dialog.service';
+import { UIService } from '../../../core/ui/ui.service';
 
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../layout/page/page.component';
@@ -19,7 +20,7 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
   templateUrl: './send.component.html',
   styleUrls: [ './send.component.scss' ],
 })
-export class SendComponent extends AbstractPageComponent implements OnInit, OnDestroy {
+export class SendComponent extends AbstractPageComponent implements OnInit, AfterViewInit, OnDestroy {
   static PATH_CONFIRM = '/app/home/send/confirm';
   static PATH_HOME = '/app/home';
 
@@ -32,6 +33,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
   private signatureSub: Subscription;
   private symbolsSub: Subscription;
   private accountSub: Subscription;
+  private formSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -39,7 +41,8 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
     private router: Router,
     private accountService: AccountService,
     private eosService: EOSService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private uiService: UIService
   ) {
     super(pageLayout, {
       backLink: '/app/home',
@@ -74,16 +77,24 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
 
     this.accountSub = this.accountService.selectedAccount$
       .pipe(
-        distinctUntilChanged(),
+        distinctUntilChanged((a, b) => b && a.id === b.id),
         skip(1)
       )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
   }
 
+  ngAfterViewInit(): void {
+    this.restoreUIState();
+  }
+
   ngOnDestroy(): void {
+    this.destroyUIState();
     this.signatureSub.unsubscribe();
     this.symbolsSub.unsubscribe();
     this.accountSub.unsubscribe();
+    if (this.formSub) {
+      this.formSub.unsubscribe();
+    }
   }
 
   filterSymbols(key: string): string[] {
@@ -104,5 +115,31 @@ export class SendComponent extends AbstractPageComponent implements OnInit, OnDe
         ))
       )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
+  }
+
+  private initUIStateHandler(): void {
+    this.formSub = this.form.valueChanges
+      .subscribe(value => {
+        this.uiService.setState('send', value);
+      });
+  }
+
+  private restoreUIState(): void {
+    setTimeout(() => {
+      this.uiService.getState('send')
+        .pipe(
+          first()
+        )
+        .subscribe(value => {
+          if (value) {
+            this.form.setValue(value);
+          }
+          this.initUIStateHandler();
+        });
+    });
+  }
+
+  private destroyUIState(): void {
+    this.uiService.setState('send', null);
   }
 }

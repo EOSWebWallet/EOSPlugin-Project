@@ -82,12 +82,12 @@ export class EOSService {
               startWith(true)
             )
         ),
+        tap(value => value > 1 && this.actionsHistory$.next([])),
         switchMap(init =>
           (
             init === true
               ? interval(500)
                 .pipe(
-                  takeWhile(i => i < 10),
                   flatMap(() =>
                     this.actions$
                       .pipe(
@@ -99,7 +99,7 @@ export class EOSService {
           )
           .pipe(
             filter(actions => actions && !!actions.length),
-            catchError(() => []),
+            catchError(() => of([])),
             first(),
           )
         ),

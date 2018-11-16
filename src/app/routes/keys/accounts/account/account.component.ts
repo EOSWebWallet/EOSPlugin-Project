@@ -16,7 +16,7 @@ import { IAccountForm } from './account.interface';
 import { AccountService } from '../../../../core/account/account.service';
 import { NetworksService } from '../../../../core/network/networks.service';
 import { EOSService } from '../../../../core/eos/eos.service';
-import { UIStateService } from '../../../../core/ui/state.service';
+import { UIService } from '../../../../core/ui/ui.service';
 
 import { AbstractPageComponent } from '../../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../../layout/page/page.component';
@@ -57,7 +57,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
     private eosService: EOSService,
     private route: ActivatedRoute,
     private router: Router,
-    private uiStateService: UIStateService
+    private uiService: UIService
   ) {
     super(pageLayout, {
       backLink: '/app/keys/accounts',
@@ -228,7 +228,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   private initUIStateHandler(): void {
     this.formSub = this.form.valueChanges
       .subscribe(value => {
-        this.uiStateService.setState('accountForm', {
+        this.uiService.setState('accountForm', {
           ...value,
           ...(
             this.form.controls['publicKey']
@@ -241,7 +241,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
 
   private restoreUIState(): void {
     setTimeout(() => {
-      this.uiStateService.getState('accountForm')
+      this.uiService.getState('accountForm')
         .pipe(
           first()
         )
@@ -256,6 +256,6 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   }
 
   private destroyUIState(): void {
-    this.uiStateService.setState('accountForm', null);
+    this.uiService.setState('accountForm', null);
   }
 }

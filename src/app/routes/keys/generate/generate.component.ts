@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { first, debounceTime, flatMap } from 'rxjs/internal/operators';
 
-import { UIStateService } from '../../../core/ui/state.service';
+import { UIService } from '../../../core/ui/ui.service';
 
 import { AbstractPageComponent } from '../../../layout/page/page.interface';
 import { TextComponent } from '../../../shared/form/text/text.component';
@@ -32,7 +32,7 @@ export class GenerateComponent extends AbstractPageComponent implements AfterVie
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
-    private uiStateService: UIStateService
+    private uiService: UIService
   ) {
     super(pageLayout, {
       backLink: '/app/keys',
@@ -89,7 +89,7 @@ export class GenerateComponent extends AbstractPageComponent implements AfterVie
   private initUIStateHandler(): void {
     this.formSub = this.form.valueChanges
       .subscribe(value => {
-        this.uiStateService.setState('generateForm', value);
+        this.uiService.setState('generateForm', value);
       });
   }
 
@@ -110,7 +110,7 @@ export class GenerateComponent extends AbstractPageComponent implements AfterVie
 
   private restoreUIState(): void {
     setTimeout(() => {
-      this.uiStateService.getState('generateForm')
+      this.uiService.getState('generateForm')
         .pipe(
           first()
         )
@@ -125,6 +125,6 @@ export class GenerateComponent extends AbstractPageComponent implements AfterVie
   }
 
   private destroyUIState(): void {
-    this.uiStateService.setState('generateForm', null);
+    this.uiService.setState('generateForm', null);
   }
 }

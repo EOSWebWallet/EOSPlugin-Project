@@ -1,7 +1,10 @@
-import { Component, forwardRef, Inject, OnInit } from '@angular/core';
+import { Component, forwardRef, Inject, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { Subject } from 'rxjs/internal/Subject';
 import { first, map, filter } from 'rxjs/operators';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { IAccount } from '../../../core/account/account.interface';
 import { INetwork } from '../../../core/network/network.interface';
@@ -9,6 +12,7 @@ import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.in
 
 import { NetworksService } from '../../../core/network/networks.service';
 import { AccountService } from '../../../core/account/account.service';
+import { UIService } from '../../../core/ui/ui.service';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 
@@ -19,17 +23,40 @@ import { Networks } from '../../../core/network/network';
   templateUrl: './networks.component.html',
   styleUrls: [ './networks.component.scss' ],
 })
-export class NetworksComponent extends AbstractPageComponent implements OnInit {
+export class NetworksComponent extends AbstractPageComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  private form: FormGroup;
+
+  @ViewChild('form') set networkForm(form: FormGroup) {
+    this.form = form;
+
+    if (form) {
+      if (this.formSub) {
+        this.formSub.unsubscribe();
+      }
+      this.formSub = form.valueChanges
+        .subscribe(() => this.stateChanged$.next());
+    }
+  }
+
+  networks: INetwork[] = [];
 
   newNetwork: INetwork;
   editableNetwork: INetwork;
 
   accounts: IAccount[] = [];
 
+  private stateChanged$ = new Subject<void>();
+
+  private formSub: Subscription;
+  private stateSub: Subscription;
+  private networksSub: Subscription;
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private networskService: NetworksService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private uiService: UIService
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -46,6 +73,24 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
         first()
       )
       .subscribe(accounts => this.accounts = accounts);
+
+    this.networksSub = this.networks$
+      .subscribe(networks => this.networks = networks);
+  }
+
+  ngAfterViewInit(): void {
+    this.restoreUIState();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyUIState();
+    if (this.formSub) {
+      this.formSub.unsubscribe();
+    }
+    if (this.stateSub) {
+      this.stateSub.unsubscribe();
+    }
+    this.networksSub.unsubscribe();
   }
 
   get networks$(): Observable<INetwork[]> {
@@ -55,6 +100,7 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
   onAdd(): void {
     this.newNetwork = Networks.createNetwork();
     this.editableNetwork = null;
+    this.stateChanged$.next();
   }
 
   onUpdate(): void {
@@ -74,6 +120,7 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
     if (!this.hasAccounts(network)) {
       this.editableNetwork = { ...network };
       this.newNetwork = null;
+      this.stateChanged$.next();
     }
   }
 
@@ -94,5 +141,40 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit {
 
   isEditing(network: INetwork): boolean {
     return network && this.editableNetwork && network.id === this.editableNetwork.id;
+  }
+
+  private initUIStateHandler(): void {
+    this.stateSub = this.stateChanged$
+      .subscribe(value => {
+        this.uiService.setState('networks', {
+          ...(
+            this.form
+              ? { form: this.form.value }
+              : {}
+          ),
+          newNetwork: this.newNetwork,
+          editableNetwork: this.editableNetwork
+        });
+      });
+  }
+
+  private restoreUIState(): void {
+    this.uiService.getState('networks')
+      .pipe(
+        first()
+      )
+      .subscribe(networks => {
+        const { form, newNetwork, editableNetwork } = networks || {} as any;
+        if (form) {
+          setTimeout(() => this.form.setValue(form));
+        }
+        this.newNetwork = newNetwork || this.newNetwork;
+        this.editableNetwork = editableNetwork || this.editableNetwork;
+        this.initUIStateHandler();
+      });
+  }
+
+  private destroyUIState(): void {
+    this.uiService.setState('networks', null);
   }
 }

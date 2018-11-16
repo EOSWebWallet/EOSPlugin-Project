@@ -111,7 +111,7 @@ export class PluginEffects {
   @Effect()
   authorizePlugin$ = this.actions.pipe(
     ofType(AuthService.AUTH_LOGIN_SUCCESS),
-    map(() => [{
+    switchMap(() => [{
       type: Plugins.PLUGIN_LOAD
     }, {
       type: Plugins.PLUGIN_STORE_UI,

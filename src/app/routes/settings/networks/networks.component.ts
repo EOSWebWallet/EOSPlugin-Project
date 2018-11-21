@@ -130,7 +130,9 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit, 
 
   onEdit(network: INetwork): void {
     if (!this.hasAccounts(network)) {
-      this.editableNetwork = { ...network };
+      this.editableNetwork = !this.editableNetwork || this.editableNetwork.id !== network.id
+        ? { ...network }
+        : null;
       this.newNetwork = null;
       this.stateChanged$.next();
     }

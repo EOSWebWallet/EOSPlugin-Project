@@ -61,6 +61,7 @@ export class Plugins {
             protocol: 'https',
             name: 'Mainnet (Greymass)',
             host: 'eos.greymass.com',
+            selected: true,
             port: 443
           },
           {

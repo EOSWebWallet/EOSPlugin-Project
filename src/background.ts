@@ -98,17 +98,21 @@ export class Background {
   }
 
   export(payload: any, cb: Function): void {
-    this.load(plugin => {
-      plugin.keychain.accounts = plugin.keychain.accounts.map(account => {
-        const decrypted = Keypairs.decrypt(account.keypair, this.seed);
-        return ({
-          ...account,
-          keypair: Keypairs.encrypt(decrypted, payload.seed)
+    if (this.seed == payload.seed) {
+      this.load(plugin => {
+        plugin.keychain.accounts = plugin.keychain.accounts.map(account => {
+          const decrypted = Keypairs.decrypt(account.keypair, payload.seed);
+          return ({
+            ...account,
+            keypair: Keypairs.encrypt(decrypted, payload.seed)
+          });
         });
+        const pluginData = Plugins.encrypt(plugin, payload.seed);
+        PluginStorage.getSalt().then(salt => cb({ pluginData, salt }));
       });
-      const pluginData = Plugins.encrypt(plugin, payload.seed);
-      PluginStorage.getSalt().then(salt => cb({ pluginData, salt }));
-    });
+    } else {
+      cb(null);
+    }
   }
 
   async import(payload: any, cb: Function) {

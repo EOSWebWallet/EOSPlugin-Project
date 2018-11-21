@@ -30,7 +30,6 @@ export class PluginService extends AbstractStateService {
     return from(Encryption.generateMnemonic(password))
       .pipe(
         flatMap(([ mnemonic, seed ]) => Browser.stream.send({ type: ExtensionMessageType.EXPORT_PLUGIN, payload: { seed } })),
-        map(exportData => Plugins.createBlob(exportData))
       );
   }
 

@@ -1,15 +1,16 @@
 import { Component, forwardRef, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { map, delay } from 'rxjs/internal/operators';
+import { map, filter, tap } from 'rxjs/internal/operators';
 
 import { IControlErrors } from '../../../shared/form/form.interface';
-import { IPageConfig, AbstractPageComponent } from '../../../layout/page/page.interface';
-
-import { AuthService } from '../../../core/auth/auth.service';
+import { AbstractPageComponent } from '../../../layout/page/page.interface';
 
 import { PageLayoutComponent } from '../../../layout/page/page.component';
 import { PluginService } from '../../../core/plugin/plugin.service';
+import { DialogService } from 'src/app/shared/dialog/dialog.service';
+
+import { Plugins } from 'src/app/core/plugin/plugin';
 
 @Component({
   selector: 'app-export',
@@ -25,9 +26,9 @@ export class ExportComponent extends AbstractPageComponent {
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
-    private authService: AuthService,
     private pluginService: PluginService,
-    private router: Router
+    private router: Router,
+    private dialogService: DialogService
   ) {
     super(pageLayout, {
       backLink: '/app/settings',
@@ -45,6 +46,9 @@ export class ExportComponent extends AbstractPageComponent {
   onExport(): void {
     this.pluginService.export(this.password)
       .pipe(
+        tap(data => !data && this.dialogService.error('routes.settings.export.failureMessage')),
+        filter(Boolean),
+        map(exportData => Plugins.createBlob(exportData)),
         map(blob => URL.createObjectURL(blob)),
       )
       .subscribe(url => {

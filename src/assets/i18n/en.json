@@ -136,7 +136,8 @@
         "menu": "Export Data",
         "message": "Exporting your plugin allows you to import it into other devices. The file will still be encrypted when it is exported so make sure you have either your password, otherwise it will be useless.",
         "export": "Export",
-        "password": "Enter password to continue"
+        "password": "Enter password to continue",
+        "failureMessage": "Data export failed!"
       },
       "destroy": {
         "title": "Destroy",

@@ -28,7 +28,7 @@
       <mat-divider></mat-divider>
     </mat-list-item>
   </ng-container>
-  <mat-list-item class="network-edit" *ngIf="newNetwork">
+  <mat-list-item class="network-edit" *ngIf="newNetwork" #createForm>
     <form #form="ngForm">
       <app-text name="name" [(ngModel)]="newNetwork.name" [label]="'routes.settings.networks.name' | translate" required></app-text>
       <app-text name="host" [(ngModel)]="newNetwork.host" [label]="'routes.settings.networks.host' | translate" required></app-text>

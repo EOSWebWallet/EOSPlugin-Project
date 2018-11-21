@@ -1,4 +1,4 @@
-import { Component, forwardRef, Inject, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, forwardRef, Inject, OnInit, ViewChild, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 import { Subscription } from 'rxjs/internal/Subscription';
@@ -26,6 +26,7 @@ import { Networks } from '../../../core/network/network';
 export class NetworksComponent extends AbstractPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private form: FormGroup;
+  private createFormEl: ElementRef;
 
   @ViewChild('form') set networkForm(form: FormGroup) {
     this.form = form;
@@ -36,6 +37,13 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit, 
       }
       this.formSub = form.valueChanges
         .subscribe(() => this.stateChanged$.next());
+    }
+  }
+
+  @ViewChild('createForm', { read: ElementRef }) set createForm(el: ElementRef) {
+    this.createFormEl = el;
+    if (this.createFormEl) {
+      this.createFormEl.nativeElement.scrollIntoView();
     }
   }
 

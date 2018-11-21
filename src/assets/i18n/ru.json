@@ -1,6 +1,7 @@
 {
   "siteName": "eosplugin.io",
   "siteURL": "https://eosplugin.io",
+  "network": "Сеть",
   "prompt": {
     "identity": {
       "title": "Запрос идентификации",

@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { ScrollbarModule } from 'ngx-scrollbar';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { DashboardModule } from '../routes/dashboard/dashboard.module';
 import { KeysModule } from '../routes/keys/keys.module';
@@ -101,7 +102,8 @@ const routes: Routes = [
     LanguageModule,
     SendModule,
     ConfirmModule,
-    UserModule
+    UserModule,
+    TranslateModule
   ],
   declarations: [
     LayoutComponent,

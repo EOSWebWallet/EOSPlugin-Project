@@ -11,7 +11,9 @@
         <app-icon [type]="link.icon"></app-icon>
       </a>
       <div mat-button [matMenuTriggerFor]="menu" class="menu">
-        {{ selectedNetwork$ | async }}
+        <span *ngIf="selectedNetwork$ | async">{{ selectedNetwork$ | async }}</span>
+        <span *ngIf="!(selectedNetwork$ | async)">{{ 'network' | translate }}</span>
+        <mat-icon>arrow_drop_down</mat-icon>
       </div>
       <mat-menu #menu="matMenu" overlapTrigger="false">
         <li mat-menu-item *ngFor="let network of networks$ | async" (click)="onSelectNetwork(network)">{{ network.name }}</li>

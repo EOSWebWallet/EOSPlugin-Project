@@ -214,7 +214,7 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
         flatMap(() => from(Keypairs.makePublicKey(this.account.keypair))),
       )
       .subscribe(keypair => {
-        if (this.account.keypair.publicKey !== keypair.publicKey) {
+        if (this.account.keypair.publicKey !== keypair.publicKey || !this.accountOptions.length) {
           const networkOption = this.form.controls['network'].value;
           if (networkOption) {
             const network = this.networks.find(n => n.id === networkOption.value);
@@ -247,10 +247,18 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
         )
         .subscribe(value => {
           if (value) {
-            this.form.setValue(value);
+            if (value.network && value.publicKey) {
+              const network = this.networks.find(n => n.id === value.network.value);
+              this.requestNetworkAccounts(value.publicKey, network);
+            }
+            Object.keys(this.form.controls)
+              .forEach(control => this.form.controls[control].setValue(value[control]));
           }
           this.initUIStateHandler();
           this.initPrivateKeyHandler();
+          if (value && value.privateKey && !value.publicKey) {
+            this.privateKeyChanged$.next();
+          }
         });
     });
   }

@@ -84,7 +84,7 @@ export class NetworksComponent extends AbstractPageComponent implements OnInit, 
 
     this.networksSub = this.networks$
       .pipe(
-        //TODO: for prevent dead lock while updating networks and monitoring ui state, need refactor
+        // TODO: for prevent dead lock while updating networks and monitoring ui state, need refactor
         distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
       )
       .subscribe(networks => this.networks = networks);

@@ -98,7 +98,7 @@ export class Background {
   }
 
   export(payload: any, cb: Function): void {
-    if (this.seed == payload.seed) {
+    if (this.seed === payload.seed) {
       this.load(plugin => {
         plugin.keychain.accounts = plugin.keychain.accounts.map(account => {
           const decrypted = Keypairs.decrypt(account.keypair, payload.seed);

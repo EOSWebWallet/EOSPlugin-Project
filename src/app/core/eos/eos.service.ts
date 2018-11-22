@@ -204,7 +204,7 @@ export class EOSService {
       resultInfo.cpuData = parseFloat(resultInfo.cpuData).toFixed(2).toString();
     }
     resultInfo.ramPercent = Math.round(Number(accountInfo.ram_usage) / Number(accountInfo.ram_quota) * 100);
-    resultInfo.totalBalance = Number(accountInfo.core_liquid_balance.split(' ', 1)[0]) + Number(accountInfo.voter_info.staked) / 10000;
+    resultInfo.totalBalance = parseFloat((Number(accountInfo.core_liquid_balance.split(' ', 1)[0]) + Number(accountInfo.voter_info.staked) / 10000).toFixed(3));
     resultInfo.usdTotal = Number((Number(resultInfo.totalBalance) * usdCourse).toFixed(3));
     resultInfo.cpuUsedSec = Number((Number(accountInfo.cpu_limit.used) / 1000000).toFixed(3));
     resultInfo.cpuMaxSec = Number((Number(accountInfo.cpu_limit.max) / 1000000).toFixed(3));

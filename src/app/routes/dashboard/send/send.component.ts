@@ -77,7 +77,6 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
 
     this.accountSub = this.accountService.selectedAccount$
       .pipe(
-        distinctUntilChanged((a, b) => b && a.id === b.id),
         skip(1)
       )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));

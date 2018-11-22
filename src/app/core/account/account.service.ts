@@ -2,8 +2,7 @@ import { Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/internal/Observable';
-import { map, first, filter } from 'rxjs/internal/operators';
-import { from } from 'rxjs/internal/observable/from';
+import { map, first, filter, distinctUntilChanged } from 'rxjs/internal/operators';
 
 import { IAppState } from '../state/state.interface';
 import { IAccount } from './account.interface';
@@ -34,7 +33,8 @@ export class AccountService extends AbstractEntityService {
   get selectedAccount$(): Observable<IAccount> {
     return this.accounts$
       .pipe(
-        map(accounts => accounts && accounts.find(a => !!a.accounts.find(aa => aa.selected)))
+        map(accounts => accounts && accounts.find(a => !!a.accounts.find(aa => aa.selected))),
+        distinctUntilChanged((a, b) => a && b && a.id === b.id),
       );
   }
 

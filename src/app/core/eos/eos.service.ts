@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import {
   map, flatMap, filter, catchError, startWith, first,
-  distinctUntilChanged, tap, switchMap, takeWhile
+  tap, switchMap, 
 } from 'rxjs/internal/operators';
 import { from } from 'rxjs/internal/observable/from';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
@@ -74,7 +74,6 @@ export class EOSService {
     this.accountService.selectedAccount$
       .pipe(
         filter(Boolean),
-        distinctUntilChanged(),
         tap(() => this.actionsHistory$.next(null)),
         switchMap(() =>
           interval(10000)

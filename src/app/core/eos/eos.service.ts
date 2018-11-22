@@ -205,11 +205,7 @@ export class EOSService {
       resultInfo.cpuData = parseFloat(resultInfo.cpuData).toFixed(2).toString();
     }
     resultInfo.ramPercent = Math.round(Number(accountInfo.ram_usage) / Number(accountInfo.ram_quota) * 100);
-    if (accountInfo.core_liquid_balance) {
-      resultInfo.totalBalance = Number(accountInfo.core_liquid_balance.split(' ', 1)[0]) + Number(accountInfo.voter_info.staked);
-    } else {
-      resultInfo.totalBalance = Number(accountInfo.voter_info.staked);
-    }
+    resultInfo.totalBalance = Number(accountInfo.core_liquid_balance.split(' ', 1)[0]) + Number(accountInfo.voter_info.staked) / 10000;
     resultInfo.usdTotal = Number((Number(resultInfo.totalBalance) * usdCourse).toFixed(3));
     resultInfo.cpuUsedSec = Number((Number(accountInfo.cpu_limit.used) / 1000000).toFixed(2));
     resultInfo.cpuMaxSec = Number((Number(accountInfo.cpu_limit.max) / 1000000).toFixed(2));
@@ -222,7 +218,7 @@ export class EOSService {
       resultInfo.usdUnstaked = Number((resultInfo.unstaked * usdCourse).toFixed(3));
     }
     if (accountInfo.voter_info && accountInfo.voter_info.staked) {
-      resultInfo.staked = Number(accountInfo.voter_info.staked);
+      resultInfo.staked = Number(accountInfo.voter_info.staked) / 10000;
       resultInfo.usdStaked = Number((resultInfo.staked * usdCourse).toFixed(3));
     }
     return resultInfo;

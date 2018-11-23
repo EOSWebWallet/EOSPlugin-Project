@@ -108,6 +108,10 @@
       font-size: 12px;
       padding: 5px 10px 5px 0;
 
+      &:first-child {
+        padding-right: 0;
+      }
+
       span {
         font-weight: 600;
 

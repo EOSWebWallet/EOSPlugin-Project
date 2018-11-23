@@ -209,3 +209,11 @@
     transform: rotate(360deg);
   }
 }
+
+.tokens {
+  font-size: 12px;
+  span {
+    color: $color-primary;
+    font-weight: 600;
+  }
+}

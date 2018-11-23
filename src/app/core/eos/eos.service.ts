@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { Observable } from 'rxjs/internal/Observable';
 import {
@@ -9,11 +9,10 @@ import {
 import { from } from 'rxjs/internal/observable/from';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { of } from 'rxjs/internal/observable/of';
-import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 import { interval } from 'rxjs/internal/observable/interval';
 
 import { INetwork, INetworkAccount } from '../network/network.interface';
-import { IChainInfo, INetworkAccountInfo, INetworkAccountAction, Tokens } from './eos.interface';
+import { IChainInfo, INetworkAccountInfo, INetworkAccountAction, Tokens, NetworkChaindId } from './eos.interface';
 import { IAccount } from '../account/account.interface';
 
 import { AccountService } from '../account/account.service';
@@ -66,6 +65,8 @@ export class EOSService {
 
   readonly actionsHistory$ = new BehaviorSubject<INetworkAccountAction[]>(null);
 
+  private userSymbol: string[] = [];
+
   constructor(
     private httpClient: HttpClient,
     private accountService: AccountService,
@@ -108,6 +109,73 @@ export class EOSService {
 
   requestCurrentCourses(): Observable<any> {
     return this.httpClient.get('https://api.coingecko.com/api/v3/coins/eos');
+  }
+
+  getTokensGreymass (accountName: string): Observable<any> {
+    return this.httpClient.post(
+      'https://eos.greymass.com:443/v1/chain/get_currency_balances', '{"account":"' + accountName + '"}').pipe(
+      catchError(err => {
+        return of(false);
+      })
+    );
+  }
+
+  getTokensEosflare (accountName: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.httpClient.post(
+      'https://api-pub.eosflare.io/v1/eosflare/get_account', '{"account":"' + accountName + '"}', httpOptions).pipe(
+      catchError(err => {
+        return of(false);
+      })
+    );
+  }
+
+  getTokenInfo (network: INetwork, body: string): Observable<any> {
+    return this.httpClient.post(`${network.protocol}://${network.host}:${network.port}/v1/chain/get_currency_balance` , body).pipe(
+      catchError(err => {
+        return of(false);
+      })
+    );
+  }
+
+  getAllTokensInfo (network: INetwork, tokens: string[], accountName) {
+    return forkJoin(tokens.map(token => this.getTokenInfo(network, '{"code":"' + token + '","account":"' + accountName + '"}')))
+      .pipe(map(result => {
+        return result.filter(item => item !== false && item.length > 0);
+      }));
+  }
+
+  getTokenString(network: INetwork, accountName: string): Observable<string> {
+    return this.getInfo(network)
+      .pipe(
+        flatMap(({ chainId }) => Observable.create(o => {
+          if (chainId === NetworkChaindId.MainNet) {
+            this.getTokensGreymass(accountName).subscribe((tokens) => {
+              if (tokens && tokens.length) {
+                o.next(this.setTokensGreymassSymbol(tokens));
+              } else {
+                this.getTokensEosflare(accountName).subscribe((result) => {
+                  if (result && result.account) {
+                    o.next(this.setTokensEosflareSymbol(result.account.tokens));
+                  } else {
+                    this.getAllTokensInfo(network, Tokens, accountName).subscribe((allTokens) => {
+                      o.next(this.setTokensSymbol(allTokens));
+                    });
+                  }
+                });
+              }
+            });
+          } else {
+            this.getAllTokensInfo(network, Tokens, accountName).subscribe((tokens) => {
+              o.next(this.setTokensSymbol(tokens));
+            });
+          }
+        }))
+      );
   }
 
   getInfo(network: INetwork): Observable<IChainInfo> {
@@ -161,7 +229,7 @@ export class EOSService {
         result.forEach(resultArr => {
           resultArr.forEach(element => {
             const symbol = element.substring(element.lastIndexOf(' ') + 1);
-            const findSymbol = userSymbols.map(s => s.toLocaleLowerCase()).find(s => symbol.toLocaleLowerCase());
+            const findSymbol = userSymbols.map(s => s.toLocaleLowerCase()).find(s => s === symbol.toLocaleLowerCase());
             if (!findSymbol) {
               userSymbols.push(symbol);
             }
@@ -222,5 +290,50 @@ export class EOSService {
       resultInfo.usdStaked = Number((resultInfo.staked * usdCourse).toFixed(3));
     }
     return resultInfo;
+  }
+
+  private setTokensGreymassSymbol (tokens): string {
+    let tokenStringTemp = '';
+    tokens.forEach(rez => {
+      tokenStringTemp += rez.amount + ' ' + rez.symbol + ', ';
+      this.addUserSymbol(rez.symbol);
+    });
+    return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
+  }
+
+  private setTokensEosflareSymbol (tokens): string {
+    let tokenStringTemp = '';
+    tokens.forEach(rez => {
+      tokenStringTemp += rez.balance + ' ' + rez.symbol + ', ';
+      this.addUserSymbol(rez.symbol);
+    });
+    return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
+  }
+
+  private setTokensSymbol (tokens): string {
+    if (tokens && tokens.length) {
+      let tokenStringTemp = '';
+      tokens.forEach(resultArr => {
+        resultArr.forEach(element => {
+          this.addUserSymbol(element.substring(element.lastIndexOf(' ') + 1));
+          tokenStringTemp += element + ', ';
+        });
+      });
+      return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
+    }
+    return '';
+  }
+
+  private addUserSymbol (symbol: string) {
+    let findSymbol = false;
+    this.userSymbol.forEach(element => {
+      if (element.toLocaleLowerCase() === symbol.toLocaleLowerCase()) {
+        findSymbol = true;
+        return;
+      }
+    });
+    if (!findSymbol) {
+      this.userSymbol.push(symbol);
+    }
   }
 }

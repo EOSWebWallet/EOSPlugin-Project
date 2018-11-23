@@ -20,6 +20,9 @@
       </tr>
     </table>
   </div>
+  <div class="tokens">
+    <span>{{ 'routes.dashboard.tokens' | translate }}: </span>{{ tokenString }}
+  </div>
   <div class="dashboard">
     <div class="chart">
       <div>
@@ -78,9 +81,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="tokens">
-    <span>{{ 'routes.dashboard.tokens' | translate }} </span>{{ tokenString }}
   </div>
   <div class="controls">
     <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!hasAccountInfo || !(selectedNetworkAccountName$ | async)"></app-button>

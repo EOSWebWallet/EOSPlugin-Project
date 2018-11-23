@@ -80,7 +80,7 @@
     </div>
   </div>
   <div class="tokens">
-    <span>Tokens: </span>{{ tokenString }}
+    <span>{{ 'routes.dashboard.tokens' | translate }} </span>{{ tokenString }}
   </div>
   <div class="controls">
     <app-button [label]="'routes.dashboard.send.send' | translate" routerLink="/app/home/send" [disabled]="!hasAccountInfo || !(selectedNetworkAccountName$ | async)"></app-button>
@@ -110,7 +110,10 @@
       <app-icon type="icon-lock2" (click)="onLock()"></app-icon>
     </div>
     <div class="empty">
-      {{ 'routes.dashboard.emptyMessage' | translate }}
+      <div>
+        {{ 'routes.dashboard.emptyMessage' | translate }}
+        <app-button [label]="'routes.dashboard.create' | translate" (click)="onCreateAccount()" [disabled]="!hasNetworks"></app-button>
+      </div>
     </div>
   </div>
 </ng-template>

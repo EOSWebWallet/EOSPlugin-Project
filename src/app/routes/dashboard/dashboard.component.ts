@@ -1,4 +1,5 @@
 import { Component, OnInit, forwardRef, Inject, LOCALE_ID, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { map, switchMap, first, filter, startWith, catchError, tap, } from 'rxjs/operators';
@@ -15,7 +16,7 @@ import { NetworksService } from 'src/app/core/network/networks.service';
 
 import { AbstractPageComponent } from '../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../layout/page/page.component';
-
+import { AccountsComponent } from '../keys/accounts/accounts.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,12 +35,14 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
   accountInfo: INetworkAccountInfo = {};
   accountActions: INetworkAccountAction[];
   tokenString: string;
+  hasNetworks: boolean;
 
   private accountActionsSub: Subscription;
   private accountInfoSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
+    private router: Router,
     private accountService: AccountService,
     private eosService: EOSService,
     private authService: AuthService,
@@ -84,6 +87,12 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
 
     this.accountActionsSub = this.eosService.actionsHistory$
       .subscribe(actions => this.accountActions = actions);
+
+    this.networkService.networks$
+      .pipe(
+        first()
+      )
+      .subscribe(networks => this.hasNetworks = !!networks.length);
   }
 
   ngOnDestroy(): void {
@@ -97,5 +106,9 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
 
   onLock(): void {
     this.authService.lock();
+  }
+
+  onCreateAccount(): void {
+    this.router.navigateByUrl(AccountsComponent.PATH_ACCOUNT);
   }
 }

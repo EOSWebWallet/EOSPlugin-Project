@@ -29,6 +29,8 @@
       "transactions": "Transactions",
       "from": "from",
       "to": "to",
+      "tokens": "Tokens",
+      "create": "Create Group",
       "send": {
         "title": "Send",
         "send": "Send",

@@ -18,10 +18,11 @@
         <td>{{ 'routes.dashboard.staked' | translate }}:</td>
         <td>{{ accountInfo.staked || 0 }} EOS</td>
       </tr>
+      <tr>
+        <td>{{ 'routes.dashboard.tokens' | translate }}:</td>
+        <td>{{ tokenString }}</td>
+      </tr>
     </table>
-  </div>
-  <div class="tokens">
-    <span>{{ 'routes.dashboard.tokens' | translate }}: </span>{{ tokenString }}
   </div>
   <div class="dashboard">
     <div class="chart">

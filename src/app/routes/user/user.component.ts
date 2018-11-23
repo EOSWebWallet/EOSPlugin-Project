@@ -42,7 +42,9 @@ export class UserComponent extends AbstractPageComponent implements OnInit, OnDe
     )
     .subscribe(([ network, accounts ]) => {
       this.network = network;
-      this.accounts = accounts;
+      this.accounts = accounts.sort((a, b) =>
+        a.network.id === network.id && b.network.id !== network.id ? -1 : 1
+      );
     });
   }
 

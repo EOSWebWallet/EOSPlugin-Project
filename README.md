@@ -28,17 +28,57 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Integration
 
-To integrate plugin in your project:
+To integrate EOS Plugin into your project:
 
-1. Catch plugin instance by `eosPluginLoaded` event, like:
-  `document.addEventListener('eosPluginLoaded', () => {}`
+1. Install `eosjs` library via `npm` and retrieve `Eos` instance from it.
 
-2. Request and cache identity like: 
-  `window.eosPlugin.requestIdentity({ host: 'jungle.eos.smartz.io', port: 443 })`
+2. Get plugin instance by `eosPluginLoaded` event, like:
+  ```js
+  document.addEventListener('eosPluginLoaded', () => {})
+  ```
 
-3. Get cached or request identity like:
-  `window.eosPlugin.getIdentity({ host: 'jungle.eos.smartz.io', port: 443 })`
+3. Request and cache identity like: 
+  ```js
+  window.eosPlugin.requestIdentity({ host: 'jungle.eos.smartz.io', port: 443 })
+  ```
+  This call opens the prompt window where user can select predifined network account. Returns an identity with `publicKey` and `accounts` information. The plugin caches user selection for future operations.
 
-4. Use EOS instance like:
-  `window.eosPlugin.eos(network, Eos, options)`
+4. Get cached or request identity like:
+  ```js
+  window.eosPlugin.getIdentity({ host: 'jungle.eos.smartz.io', port: 443 })
+  ```
+
+5. Use EOS instance like:
+  ```js
+  window.eosPlugin.eos({ host: 'jungle.eos.smartz.io', port: 443 }, Eos, eosInstanceOptions)
+  ```
+
+Usage example: 
+
+```js
+
+import * as Eos from 'eosjs';
+
+const network = {
+  host: 'jungle.eos.smartz.io',
+  port: 443
+};
+
+document.addEventListener('eosPluginLoaded', () => {
+  const identity = window.eosPlugin.getIdentity(network);
+
+  if (identity) {
+    const { publicKey, accounts } = identity;
+
+    const eos = window.eosPlugin.eos(network, Eos);
+
+    eos.transaction(tr => {
+      // transaction code here
+    });
+  }
+});
+
+```
+
+
 

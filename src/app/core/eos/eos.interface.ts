@@ -36,6 +36,7 @@ export interface INetworkAccountInfo {
   netMaxKb?: number;
   ramUsedKb?: number;
   ramMaxKb?: number;
+  tokenString?: string;
 }
 
 export interface INetworkAccountAction {

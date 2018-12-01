@@ -34,6 +34,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
   private symbolsSub: Subscription;
   private accountSub: Subscription;
   private formSub: Subscription;
+  private accountInfoSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -66,10 +67,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
       )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_CONFIRM));
 
-    this.eosService.accountInfo$
-      .pipe(
-        first()
-      )
+    this.accountInfoSub = this.eosService.accountInformation$
       .subscribe(info => this.accountInfo = info);
 
     this.symbolsSub = this.eosService.symbols$
@@ -91,6 +89,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
     this.signatureSub.unsubscribe();
     this.symbolsSub.unsubscribe();
     this.accountSub.unsubscribe();
+    this.accountInfoSub.unsubscribe();
     if (this.formSub) {
       this.formSub.unsubscribe();
     }

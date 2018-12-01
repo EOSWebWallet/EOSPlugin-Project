@@ -10,13 +10,14 @@ import { from } from 'rxjs/internal/observable/from';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { of } from 'rxjs/internal/observable/of';
 import { interval } from 'rxjs/internal/observable/interval';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { INetwork, INetworkAccount } from '../network/network.interface';
 import { IChainInfo, INetworkAccountInfo, INetworkAccountAction, Tokens, NetworkChaindId } from './eos.interface';
 import { IAccount } from '../account/account.interface';
 
 import { AccountService } from '../account/account.service';
-import { AuthService } from '../auth/auth.service';
+import { NetworksService } from 'src/app/core/network/networks.service';
 
 import { EOS } from './eos';
 
@@ -63,6 +64,7 @@ export class EOSService {
       flatMap(({ account, networkAccount }) => this.getSymbols(account, networkAccount))
     );
 
+  readonly accountInformation$ = new BehaviorSubject<INetworkAccountInfo>({});
   readonly actionsHistory$ = new BehaviorSubject<INetworkAccountAction[]>(null);
 
   readonly userSymbol: string[][] = [];
@@ -70,12 +72,18 @@ export class EOSService {
   constructor(
     private httpClient: HttpClient,
     private accountService: AccountService,
-    private authService: AuthService
+    private networkService: NetworksService
   ) {
+
+    this.accountService.selectedAccount$
+      .subscribe(() => {
+        this.actionsHistory$.next(null);
+        this.accountInformation$.next({});
+      });
+
     this.accountService.selectedAccount$
       .pipe(
         filter(Boolean),
-        tap(() => this.actionsHistory$.next(null)),
         switchMap(() =>
           interval(10000)
             .pipe(
@@ -105,6 +113,35 @@ export class EOSService {
         ),
       )
       .subscribe(actions => this.actionsHistory$.next(actions));
+
+    interval(5000)
+      .pipe(
+        startWith(0),
+        switchMap(() => combineLatest(
+          this.accountInfo$
+            .pipe(
+              catchError(() => of(null))
+            ),
+          combineLatest(
+            this.networkService.selectedNetwork$,
+            this.accountService.selectedAccount$
+              .pipe(
+                map(a => a && a.accounts.find(na => na.selected)),
+                map(na => na && na.name),
+              )
+          )
+          .pipe(
+            filter(([ network, account ]) => !!network && !!account),
+            first(),
+            switchMap(([ network, account ]) => this.getTokenString(network, account)),
+            catchError(() => of(''))
+          )
+        )),
+      )
+      .subscribe(([ info, tokenString ]) => this.accountInformation$.next({
+        ...( info || this.accountInformation$.value ),
+        tokenString: tokenString || this.accountInformation$.value.tokenString
+      }));
   }
 
   requestCurrentCourses(): Observable<any> {

@@ -34,7 +34,6 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
 
   accountInfo: INetworkAccountInfo = {};
   accountActions: INetworkAccountAction[];
-  tokenString: string;
   hasNetworks: boolean;
 
   private accountActionsSub: Subscription;
@@ -58,34 +57,8 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
     );
 
   ngOnInit(): void {
-    this.accountInfoSub = interval(5000)
-      .pipe(
-        startWith(0),
-        switchMap(() => combineLatest(
-          this.eosService.accountInfo$,
-          combineLatest(
-            this.networkService.selectedNetwork$,
-            this.accountService.selectedAccount$
-              .pipe(
-                map(a => a && a.accounts.find(na => na.selected)),
-                map(na => na && na.name),
-              )
-          )
-          .pipe(
-            filter(([ network, account ]) => !!network && !!account),
-            first(),
-            switchMap(([ network, account ]) => this.eosService.getTokenString(network, account))
-          )
-        )),
-        catchError(() => of([])),
-        filter(([ info, tokenString ]) => !!info && !!tokenString),
-      )
-      .subscribe(([ info, tokenString ]) => {
-        debugger
-        
-        this.accountInfo = info;
-        this.tokenString = tokenString;
-      });
+    this.accountInfoSub = this.eosService.accountInformation$
+      .subscribe(info => this.accountInfo = info);
 
     this.accountActionsSub = this.eosService.actionsHistory$
       .subscribe(actions => this.accountActions = actions);
@@ -103,7 +76,8 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
   }
 
   get hasAccountInfo(): boolean {
-    return Object.keys(this.accountInfo).length > 0;
+    return !!Object.keys(this.accountInfo)
+      .find(key => !!this.accountInfo[key]);
   }
 
   onLock(): void {

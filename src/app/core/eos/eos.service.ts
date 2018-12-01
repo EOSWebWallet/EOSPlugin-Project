@@ -308,16 +308,19 @@ export class EOSService {
     if (!Number.isNaN(Number.parseFloat(resultInfo.cpuData))) {
       resultInfo.cpuData = parseFloat(resultInfo.cpuData).toFixed(2).toString();
     }
-    resultInfo.ramPercent = Math.round(Number(accountInfo.ram_usage) / Number(accountInfo.ram_quota) * 100);
+    resultInfo.ramPercent = Math.round((Number(accountInfo.ram_quota) - Number(accountInfo.ram_usage)) / Number(accountInfo.ram_quota) * 100);
     resultInfo.totalBalance =
       parseFloat((Number(accountInfo.core_liquid_balance.split(' ', 1)[0]) + Number(accountInfo.voter_info.staked) / 10000).toFixed(3));
     resultInfo.usdTotal = Number((Number(resultInfo.totalBalance) * usdCourse).toFixed(3));
-    resultInfo.cpuUsedSec = Number((Number(accountInfo.cpu_limit.used) / 1000000).toFixed(3));
-    resultInfo.cpuMaxSec = Number((Number(accountInfo.cpu_limit.max) / 1000000).toFixed(3));
-    resultInfo.netUsedKb = Number((Number(accountInfo.net_limit.used) / 1000).toFixed(3));
-    resultInfo.netMaxKb = Number((Number(accountInfo.net_limit.max) / 1000).toFixed(3));
-    resultInfo.ramUsedKb = Number((Number(accountInfo.ram_usage) / 1000).toFixed(3));
-    resultInfo.ramMaxKb = Number((Number(accountInfo.ram_quota) / 1000).toFixed(3));
+    resultInfo.cpuUsedSec = Number((Number(accountInfo.cpu_limit.used) / 1000).toFixed(3));
+    resultInfo.cpuAvailableSec = Number((Number(accountInfo.cpu_limit.available) / 1000).toFixed(3));
+    resultInfo.cpuMaxSec = Number((Number(accountInfo.cpu_limit.max) / 1000).toFixed(3));
+    resultInfo.netUsedKb = Number((Number(accountInfo.net_limit.used) / 1024).toFixed(3));
+    resultInfo.netAvailableKb = Number((Number(accountInfo.net_limit.available) / 1024).toFixed(3));
+    resultInfo.netMaxKb = Number((Number(accountInfo.net_limit.max) / 1024).toFixed(3));
+    resultInfo.ramUsedKb = Number((Number(accountInfo.ram_usage) / 1024).toFixed(3));
+    resultInfo.ramAvailableKb = Number(((Number(accountInfo.ram_quota) - Number(accountInfo.ram_usage)) / 1024).toFixed(3));
+    resultInfo.ramMaxKb = Number((Number(accountInfo.ram_quota) / 1024).toFixed(3));
     if (accountInfo.core_liquid_balance) {
       resultInfo.unstaked = Number(accountInfo.core_liquid_balance.split(' ', 1)[0]);
       resultInfo.usdUnstaked = Number((resultInfo.unstaked * usdCourse).toFixed(3));
@@ -326,6 +329,10 @@ export class EOSService {
       resultInfo.staked = Number(accountInfo.voter_info.staked) / 10000;
       resultInfo.usdStaked = Number((resultInfo.staked * usdCourse).toFixed(3));
     }
+    resultInfo.cpuStacked = accountInfo.total_resources.cpu_weight;
+    resultInfo.netStacked = accountInfo.total_resources.net_weight;
+    resultInfo.netSelfStacked = accountInfo.self_delegated_bandwidth.net_weight;
+    resultInfo.cpuSelfStacked = accountInfo.self_delegated_bandwidth.cpu_weight;
     return resultInfo;
   }
 

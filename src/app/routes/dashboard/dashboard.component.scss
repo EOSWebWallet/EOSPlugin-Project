@@ -82,8 +82,21 @@
       margin: 8px 0;
     }
 
+    .caption {
+      position: relative;
+    }
+
     .caption span {
       font-weight: 600;
+    }
+
+    .caption p {
+      position: absolute;
+      display: flex;
+      font-size: 10px;
+      width: 100%;
+      justify-content: center;
+      white-space: nowrap;
     }
   }
 }

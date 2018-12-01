@@ -31,12 +31,19 @@ export interface INetworkAccountInfo {
   totalBalance?: number;
   usdTotal?: number;
   cpuUsedSec?: number;
+  cpuAvailableSec?: number;
   cpuMaxSec?: number;
   netUsedKb?: number;
+  netAvailableKb?: number;
   netMaxKb?: number;
   ramUsedKb?: number;
+  ramAvailableKb?: number;
   ramMaxKb?: number;
   tokenString?: string;
+  cpuStacked?: string;
+  netStacked?: string;
+  cpuSelfStacked?: string;
+  netSelfStacked?: string;
 }
 
 export interface INetworkAccountAction {

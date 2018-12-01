@@ -40,7 +40,8 @@
           [value]="accountInfo.cpuPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          <span>{{ accountInfo.cpuUsedSec || 0 }}</span> <br/> {{ accountInfo.cpuMaxSec || 0 }} <span>sec</span>
+          <span>{{ accountInfo.cpuAvailableSec || 0 }}</span> <br/> {{ accountInfo.cpuMaxSec || 0 }} <span>us</span>
+          <p *ngIf="accountInfo.cpuStacked"><span>{{ 'routes.dashboard.staked' | translate }}</span>: {{ accountInfo.cpuStacked }}</p>
         </div>
       </div>
     </div>
@@ -59,7 +60,8 @@
           [value]="accountInfo.netPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          <span>{{ accountInfo.netUsedKb || 0 }}</span> <br/> {{ accountInfo.netMaxKb || 0 }} <span>kb</span>
+          <span>{{ accountInfo.netAvailableKb || 0 }}</span> <br/> {{ accountInfo.netMaxKb || 0 }} <span>kb</span>
+          <p *ngIf="accountInfo.netStacked"><span>{{ 'routes.dashboard.staked' | translate }}</span>: {{ accountInfo.netStacked }}</p>
         </div>
       </div>
     </div>
@@ -78,7 +80,7 @@
           [value]="accountInfo.ramPercent"
         ></mat-progress-spinner>
         <div class="caption">
-          <span>{{ accountInfo.ramUsedKb || 0 }}</span> <br/> {{ accountInfo.ramMaxKb || 0 }} <span>kb</span>
+          <span>{{ accountInfo.ramAvailableKb || 0 }}</span> <br/> {{ accountInfo.ramMaxKb || 0 }} <span>kb</span>
         </div>
       </div>
     </div>

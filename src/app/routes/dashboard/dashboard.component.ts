@@ -81,6 +81,8 @@ export class DashboardComponent extends AbstractPageComponent implements OnInit,
         filter(([ info, tokenString ]) => !!info && !!tokenString),
       )
       .subscribe(([ info, tokenString ]) => {
+        debugger
+        
         this.accountInfo = info;
         this.tokenString = tokenString;
       });

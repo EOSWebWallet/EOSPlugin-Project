@@ -65,7 +65,7 @@ export class EOSService {
 
   readonly actionsHistory$ = new BehaviorSubject<INetworkAccountAction[]>(null);
 
-  private userSymbol: string[] = [];
+  readonly userSymbol: string[][] = [];
 
   constructor(
     private httpClient: HttpClient,
@@ -142,8 +142,8 @@ export class EOSService {
     );
   }
 
-  getAllTokensInfo (network: INetwork, tokens: string[], accountName) {
-    return forkJoin(tokens.map(token => this.getTokenInfo(network, '{"code":"' + token + '","account":"' + accountName + '"}')))
+  getAllTokensInfo (network: INetwork, tokens: string[][], accountName) {
+    return forkJoin(tokens.map(token => this.getTokenInfo(network, '{"code":"' + token[0] + '","account":"' + accountName + '"}')))
       .pipe(map(result => {
         return result.filter(item => item !== false && item.length > 0);
       }));
@@ -216,7 +216,7 @@ export class EOSService {
   getSymbols(account: IAccount, newtworkAccount: INetworkAccount): Observable<string[]> {
     const { protocol, host, port } = account.network;
     return forkJoin(Tokens.map(token =>
-      from(EOS.getTokenInfo(protocol, host, port, token, newtworkAccount.name))
+      from(EOS.getTokenInfo(protocol, host, port, token[0], newtworkAccount.name))
         .pipe(
           catchError(err => of(false))
         )
@@ -293,47 +293,59 @@ export class EOSService {
   }
 
   private setTokensGreymassSymbol (tokens): string {
-    let tokenStringTemp = '';
+    let tokenStringTemp = ''
     tokens.forEach(rez => {
-      tokenStringTemp += rez.amount + ' ' + rez.symbol + ', ';
-      this.addUserSymbol(rez.symbol);
-    });
-    return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
+      tokenStringTemp += rez.amount + ' ' + rez.symbol + ', '
+      let precision = rez.amount.split(".")[1] ? rez.amount.split(".")[1].length : 0
+      this.addUserSymbol(rez.symbol, rez.code, precision)
+    })
+    return tokenStringTemp.substring(0, tokenStringTemp.length - 2)
   }
 
   private setTokensEosflareSymbol (tokens): string {
-    let tokenStringTemp = '';
+    let tokenStringTemp = ''
     tokens.forEach(rez => {
-      tokenStringTemp += rez.balance + ' ' + rez.symbol + ', ';
-      this.addUserSymbol(rez.symbol);
-    });
-    return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
+      tokenStringTemp += rez.balance + ' ' + rez.symbol + ', '
+      let precision = rez.balance.split(".")[1] ? rez.balance.split(".")[1].length : 0
+      this.addUserSymbol(rez.symbol, rez.code, precision)
+    })
+    return tokenStringTemp.substring(0, tokenStringTemp.length - 2)
   }
 
   private setTokensSymbol (tokens): string {
     if (tokens && tokens.length) {
-      let tokenStringTemp = '';
+      let tokenStringTemp = ''
       tokens.forEach(resultArr => {
         resultArr.forEach(element => {
-          this.addUserSymbol(element.substring(element.lastIndexOf(' ') + 1));
-          tokenStringTemp += element + ', ';
-        });
-      });
-      return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
+          let name = element.substring(element.lastIndexOf(' ') + 1)
+          let code = Tokens.filter(function(c) {
+            return c[1] == name;
+          });
+          let precision
+          if (element.indexOf('.') > -1){
+            precision = element.split('.', 2)[1].split(' ',1)[0].length
+          } else {
+            precision = 0
+          }
+          this.addUserSymbol(name, code[0][0], precision)
+          tokenStringTemp += element + ', '
+        })
+      })
+      return tokenStringTemp.substring(0, tokenStringTemp.length - 2)
     }
-    return '';
+    return ''
   }
 
-  private addUserSymbol (symbol: string) {
-    let findSymbol = false;
+  private addUserSymbol (symbol: string, code: string, precision: string) {
+    let findSymbol = false
     this.userSymbol.forEach(element => {
-      if (element.toLocaleLowerCase() === symbol.toLocaleLowerCase()) {
-        findSymbol = true;
-        return;
+      if (element[0].toLocaleLowerCase() === symbol.toLocaleLowerCase()) {
+        findSymbol = true
+        return
       }
-    });
+    })
     if (!findSymbol) {
-      this.userSymbol.push(symbol);
+      this.userSymbol.push([symbol, code, precision])
     }
   }
 }

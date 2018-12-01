@@ -52,15 +52,20 @@ export class SendService {
             map(networkInfo => ({ account, networkAccount, networkInfo }))
           )
       ),
-      flatMap(({ account, networkAccount, networkInfo }) =>
-        this.eosInstance({ ...account.network, chainId: networkInfo.chainId }, Eos, {}, 'https').transaction(tr => {
-          tr.transfer(networkAccount.name, params.recipient, `${Number(params.quantity).toFixed(4)} ${params.symbol}`, params.memo, {
+      flatMap(({ account, networkAccount, networkInfo }) => {
+        const tokenItem = this.eosService.userSymbol.filter(p => p[0] == params.symbol);
+        const accountName = tokenItem[0][1];
+        const precision = Number(tokenItem[0][2]);
+
+        return this.eosInstance({ ...account.network, chainId: networkInfo.chainId }, Eos, {}, 'https').transaction(accountName, tr => {
+          tr.transfer(networkAccount.name, params.recipient.toLowerCase(), `${Number(params.quantity).toFixed(precision)} ${params.symbol}`, params.memo, {
             broadcast: true,
             sign: true,
             authorization: [{ actor: networkAccount.name, permission: networkAccount.authority }],
             verbose: true,
           });
-        }))
+        });
+      })
     );
   }
 

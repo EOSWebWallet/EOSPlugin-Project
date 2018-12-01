@@ -47,30 +47,25 @@ export interface INetworkAccountAction {
   direction?: string;
 }
 
-export const Tokens: string[] = [
-  'eosadddddddd',
-  'eosatidiumio',
-  'eosblackteam',
-  'eosiochaince',
-  'challengedac',
-  'ednazztokens',
-  'eosio.token',
-  'eosdactokens',
-  'eoxeoxeoxeox',
-  'esbcointoken',
-  'eosvrtokenss',
-  'horustokenio',
-  'oo1122334455',
-  'everipediaiq',
-  'irespotokens',
-  'therealkarma',
-  'octtothemoon',
-  'poormantoken',
-  'wizznetwork1',
-  'ridlridlcoin',
-  'zkstokensr4u',
-  'publytoken11'
-];
+export const Tokens: string[][] = [
+  ['eosadddddddd','ADD'],
+  ['eosatidiumio','ATD'],
+  ['eosblackteam','BLACK'],
+  ['eosiochaince','CET'],
+  ['challengedac','CHL'],
+  ['ednazztokens','EDNA'],
+  ['eosio.token','EOS'],
+  ['eosdactokens','EOSDAC'],
+  ['eoxeoxeoxeox','EOX'],
+  ['oo1122334455','OS'],
+  ['everipediaiq','IQ'],
+  ['therealkarma','KARMA'],
+  ['octtothemoon','OCT'],
+  ['poormantoken','POOR'],
+  ['wizznetwork1','WIZZ'],
+  ['zkstokensr4u','ZKS'],
+  ['publytoken11','PUB']
+]
 
 export enum NetworkChaindId {
   MainNet = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',

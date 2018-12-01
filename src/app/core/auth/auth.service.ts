@@ -28,6 +28,7 @@ export class AuthService extends AbstractStateService implements CanActivate {
   static PATH_LOGIN = '/login';
   static PATH_REGISTER = '/registration';
   static PATH_CONFIRM = '/app/home/send/confirm';
+  static PATH_SEND = '/app/home/send';
   static PATH_APP = '/app';
 
   static AUTH_REGISTER = 'AUTH_REGISTER';
@@ -55,7 +56,6 @@ export class AuthService extends AbstractStateService implements CanActivate {
       .pipe(
         filter(e => e instanceof NavigationEnd),
         map(e => <NavigationEnd>e),
-        filter(e => e.url !== AuthService.PATH_CONFIRM),
         filter(e => e.url.indexOf(AuthService.PATH_APP) !== -1)
       )
       .subscribe(e => PluginStorage.setRoute(e.url));
@@ -128,7 +128,10 @@ export class AuthService extends AbstractStateService implements CanActivate {
       } else if (window.isPrompt) {
         this.router.navigateByUrl(AuthService.PATH_PROMPT);
       } else {
-        this.router.navigateByUrl(route || AuthService.PATH_HOME);
+        const finalRoute = (route || '').indexOf(AuthService.PATH_CONFIRM) !== -1
+          ? `${AuthService.PATH_SEND}?confirm=true`
+          : route;
+        this.router.navigateByUrl(finalRoute || AuthService.PATH_HOME);
       }
     });
   }

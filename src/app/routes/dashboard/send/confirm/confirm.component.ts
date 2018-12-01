@@ -1,15 +1,16 @@
-import { Component, forwardRef, Inject, ViewChild, OnInit } from '@angular/core';
+import { Component, forwardRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
+import { Subscription } from 'rxjs/internal/Subscription';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { first, map } from 'rxjs/operators';
+import { first, filter, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
-import { ISignupOptions } from '../send.interface';
 import { ITransactionInfo } from './confirm.interface';
 import { INetworkAccountInfo } from '../../../../core/eos/eos.interface';
 
 import { SendService } from '../send.service';
 import { EOSService } from '../../../../core/eos/eos.service';
+import { UIService } from 'src/app/core/ui/ui.service';
 
 import { AbstractPageComponent } from '../../../../layout/page/page.interface';
 import { PageLayoutComponent } from '../../../../layout/page/page.component';
@@ -19,7 +20,7 @@ import { PageLayoutComponent } from '../../../../layout/page/page.component';
   templateUrl: './confirm.component.html',
   styleUrls: [ './confirm.component.scss' ],
 })
-export class ConfirmComponent extends AbstractPageComponent implements OnInit {
+export class ConfirmComponent extends AbstractPageComponent implements OnInit, OnDestroy {
 
   @ViewChild('form') form: FormGroup;
 
@@ -29,10 +30,13 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
 
   transaction: ITransactionInfo;
 
+  private routerSub: Subscription;
+
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
     private sendService: SendService,
     private eosService: EOSService,
+    private uiService: UIService,
     private router: Router
   ) {
     super(pageLayout, {
@@ -57,7 +61,19 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
       this.accountInfo = info;
     });
 
+    this.routerSub = this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationStart),
+        map(e => <NavigationStart>e),
+        filter(e => e.url.indexOf('send') === -1)
+      )
+      .subscribe(() => this.destroyUIState());
+
     this.transaction = this.sendService.signupOptions.signargs.messages[0].data;
+  }
+  
+  ngOnDestroy(): void {
+    this.routerSub.unsubscribe();
   }
 
   get quantity(): number {
@@ -74,5 +90,9 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit {
 
   onConfirm(): void {
     this.sendService.signup();
+  }
+
+  private destroyUIState(): void {
+    this.uiService.setState('send', null);
   }
 }

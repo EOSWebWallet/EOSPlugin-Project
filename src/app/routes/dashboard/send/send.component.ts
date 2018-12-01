@@ -1,8 +1,9 @@
 import { Component, forwardRef, Inject, ViewChild, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 import { filter, first, map, flatMap, catchError, distinctUntilChanged, skip } from 'rxjs/internal/operators';
+import { combineLatest } from 'rxjs/internal/observable/combineLatest';
 
 import { INetworkAccountInfo } from '../../../core/eos/eos.interface';
 
@@ -23,7 +24,7 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
 export class SendComponent extends AbstractPageComponent implements OnInit, AfterViewInit, OnDestroy {
   static PATH_CONFIRM = '/app/home/send/confirm';
   static PATH_HOME = '/app/home';
-
+  
   @ViewChild('form') form: FormGroup;
 
   accountInfo: INetworkAccountInfo = {};
@@ -35,6 +36,7 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
   private accountSub: Subscription;
   private formSub: Subscription;
   private accountInfoSub: Subscription;
+  private routerSub: Subscription;
 
   constructor(
     @Inject(forwardRef(() => PageLayoutComponent)) pageLayout: PageLayoutComponent,
@@ -43,7 +45,8 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
     private accountService: AccountService,
     private eosService: EOSService,
     private dialogService: DialogService,
-    private uiService: UIService
+    private uiService: UIService,
+    private route: ActivatedRoute,
   ) {
     super(pageLayout, {
       backLink: '/app/home',
@@ -78,6 +81,14 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
         skip(1)
       )
       .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_HOME));
+
+    this.routerSub = this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationStart),
+        map(e => <NavigationStart>e),
+        filter(e => e.url.indexOf('confirm') === -1)
+      )
+      .subscribe(() => this.destroyUIState());
   }
 
   ngAfterViewInit(): void {
@@ -85,11 +96,11 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
   }
 
   ngOnDestroy(): void {
-    this.destroyUIState();
     this.signatureSub.unsubscribe();
     this.symbolsSub.unsubscribe();
     this.accountSub.unsubscribe();
     this.accountInfoSub.unsubscribe();
+    this.routerSub.unsubscribe();
     if (this.formSub) {
       this.formSub.unsubscribe();
     }
@@ -124,15 +135,19 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
 
   private restoreUIState(): void {
     setTimeout(() => {
-      this.uiService.getState('send')
+      combineLatest(this.uiService.getState('send'), this.route.queryParams)
         .pipe(
           first()
         )
-        .subscribe(value => {
+        .subscribe(([ value, params ]) => {
           if (value) {
             this.form.setValue(value);
           }
           this.initUIStateHandler();
+
+          if (params.confirm) {
+            setTimeout(() => this.onSend(), 500);
+          }
         });
     });
   }

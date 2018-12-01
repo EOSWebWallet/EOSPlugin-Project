@@ -48,6 +48,8 @@ export class EOSPlugin {
       .then(identity => {
         this.saveIdentity(identity, network);
         return identity;
+      }, function(err) {
+        return err || NetworkError.promptClosedWithoutAction();
       });
   }
 
@@ -59,6 +61,8 @@ export class EOSPlugin {
         .then(requestedIdentity => {
           this.saveIdentity(requestedIdentity, network);
           return requestedIdentity;
+        }, function(err) {
+          return err || NetworkError.promptClosedWithoutAction();
         });
   }
 

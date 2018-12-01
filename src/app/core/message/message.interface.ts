@@ -37,9 +37,6 @@ export enum NetworkErrorCode {
   NO_SIGNATURE = 402,
   FORBIDDEN = 403,
   TIMED_OUT = 408,
-  LOCKED = 423,
-  UPGRADE_REQUIRED = 426,
-  TOO_MANY_REQUESTS = 429
 }
 
 export class NetworkError {
@@ -51,7 +48,7 @@ export class NetworkError {
   constructor(type: string, message?: string, code?: number) {
     this.type = type;
     this.message = message;
-    this.code = code || NetworkErrorCode.LOCKED;
+    this.code = code;
     this.isError = true;
   }
 

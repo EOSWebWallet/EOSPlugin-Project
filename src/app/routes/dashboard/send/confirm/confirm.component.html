@@ -1,6 +1,6 @@
 <div class="quantity">
   <div><span>{{ quantity.toFixed(4) }}</span> {{ symbol }}</div>
-  <div>{{ quantityUSD }} $</div>
+  <div *ngIf="symbol === 'EOS'">{{ quantityUSD }} $</div>
 </div>
 <mat-divider></mat-divider>
 <div class="accounts">

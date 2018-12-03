@@ -103,8 +103,10 @@
         <table>
           <tr *ngFor="let action of accountActions">
             <td>{{ action.date | date : 'MMM d, h:mm a' }}</td>
-            <td *ngIf="action.direction === 'from'"><span class="from">{{ 'routes.dashboard.from' | translate }}</span> {{ action.from }}</td>
-            <td *ngIf="action.direction === 'to'"><span class="to">{{ 'routes.dashboard.to' | translate }}</span> {{ action.to }}</td>
+            <td *ngIf="action.direction === 'from'"><span class="from">{{ 'routes.dashboard.from' | translate }}</span></td>
+            <td *ngIf="action.direction === 'from'">{{ action.from }}</td>
+            <td *ngIf="action.direction === 'to'"><span class="to">{{ 'routes.dashboard.to' | translate }}</span></td>
+            <td *ngIf="action.direction === 'to'">{{ action.to }}</td>
             <td><span>{{ action.quantity }}</span> {{ action.symbol }}</td>
           </tr>
         </table>

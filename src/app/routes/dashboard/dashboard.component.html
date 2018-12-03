@@ -19,6 +19,14 @@
         <td>{{ accountInfo.staked || 0 }} EOS</td>
       </tr>
       <tr>
+        <td>{{ 'routes.dashboard.refund' | translate }}</td>
+        <td>{{ accountInfo.refund || 0 }} EOS</td>
+      </tr>
+      <tr *ngIf="accountInfo.requestTime">
+        <td>{{ 'routes.dashboard.refundTime' | translate }}</td>
+        <td>{{ accountInfo.requestTime || 0 }}</td>
+      </tr>
+      <tr>
         <td>{{ 'routes.dashboard.tokens' | translate }}:</td>
         <td>{{ accountInfo.tokenString }}</td>
       </tr>

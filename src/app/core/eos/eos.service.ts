@@ -333,6 +333,16 @@ export class EOSService {
     resultInfo.netStacked = accountInfo.total_resources.net_weight;
     resultInfo.netSelfStacked = accountInfo.self_delegated_bandwidth.net_weight;
     resultInfo.cpuSelfStacked = accountInfo.self_delegated_bandwidth.cpu_weight;
+
+    if (!isNaN(parseFloat(accountInfo.refund_request.cpu_amount))) {
+      resultInfo.refund = parseFloat(accountInfo.refund_request.cpu_amount);
+    }
+    if (!isNaN(parseFloat(accountInfo.refund_request.net_amount))) {
+      resultInfo.refund = resultInfo.refund + parseFloat(accountInfo.refund_request.net_amount);
+    }
+
+    resultInfo.requestTime = accountInfo.request_time;
+
     return resultInfo;
   }
 

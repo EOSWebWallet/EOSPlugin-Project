@@ -44,6 +44,8 @@ export interface INetworkAccountInfo {
   netStacked?: string;
   cpuSelfStacked?: string;
   netSelfStacked?: string;
+  refund?: number;
+  requestTime?: number;
 }
 
 export interface INetworkAccountAction {

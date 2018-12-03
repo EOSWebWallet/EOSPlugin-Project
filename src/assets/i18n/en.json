@@ -30,6 +30,8 @@
       "from": "from",
       "to": "to",
       "tokens": "Tokens",
+      "refund": "Refunding",
+      "refundTime": "Refund time",
       "create": "Create Group",
       "send": {
         "title": "Send",

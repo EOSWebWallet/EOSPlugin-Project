@@ -73,7 +73,8 @@ export class SendService {
     const signupOptions = this.signature$.value;
     Browser.stream.send({
       type: ExtensionMessageType.SIGNUP,
-      payload: { signargs: signupOptions.signargs, keypair: signupOptions.keypair }
+      // Need stringify data because of Firefox
+      payload: JSON.stringify({ signargs: signupOptions.signargs, keypair: signupOptions.keypair })
     }).then(result => {
       if (result) {
         this.signature$.next(null);

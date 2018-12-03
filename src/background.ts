@@ -43,7 +43,7 @@ export class Background {
       case ExtensionMessageType.IMPORT_PLUGIN: this.import(message.payload, cb); break;
       case ExtensionMessageType.GET_IDENTITY: this.getIdentity(message.payload, cb); break;
       case ExtensionMessageType.REQUEST_SIGNATURE: this.requestSignature(message.payload, cb); break;
-      case ExtensionMessageType.SIGNUP: this.signup(message.payload, cb); break;
+      case ExtensionMessageType.SIGNUP: this.signup(JSON.parse(message.payload), cb); break;
     }
   }
 

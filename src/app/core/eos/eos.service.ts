@@ -278,17 +278,21 @@ export class EOSService {
   }
 
   private mapAccountActions(actions: any[]): INetworkAccountAction[] {
-    return actions
+    const actionsSet = new Set(actions
       .reverse()
       .filter(a => a.action_trace.act.name === 'transfer')
-      .slice(0, 4)
-      .map(a => ({
+      .filter(a => !!a.action_trace.act.data.quantity)
+      .map(a => JSON.stringify({
         from: a.action_trace.act.data.from,
         to: a.action_trace.act.data.to,
         quantity: a.action_trace.act.data.quantity.split(' ')[0],
         symbol: a.action_trace.act.data.quantity.split(' ')[1],
         date: a.block_time
-      }));
+      }))
+    );
+    return Array.from(actionsSet)
+      .map(actionString => JSON.parse(actionString))
+      .slice(0, 4);
   }
 
   private mapAccountInfo(accountInfo: any, courses: any): INetworkAccountInfo {

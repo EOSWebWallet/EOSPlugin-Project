@@ -345,7 +345,8 @@ export class EOSService {
       resultInfo.refund = resultInfo.refund + parseFloat(accountInfo.refund_request.net_amount);
     }
 
-    resultInfo.requestTime = accountInfo.refund_request.request_time;
+    const requestTime = new Date(accountInfo.refund_request.request_time);
+    resultInfo.requestTime = requestTime.setDate(requestTime.getDate() + 3);
 
     return resultInfo;
   }

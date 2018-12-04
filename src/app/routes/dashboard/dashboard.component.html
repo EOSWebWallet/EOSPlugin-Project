@@ -24,7 +24,7 @@
       </tr>
       <tr *ngIf="accountInfo.requestTime">
         <td>{{ 'routes.dashboard.refundTime' | translate }}</td>
-        <td>{{ accountInfo.requestTime || 0 }}</td>
+        <td>{{ (accountInfo.requestTime | date : 'yyyy-MM-dd hh:mm:ss' ) || 0 }}</td>
       </tr>
       <tr>
         <td>{{ 'routes.dashboard.tokens' | translate }}:</td>

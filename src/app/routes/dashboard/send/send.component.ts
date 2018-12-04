@@ -68,7 +68,9 @@ export class SendComponent extends AbstractPageComponent implements OnInit, Afte
       .pipe(
         filter(Boolean)
       )
-      .subscribe(() => this.router.navigateByUrl(SendComponent.PATH_CONFIRM));
+      .subscribe(() => {
+        this.router.navigateByUrl(`${SendComponent.PATH_CONFIRM}?quantity=${this.form.controls['quantity'].value}`);
+      });
 
     this.accountInfoSub = this.eosService.accountInformation$
       .subscribe(info => this.accountInfo = info);

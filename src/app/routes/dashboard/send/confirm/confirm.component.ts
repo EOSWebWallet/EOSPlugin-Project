@@ -1,5 +1,5 @@
 import { Component, forwardRef, Inject, ViewChild, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { FormGroup } from '@angular/forms';
 import { first, filter, map } from 'rxjs/operators';
@@ -37,7 +37,8 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit, O
     private sendService: SendService,
     private eosService: EOSService,
     private uiService: UIService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     super(pageLayout, {
       backLink: '/app/home/send',
@@ -77,7 +78,7 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit, O
   }
 
   get quantity(): number {
-    return parseFloat(this.transaction.quantity);
+    return parseFloat(this.route.snapshot.queryParams['quantity']);
   }
 
   get quantityUSD(): number {

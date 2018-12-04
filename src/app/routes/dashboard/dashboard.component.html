@@ -18,7 +18,7 @@
         <td>{{ 'routes.dashboard.staked' | translate }}:</td>
         <td>{{ accountInfo.staked || 0 }} EOS</td>
       </tr>
-      <tr>
+      <tr *ngIf="accountInfo.refund">
         <td>{{ 'routes.dashboard.refund' | translate }}</td>
         <td>{{ accountInfo.refund || 0 }} EOS</td>
       </tr>

@@ -8,7 +8,7 @@
     "storage"
   ],
   "browser_action": {
-    "default_title": "EOS Extension",
+    "default_title": "EOS Plugin",
     "default_popup": "index.html",
     "default_icon": "icon.png"
   },

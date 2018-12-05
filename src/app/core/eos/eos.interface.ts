@@ -58,24 +58,24 @@ export interface INetworkAccountAction {
 }
 
 export const Tokens: string[][] = [
-  ['eosadddddddd','ADD'],
-  ['eosatidiumio','ATD'],
-  ['eosblackteam','BLACK'],
-  ['eosiochaince','CET'],
-  ['challengedac','CHL'],
-  ['ednazztokens','EDNA'],
-  ['eosio.token','EOS'],
-  ['eosdactokens','EOSDAC'],
-  ['eoxeoxeoxeox','EOX'],
-  ['oo1122334455','OS'],
-  ['everipediaiq','IQ'],
-  ['therealkarma','KARMA'],
-  ['octtothemoon','OCT'],
-  ['poormantoken','POOR'],
-  ['wizznetwork1','WIZZ'],
-  ['zkstokensr4u','ZKS'],
-  ['publytoken11','PUB']
-]
+  [ 'eosadddddddd', 'ADD' ],
+  [ 'eosatidiumio', 'ATD' ],
+  [ 'eosblackteam', 'BLACK' ],
+  [ 'eosiochaince', 'CET' ],
+  [ 'challengedac', 'CHL' ],
+  [ 'ednazztokens', 'EDNA' ],
+  [ 'eosio.token', 'EOS' ],
+  [ 'eosdactokens', 'EOSDAC' ],
+  [ 'eoxeoxeoxeox', 'EOX' ],
+  [ 'oo1122334455', 'OS' ],
+  [ 'everipediaiq', 'IQ' ],
+  [ 'therealkarma', 'KARMA' ],
+  [ 'octtothemoon', 'OCT' ],
+  [ 'poormantoken', 'POOR' ],
+  [ 'wizznetwork1', 'WIZZ' ],
+  [ 'zkstokensr4u', 'ZKS' ],
+  [ 'publytoken11', 'PUB' ]
+];
 
 export enum NetworkChaindId {
   MainNet = 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906',

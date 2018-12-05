@@ -53,12 +53,13 @@ export class SendService {
           )
       ),
       flatMap(({ account, networkAccount, networkInfo }) => {
-        const tokenItem = this.eosService.userSymbol.filter(p => p[0] == params.symbol);
+        const tokenItem = this.eosService.userSymbol.filter(p => p[0] === params.symbol);
         const accountName = tokenItem[0][1];
         const precision = Number(tokenItem[0][2]);
 
         return this.eosInstance({ ...account.network, chainId: networkInfo.chainId }, Eos, {}, 'https').transaction(accountName, tr => {
-          tr.transfer(networkAccount.name, params.recipient.toLowerCase(), `${Number(params.quantity).toFixed(precision)} ${params.symbol}`, params.memo, {
+          tr.transfer(networkAccount.name, params.recipient.toLowerCase(),
+            `${Number(params.quantity).toFixed(precision)} ${params.symbol}`, params.memo, {
             broadcast: true,
             sign: true,
             authorization: [{ actor: networkAccount.name, permission: networkAccount.authority }],

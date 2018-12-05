@@ -72,7 +72,7 @@ export class ConfirmComponent extends AbstractPageComponent implements OnInit, O
 
     this.transaction = this.sendService.signupOptions.signargs.messages[0].data;
   }
-  
+
   ngOnDestroy(): void {
     this.routerSub.unsubscribe();
   }

@@ -312,7 +312,8 @@ export class EOSService {
     if (!Number.isNaN(Number.parseFloat(resultInfo.cpuData))) {
       resultInfo.cpuData = parseFloat(resultInfo.cpuData).toFixed(2).toString();
     }
-    resultInfo.ramPercent = Math.round((Number(accountInfo.ram_quota) - Number(accountInfo.ram_usage)) / Number(accountInfo.ram_quota) * 100);
+    resultInfo.ramPercent =
+      Math.round((Number(accountInfo.ram_quota) - Number(accountInfo.ram_usage)) / Number(accountInfo.ram_quota) * 100);
     resultInfo.totalBalance =
       parseFloat((Number(accountInfo.core_liquid_balance.split(' ', 1)[0]) + Number(accountInfo.voter_info.staked) / 10000).toFixed(3));
     resultInfo.usdTotal = Number((Number(resultInfo.totalBalance) * usdCourse).toFixed(3));
@@ -352,59 +353,59 @@ export class EOSService {
   }
 
   private setTokensGreymassSymbol (tokens): string {
-    let tokenStringTemp = ''
+    let tokenStringTemp = '';
     tokens.forEach(rez => {
-      tokenStringTemp += rez.amount + ' ' + rez.symbol + ', '
-      let precision = rez.amount.split(".")[1] ? rez.amount.split(".")[1].length : 0
-      this.addUserSymbol(rez.symbol, rez.code, precision)
-    })
-    return tokenStringTemp.substring(0, tokenStringTemp.length - 2)
+      tokenStringTemp += rez.amount + ' ' + rez.symbol + ', ';
+      const precision = rez.amount.split('.')[1] ? rez.amount.split('.')[1].length : 0;
+      this.addUserSymbol(rez.symbol, rez.code, precision);
+    });
+    return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
   }
 
   private setTokensEosflareSymbol (tokens): string {
-    let tokenStringTemp = ''
+    let tokenStringTemp = '';
     tokens.forEach(rez => {
-      tokenStringTemp += rez.balance + ' ' + rez.symbol + ', '
-      let precision = rez.balance.split(".")[1] ? rez.balance.split(".")[1].length : 0
-      this.addUserSymbol(rez.symbol, rez.code, precision)
-    })
-    return tokenStringTemp.substring(0, tokenStringTemp.length - 2)
+      tokenStringTemp += rez.balance + ' ' + rez.symbol + ', ';
+      const precision = rez.balance.split('.')[1] ? rez.balance.split('.')[1].length : 0;
+      this.addUserSymbol(rez.symbol, rez.code, precision);
+    });
+    return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
   }
 
   private setTokensSymbol (tokens): string {
     if (tokens && tokens.length) {
-      let tokenStringTemp = ''
+      let tokenStringTemp = '';
       tokens.forEach(resultArr => {
         resultArr.forEach(element => {
-          let name = element.substring(element.lastIndexOf(' ') + 1)
-          let code = Tokens.filter(function(c) {
-            return c[1] == name;
+          const name = element.substring(element.lastIndexOf(' ') + 1);
+          const code = Tokens.filter(function(c) {
+            return c[1] === name;
           });
-          let precision
-          if (element.indexOf('.') > -1){
-            precision = element.split('.', 2)[1].split(' ',1)[0].length
+          let precision;
+          if (element.indexOf('.') > -1) {
+            precision = element.split('.', 2)[1].split(' ', 1)[0].length;
           } else {
-            precision = 0
+            precision = 0;
           }
-          this.addUserSymbol(name, code[0][0], precision)
-          tokenStringTemp += element + ', '
-        })
-      })
-      return tokenStringTemp.substring(0, tokenStringTemp.length - 2)
+          this.addUserSymbol(name, code[0][0], precision);
+          tokenStringTemp += element + ', ';
+        });
+      });
+      return tokenStringTemp.substring(0, tokenStringTemp.length - 2);
     }
-    return ''
+    return '';
   }
 
   private addUserSymbol (symbol: string, code: string, precision: string) {
-    let findSymbol = false
+    let findSymbol = false;
     this.userSymbol.forEach(element => {
       if (element[0].toLocaleLowerCase() === symbol.toLocaleLowerCase()) {
-        findSymbol = true
-        return
+        findSymbol = true;
+        return;
       }
-    })
+    });
     if (!findSymbol) {
-      this.userSymbol.push([symbol, code, precision])
+      this.userSymbol.push([symbol, code, precision]);
     }
   }
 }

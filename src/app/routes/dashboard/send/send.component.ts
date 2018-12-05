@@ -24,7 +24,7 @@ import { PageLayoutComponent } from '../../../layout/page/page.component';
 export class SendComponent extends AbstractPageComponent implements OnInit, AfterViewInit, OnDestroy {
   static PATH_CONFIRM = '/app/home/send/confirm';
   static PATH_HOME = '/app/home';
-  
+
   @ViewChild('form') form: FormGroup;
 
   accountInfo: INetworkAccountInfo = {};

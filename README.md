@@ -2,6 +2,11 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.8.
 
+The project requires NodeJS to be installed:
+1. Install webpack globally `npm -g webpack`.
+2. Move to project folder and run `npm i`.
+3. Run `sh build-dev.sh` or `sh build-prod.sh` to build the project. The build artifacts will be stored in the `dist/` directory.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

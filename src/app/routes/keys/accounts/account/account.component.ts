@@ -45,6 +45,8 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
   accounts: INetworkAccount[] = [];
   accountOptions: ISelectOption[] = [];
 
+  private selectedNetworkAccount: INetworkAccount;
+
   private privateKeyChanged$ = new Subject<void>();
   private privateKeySub: Subscription;
   private accountSub: Subscription;
@@ -94,6 +96,12 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
         this.account = this.createEmptyForm(this.networkOptions[0]);
       }
     });
+
+    this.accountService.selectedNetworkAccount$
+      .pipe(
+        first()
+      )
+      .subscribe(a => this.selectedNetworkAccount = a);
   }
 
   ngAfterViewInit(): void {
@@ -128,7 +136,9 @@ export class AccountComponent extends AbstractPageComponent implements OnInit, O
         publicKey: data.publicKey
       },
       network: this.networks.find(n => n.id === data.network.value),
-      accounts: this.accounts.filter(a => data.account.find(na => na.value === this.getAccountName(a)))
+      accounts: this.accounts
+        .filter(a => data.account.find(na => na.value === this.getAccountName(a)))
+        .map((a, i) => ({ ...a, selected: !this.selectedNetworkAccount && i === 0 }))
     };
     if (this.accountId) {
       this.accountService.update(updatedAccount.id, updatedAccount);

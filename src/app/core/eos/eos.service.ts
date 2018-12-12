@@ -339,15 +339,17 @@ export class EOSService {
     resultInfo.netSelfStacked = accountInfo.self_delegated_bandwidth.net_weight;
     resultInfo.cpuSelfStacked = accountInfo.self_delegated_bandwidth.cpu_weight;
 
-    if (!isNaN(parseFloat(accountInfo.refund_request.cpu_amount))) {
-      resultInfo.refund = parseFloat(accountInfo.refund_request.cpu_amount);
+    if (accountInfo.refund_request) {
+      if (!isNaN(parseFloat(accountInfo.refund_request.cpu_amount))) {
+        resultInfo.refund = parseFloat(accountInfo.refund_request.cpu_amount);
+      }
+      if (!isNaN(parseFloat(accountInfo.refund_request.net_amount))) {
+        resultInfo.refund = resultInfo.refund + parseFloat(accountInfo.refund_request.net_amount);
+      }
+    
+      const requestTime = new Date(accountInfo.refund_request.request_time);
+      resultInfo.requestTime = requestTime.setDate(requestTime.getDate() + 3);
     }
-    if (!isNaN(parseFloat(accountInfo.refund_request.net_amount))) {
-      resultInfo.refund = resultInfo.refund + parseFloat(accountInfo.refund_request.net_amount);
-    }
-
-    const requestTime = new Date(accountInfo.refund_request.request_time);
-    resultInfo.requestTime = requestTime.setDate(requestTime.getDate() + 3);
 
     return resultInfo;
   }

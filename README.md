@@ -17,7 +17,11 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `sh build-dev.sh` or `sh build-prod.sh` to build the project. The build artifacts will be stored in the `dist/` directory.
+The project requires NodeJS to be installed.
+
+1. Install webpack globally `npm -g webpack`.
+2. Move to project folder and run `npm i`.
+3. Run `sh build-dev.sh` or `sh build-prod.sh` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
 
